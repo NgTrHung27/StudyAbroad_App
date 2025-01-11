@@ -77,7 +77,7 @@ dependencies:
   pdf: ^3.11.1
   open_file: ^3.3.2
   path_provider: ^2.1.4
-  ably_flutter: ^1.2.34
+  ably_flutter: ^1.2.36
   flutter_speed_dial: ^7.0.0
 
 dev_dependencies:

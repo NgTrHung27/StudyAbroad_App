@@ -87,7 +87,7 @@ class SchoolBox extends StatelessWidget {
                           stops: parseGradient(school.color).stops,
                           colors: parseGradient(school.color)
                               .colors
-                              .map((color) => color.withOpacity(0.35))
+                              .map((color) => color.withValues(alpha: 0.35),)
                               .toList(),
                         ),
                       ),

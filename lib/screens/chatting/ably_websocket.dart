@@ -33,7 +33,6 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
 
   late String _clientId;
   void connect() {
-    print('Connecting with clientId: $_clientId');
     // Thực hiện kết nối WebSocket với _clientId
   }
 
@@ -75,13 +74,11 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
   void setLoadingState() {
     setState(() {
       _isLoading = true;
-      print('Loading started');
     });
 
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         _isLoading = false;
-        print('Loading ended');
       });
     });
   }
@@ -113,11 +110,7 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
         _sortMessages();
       });
 
-      print("Loaded messages: ${_currentChatSession.messages?.length}");
     } else {
-      print("Failed to load chat session: ${chatSessionResponse.statusCode}");
-      print("Failed to load chat session: ${chatSessionResponse.body}");
-
       _loadChatSession();
     }
   }
@@ -131,16 +124,13 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
     clientOptions.clientId = _clientId;
     try {
       realtimeInstance = ably.Realtime(options: clientOptions);
-      print('Ably instantiated');
       chatChannel = realtimeInstance.channels.get('support:$_clientId');
       subscribeToChatChannel();
       realtimeInstance.connection
           .on(ably.ConnectionEvent.connected)
           .listen((ably.ConnectionStateChange stateChange) async {
-        print('Realtime connection state changed: ${stateChange.event}');
       });
       chatChannel.subscribe().listen((ably.Message message) {
-        print('Received message: ${message.data}');
       });
     } catch (error) {
       print('Error creating Ably Realtime Instance: $error');
@@ -172,7 +162,6 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
           createdAt: DateTime.now().toLocal(),
         );
       } else {
-        print("Unexpected data type: ${newMsgFromAbly.runtimeType}");
         return;
       }
 
@@ -428,7 +417,7 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
                   BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                     child: Container(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                     ),
                   ),
                   const Center(

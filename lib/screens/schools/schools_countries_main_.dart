@@ -60,8 +60,8 @@ class _CountrySchoolListState extends State<CountrySchoolList> {
                     borderRadius: BorderRadius.circular(15),
                     gradient: LinearGradient(
                       colors: [
-                        Colors.white.withOpacity(0.1),
-                        Colors.black.withOpacity(0.8),
+                        Colors.white.withValues(alpha: 0.1),
+                        Colors.black.withValues(alpha: 0.8),
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,

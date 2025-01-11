@@ -22,16 +22,10 @@ class MainPage extends StatefulWidget {
   MainPageState createState() => MainPageState();
 }
 
-class MainPageState extends State<MainPage>
-    with SingleTickerProviderStateMixin {
+class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin {
   late int _currentIndex;
 
-  final List<Widget> _bodyView = [
-    const HomePage(),
-    const AblyWebsocket(),
-    const NotificationsPage(),
-    const Profile()
-  ];
+  final List<Widget> _bodyView = [const HomePage(), const AblyWebsocket(), const NotificationsPage(), const Profile()];
 
   void onTabTapped(int index) {
     setState(() {
@@ -52,15 +46,13 @@ class MainPageState extends State<MainPage>
     if (args != null && args is Map && args.containsKey('index')) {
       setState(() {
         _currentIndex = args['index'];
-        print(' Did $_currentIndex');
       });
     }
   }
 
   Widget _tabItem(String icon, String label, int index) {
     bool isSelected = _currentIndex == index;
-    String iconPath =
-        isSelected ? '${icon}_selected.png' : '${icon}_unselected.png';
+    String iconPath = isSelected ? '${icon}_selected.png' : '${icon}_unselected.png';
 
     return GestureDetector(
       onTap: () => onTabTapped(index),
@@ -105,14 +97,10 @@ class MainPageState extends State<MainPage>
     final floatingHeight = isRunningOnAndroid ? 0.12 : 0.08;
     final screenHeight = MediaQuery.of(context).size.height;
     final localizations = AppLocalizations.of(context);
-    final home =
-        localizations != null ? localizations.nav_home : 'Default Text';
-    final chatAI =
-        localizations != null ? localizations.ai_chatting_nav : 'Default Text';
-    final noti =
-        localizations != null ? localizations.nav_noti : 'Default Text';
-    final profile =
-        localizations != null ? localizations.nav_profile : 'Default Text';
+    final home = localizations != null ? localizations.nav_home : 'Default Text';
+    final chatAI = localizations != null ? localizations.ai_chatting_nav : 'Default Text';
+    final noti = localizations != null ? localizations.nav_noti : 'Default Text';
+    final profile = localizations != null ? localizations.nav_profile : 'Default Text';
     final List<String> labels = [home, chatAI, noti, profile];
     return Scaffold(
       body: Stack(
@@ -135,7 +123,7 @@ class MainPageState extends State<MainPage>
                   borderRadius: BorderRadius.circular(50.0),
                   child: Container(
                     height: 80,
-                    color: Colors.white.withOpacity(1),
+                    color: Colors.white.withValues(alpha: 0.1),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: List.generate(_icons.length, (index) {
@@ -168,8 +156,7 @@ class MainPageState extends State<MainPage>
                   label: 'Gemini - Flash',
                   onTap: () => _showFlashBottomSheetNew(context),
                   backgroundColor: AppColor.redLight,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 ),
                 SpeedDialChild(
                   child: const ImageIcon(
@@ -180,8 +167,7 @@ class MainPageState extends State<MainPage>
                   label: 'Gemini - Pro',
                   onTap: () => _showProBottomSheet(context),
                   backgroundColor: AppColor.redLight,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 ),
               ],
             )
@@ -206,8 +192,7 @@ class MainPageState extends State<MainPage>
             child: const Center(
               child: Padding(
                 padding: EdgeInsets.all(20.0),
-                child: Text("Chat AI",
-                    style: TextStyle(fontSize: 30, color: Colors.blue)),
+                child: Text("Chat AI", style: TextStyle(fontSize: 30, color: Colors.blue)),
               ),
             )),
       ),
@@ -227,8 +212,7 @@ class MainPageState extends State<MainPage>
             child: const Center(
               child: Padding(
                 padding: EdgeInsets.all(20.0),
-                child: Text("Chat AI",
-                    style: TextStyle(fontSize: 30, color: Colors.blue)),
+                child: Text("Chat AI", style: TextStyle(fontSize: 30, color: Colors.blue)),
               ),
             )),
       ),

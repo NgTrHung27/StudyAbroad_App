@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart'; // Import Cupertino library
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kltn_mobile/blocs/lang_cubit/language_bloc.dart';
 import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
 import 'package:kltn_mobile/components/constant/color_constant.dart';
 import 'package:kltn_mobile/components/constant/theme.dart';
+import 'package:kltn_mobile/components/style/montserrat.dart';
 
 class FunctionItem {
   final String name;
@@ -49,10 +49,8 @@ class _ActionTabState extends State<ActionTab> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isDarkMode =
-        context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme;
-    final dropdownColor =
-        isDarkMode ? AppColor.scafflodBgColorDark : Colors.white;
+    final isDarkMode = context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme;
+    final dropdownColor = isDarkMode ? AppColor.scafflodBgColorDark : Colors.white;
     final textcolor = isDarkMode ? Colors.white : Colors.black;
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -62,7 +60,7 @@ class _ActionTabState extends State<ActionTab> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             spreadRadius: 5,
             offset: const Offset(0, 5),
@@ -95,8 +93,7 @@ class _ActionTabState extends State<ActionTab> {
                       children: [
                         Row(
                           children: [
-                            Icon(function.icon,
-                                color: widget.colorIcon, size: 25),
+                            Icon(function.icon, color: widget.colorIcon, size: 25),
                             const SizedBox(width: 15),
                             Expanded(
                               child: TextMonserats(
@@ -108,46 +105,31 @@ class _ActionTabState extends State<ActionTab> {
                             ),
                             if (function.isEnable)
                               CupertinoSwitch(
-                                value:
-                                    context.watch<ThemeSettingCubit>().state ==
-                                        AppTheme.blackTheme,
+                                value: context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme,
                                 onChanged: (value) {
-                                  context
-                                      .read<ThemeSettingCubit>()
-                                      .toggleTheme();
+                                  context.read<ThemeSettingCubit>().toggleTheme();
                                 },
                               ),
                             if (function.dropdownCallback != null)
-                              BlocBuilder<LanguageBloc, Locale>(
-                                  builder: (context, state) {
+                              BlocBuilder<LanguageBloc, Locale>(builder: (context, state) {
                                 return Container(
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: textcolor, width: 1),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(30)),
+                                    border: Border.all(color: textcolor, width: 1),
+                                    borderRadius: const BorderRadius.all(Radius.circular(30)),
                                   ),
                                   child: SizedBox(
                                     height: 30,
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
                                       child: DropdownButton<Locale>(
-                                          value: context
-                                              .watch<LanguageBloc>()
-                                              .state,
+                                          value: context.watch<LanguageBloc>().state,
                                           items: const [
-                                            DropdownMenuItem(
-                                                value: Locale('en'),
-                                                child: Text('English')),
-                                            DropdownMenuItem(
-                                                value: Locale('ko'),
-                                                child: Text('Korean')),
+                                            DropdownMenuItem(value: Locale('en'), child: Text('English')),
+                                            DropdownMenuItem(value: Locale('ko'), child: Text('Korean')),
                                             DropdownMenuItem(
                                                 value: Locale('vi'),
                                                 child: Padding(
-                                                  padding:
-                                                      EdgeInsets.only(right: 5),
+                                                  padding: EdgeInsets.only(right: 5),
                                                   child: Text('Vietnamese'),
                                                 )),
                                           ],
@@ -172,8 +154,7 @@ class _ActionTabState extends State<ActionTab> {
                               }),
                           ],
                         ),
-                        if (idx != widget.functions.length - 1)
-                          const SizedBox(height: 12),
+                        if (idx != widget.functions.length - 1) const SizedBox(height: 12),
                       ],
                     ),
                   ),

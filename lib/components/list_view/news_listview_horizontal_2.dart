@@ -36,7 +36,6 @@ class NewsListViewShortState extends State<NewsListViewShort> {
           );
         }
         if (state is NewsError) {
-          print(state.message.toString());
           return Center(child: Text(errorConn));
         }
         if (state is NewsSchoolLoaded) {
@@ -78,8 +77,8 @@ class NewsListViewShortState extends State<NewsListViewShort> {
                         borderRadius: BorderRadius.circular(15),
                         gradient: LinearGradient(
                           colors: [
-                            Colors.white.withOpacity(0.1),
-                            Colors.black.withOpacity(0.8),
+                            Colors.white.withValues(alpha: 0.1),
+                            Colors.black.withValues(alpha: 0.8),
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,

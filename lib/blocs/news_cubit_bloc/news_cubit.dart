@@ -19,7 +19,6 @@ class NewsCubit extends Cubit<NewsState> {
       emit(NewsLoaded(newsList: nullFieldsNewsList));
     } catch (e) {
       emit(NewsError(message: e.toString()));
-      print('NewsError $e');
     }
   }
 }

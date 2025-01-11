@@ -67,9 +67,7 @@ class _HomePageState extends BasePageState<HomePage> {
     print('checkuserAuth _initializeNotifications: $userAuth');
 
     if (userAuth == null) {
-      print('checkuserAuth: null');
     } else {
-      print('checkuserAuth: $userAuth');
     }
 
     final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
@@ -88,10 +86,8 @@ class _HomePageState extends BasePageState<HomePage> {
     final fCMToken = await firebaseMessaging.getToken();
 
     // Print the token
-    print('FCM KLTN Token: $fCMToken');
     if (fCMToken == null) return;
     final idUser = userAuth?.id;
-    print('Log data before send API: $idUser , $fCMToken');
     final url = Uri.parse('https://admin-cemc-co.vercel.app/api/notifications');
     final response = await http.post(
       url,
@@ -100,12 +96,9 @@ class _HomePageState extends BasePageState<HomePage> {
       },
       body: jsonEncode({'token': fCMToken, 'userId': idUser}),
     );
-
-    print('Token posted successfully');
     if (mounted) {
       // ignore: use_build_context_synchronously
       context.read<ClientIdProvider>().setClientId(fCMToken);
-      print("Token Provided sent to Websocket");
     } else {
       print('Failed to post token: ${response.statusCode}');
     }
@@ -115,7 +108,6 @@ class _HomePageState extends BasePageState<HomePage> {
   Widget build(BuildContext context) {
     final userAuth =
         this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
-    print('checkuserAuth: $userAuth');
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -163,7 +155,6 @@ class _HomePageState extends BasePageState<HomePage> {
                             } else if (state is CarouselLoaded) {
                               return CarouselSliderDataFound(state.carousels);
                             } else if (state is CarouselError) {
-                              print(state.message.toString());
                               return Center(child: Text(errorConn));
                             } else {
                               return Container();

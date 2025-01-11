@@ -1,5 +1,8 @@
+// ignore: depend_on_referenced_packages
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:kltn_mobile/blocs/contact_us_bloc/contact_cubit.dart';
 import 'package:kltn_mobile/blocs/contact_us_bloc/contact_state.dart';
@@ -17,9 +20,6 @@ import 'package:kltn_mobile/models/schools.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
 import 'package:kltn_mobile/screens/home/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// ignore: depend_on_referenced_packages
-import 'package:collection/collection.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContactUs extends BasePage {
   const ContactUs({super.key});
@@ -92,7 +92,6 @@ class _ContactUsState extends BasePageState<ContactUs> {
     };
     items.forEach((key, value) {
       if (value == null || (value is String && value.isEmpty)) {
-        print('$key is null or empty');
       }
     });
 
@@ -102,13 +101,10 @@ class _ContactUsState extends BasePageState<ContactUs> {
         name.isEmpty ||
         phone.isEmpty ||
         message.isEmpty) {
-      print('Please fill all fields correctly.');
       return;
     }
 
-    context
-        .read<ContactUsCubit>()
-        .sendForm(name, email, valueTitleForm!, phone, message, selectedSchool);
+    context.read<ContactUsCubit>().sendForm(name, email, valueTitleForm!, phone, message, selectedSchool);
   }
 
   //Declare intial state value for selectedSchool ,program, city, district, ward
@@ -123,10 +119,8 @@ class _ContactUsState extends BasePageState<ContactUs> {
   //Declar intial state value for TitleFprm -Function TitleForm
   void titleValueChanged(TitleForm? title) {
     setState(() {
-      print("TitleForm: $title");
       if (title != null) {
         valueTitleForm = title;
-        print("titleform: $title");
       }
     });
   }
@@ -175,8 +169,6 @@ class _ContactUsState extends BasePageState<ContactUs> {
           name: 'System',
           locale: Localizations.localeOf(context).languageCode,
         );
-      default:
-        return '';
     }
   }
 
@@ -192,37 +184,20 @@ class _ContactUsState extends BasePageState<ContactUs> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    final contactPage =
-        localizations != null ? localizations.contact_page : "Default Text";
-    final contactSub =
-        localizations != null ? localizations.contact_text : "Default Text";
-    final contactTit =
-        localizations != null ? localizations.contact_title : "Default Text";
-    final contactSchool =
-        localizations != null ? localizations.contact_school : "Default Text";
-    final contactName =
-        localizations != null ? localizations.contact_name : "Default Text";
-    final contactMail =
-        localizations != null ? localizations.contact_mail : "Default Text";
-    final contactPhon =
-        localizations != null ? localizations.contact_phone : "Default Text";
-    final contactMess =
-        localizations != null ? localizations.contact_mess : "Default Text";
-    final fullname = localizations != null
-        ? localizations.register_7_fullname
-        : "Default Text";
-    final mail = localizations != null
-        ? localizations.register_login_cpass__fg_mail
-        : "Default Text";
-    final phoneText = localizations != null
-        ? localizations.register_12_phone
-        : "Default Text";
-    final help =
-        localizations != null ? localizations.contact_helps : "Defalut Text";
-    final send =
-        localizations != null ? localizations.contact_send : "Default Text";
-    final isDarkMode =
-        context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme;
+    final contactPage = localizations != null ? localizations.contact_page : "Default Text";
+    final contactSub = localizations != null ? localizations.contact_text : "Default Text";
+    final contactTit = localizations != null ? localizations.contact_title : "Default Text";
+    final contactSchool = localizations != null ? localizations.contact_school : "Default Text";
+    final contactName = localizations != null ? localizations.contact_name : "Default Text";
+    final contactMail = localizations != null ? localizations.contact_mail : "Default Text";
+    final contactPhon = localizations != null ? localizations.contact_phone : "Default Text";
+    final contactMess = localizations != null ? localizations.contact_mess : "Default Text";
+    final fullname = localizations != null ? localizations.register_7_fullname : "Default Text";
+    final mail = localizations != null ? localizations.register_login_cpass__fg_mail : "Default Text";
+    final phoneText = localizations != null ? localizations.register_12_phone : "Default Text";
+    final help = localizations != null ? localizations.contact_helps : "Defalut Text";
+    final send = localizations != null ? localizations.contact_send : "Default Text";
+    final isDarkMode = context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme;
     final screenWidth = MediaQuery.of(context).size.width;
     return BlocConsumer<ContactUsCubit, ContactUsState>(
       listener: (context, state) {
@@ -235,8 +210,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
             errorEmailMessage = state.error;
           });
         } else if (state is ContactSuccessState) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const HomePage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
         }
       },
       builder: (context, state) {
@@ -254,8 +228,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
           );
         } else if (state is ContactInitialState) {}
         return Scaffold(
-          backgroundColor: context.select(
-              (ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
+          backgroundColor: context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
           body: Container(
             padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
             child: SingleChildScrollView(
@@ -308,11 +281,9 @@ class _ContactUsState extends BasePageState<ContactUs> {
                         }
                         setState(() {
                           titleValueChanged(newValueTitle);
-                          print(valueTitleForm);
                         });
                       },
-                      itemLabel: (TitleForm title) =>
-                          getTitleFormLabel(context, title),
+                      itemLabel: (TitleForm title) => getTitleFormLabel(context, title),
                       isExpanded: false,
                     ),
                   ),
@@ -330,8 +301,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
                             items: lstschools,
                             selectedItem: selectedSchool == null
                                 ? null
-                                : lstschools.firstWhereOrNull((element) =>
-                                    element.id.toString() == selectedSchool),
+                                : lstschools.firstWhereOrNull((element) => element.id.toString() == selectedSchool),
                             onChanged: (Schools? newValueSchool) {
                               setState(() {
                                 selectedSchool = newValueSchool?.id.toString();
@@ -398,7 +368,6 @@ class _ContactUsState extends BasePageState<ContactUs> {
                   const SizedBox(height: 40),
                   MyButton(
                     onTap: () {
-                      print('Button pressed');
                       _showAlertDialog(context);
                       sendForm();
                     },

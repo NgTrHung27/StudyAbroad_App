@@ -52,7 +52,7 @@ class ScholarshipsDetailState extends BasePageState<ScholarshipsDetail> {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: boxColor.withOpacity(0.5),
+                          color: boxColor.withValues(alpha: 0.1),
                           spreadRadius: 5,
                           blurRadius: 7,
                           offset: const Offset(0, 3),

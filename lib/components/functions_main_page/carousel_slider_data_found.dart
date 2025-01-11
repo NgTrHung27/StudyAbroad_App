@@ -12,8 +12,7 @@ class CarouselSliderDataFound extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _CarouselSliderDataFoundState createState() =>
-      _CarouselSliderDataFoundState();
+  _CarouselSliderDataFoundState createState() => _CarouselSliderDataFoundState();
 }
 
 class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
@@ -31,10 +30,8 @@ class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
                   children: [
                     CachedNetworkImage(
                       imageUrl: e.background,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Center(
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      progressIndicatorBuilder: (context, url, downloadProgress) => Center(
                         child: CircularProgressIndicator(
                           value: downloadProgress.progress,
                         ),
@@ -51,18 +48,15 @@ class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
                           borderRadius: BorderRadius.circular(15),
                           gradient: LinearGradient(
                             colors: [
-                              Colors.white.withOpacity(0.2),
-                              Colors.black.withOpacity(0.8),
+                              Colors.white.withValues(alpha: 0.2),
+                              Colors.black.withValues(alpha: 0.8),
                             ],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                           ),
                         ),
                         padding: const EdgeInsets.all(10),
-                        child: TextMonserats(e.name,
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700),
+                        child: TextMonserats(e.name, fontSize: 20, color: Colors.white, fontWeight: FontWeight.w700),
                       ),
                     )
                   ],
@@ -75,17 +69,14 @@ class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final circleBG = isDarkMode ? const Color(0xff616161) : Colors.white;
     final circleHL = isDarkMode ? Colors.white : const Color(0xff959595);
 
     final screenWidth = MediaQuery.of(context).size.width;
-    double orientationSizeHor =
-        MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 0.7;
+    double orientationSizeHor = MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 0.7;
     final screenHeight = MediaQuery.of(context).size.height;
-    double orientationSizeVer =
-        MediaQuery.of(context).orientation == Orientation.portrait ? 0.25 : 0.5;
+    double orientationSizeVer = MediaQuery.of(context).orientation == Orientation.portrait ? 0.25 : 0.5;
     return Column(
       children: [
         SizedBox(

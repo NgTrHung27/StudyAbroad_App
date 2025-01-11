@@ -8,28 +8,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:kltn_mobile/blocs/auth_cubit_bloc/auth_cubit.dart';
 import 'package:kltn_mobile/blocs/auth_cubit_bloc/auth_state.dart';
 import 'package:kltn_mobile/blocs/lang_cubit/language_bloc.dart';
 import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
+import 'package:kltn_mobile/components/constant/color_constant.dart';
 import 'package:kltn_mobile/components/functions/convert_imagetostring.dart';
+import 'package:kltn_mobile/components/functions/dropdown.dart';
+import 'package:kltn_mobile/components/functions/radio.dart';
+import 'package:kltn_mobile/components/functions/text_field.dart';
 import 'package:kltn_mobile/components/style/backbutton.dart';
+import 'package:kltn_mobile/components/style/montserrat.dart';
+import 'package:kltn_mobile/components/style/simplebutton.dart';
+import 'package:kltn_mobile/components/style/textspan.dart';
 import 'package:kltn_mobile/models/country.dart';
 import 'package:kltn_mobile/models/enum.dart';
 import 'package:kltn_mobile/models/schools.dart';
 import 'package:kltn_mobile/screens/authentication/login_page.dart';
-import 'package:intl/intl.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
-import 'package:kltn_mobile/components/style/simplebutton.dart';
-import 'package:kltn_mobile/components/style/textspan.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/functions/dropdown.dart';
-import 'package:kltn_mobile/components/functions/radio.dart';
-import 'package:kltn_mobile/components/functions/text_field.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends BasePage {
   const RegisterPage({super.key});
@@ -93,20 +93,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
       errorCertificateTypeMessage,
       errorMessage;
   //Declare
-  String email = '',
-      name = '',
-      password = '',
-      confirmpassword = '',
-      phone = '',
-      idCardNumber = '',
-      dob = '';
+  String email = '', name = '', password = '', confirmpassword = '', phone = '', idCardNumber = '', dob = '';
   Schools? selectedSchoolObject;
-  String? selectedSchool,
-      selectedCountry,
-      selectedProgram,
-      selectedCity,
-      selectedDistrict,
-      selectedWard;
+  String? selectedSchool, selectedCountry, selectedProgram, selectedCity, selectedDistrict, selectedWard;
   String address = '';
   Gender? valueGender;
   DegreeType? valueDegree;
@@ -158,7 +147,6 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
 // Kiểm tra trường ngày tháng có rỗng không
     if (dateController.text.trim().isEmpty) {
       // Hiển thị thông báo lỗi hoặc xử lý lỗi tại đây
-      print("Ngày tháng không được để trống.");
       setState(() {
         isLoading = false;
       });
@@ -169,7 +157,6 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
       dob = DateFormat('dd/MM/yyyy').parse(dateController.text.trim());
     } catch (e) {
       // Xử lý lỗi phân tích ngày tháng tại đây
-      print("Lỗi khi phân tích ngày tháng: $e");
       setState(() {
         isLoading = false;
       });
@@ -180,7 +167,6 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
       gradeScore = double.parse(gradeController.text.trim());
     } catch (e) {
       // Xử lý lỗi chuyển đổi số thực tại đây
-      print("Lỗi khi chuyển đổi điểm số: $e");
       setState(() {
         isLoading = false;
       });
@@ -281,10 +267,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
 
   void genderValueChanged(Gender? gender) {
     setState(() {
-      print("gender: $gender");
       if (gender != null) {
         valueGender = gender;
-        print("gender: $gender");
       }
     });
   }
@@ -306,7 +290,6 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
   }
 
   Future<void> imageValueChanged(String? certiImg) async {
-    print('Certificate ImageValueRegis: $certificateImg');
     setState(() {
       if (certiImg != null) {
         certificateImg = certiImg;
@@ -321,7 +304,6 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
-      print('Picked image path: ${pickedImage.path}');
       String? base64Image = await convertImageToBase64(pickedImage.path);
       if (base64Image != null) {
         setState(() {
@@ -330,11 +312,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
         });
         return base64Image;
       } else {
-        print("Failed to convert image to base64");
         return null;
       }
     } else {
-      print("No image selected");
       return null;
     }
   }
@@ -353,8 +333,6 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
           name: 'female',
           locale: Localizations.localeOf(context).languageCode,
         );
-      default:
-        return '';
     }
   }
 
@@ -445,7 +423,6 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                 .length -
             1;
     if (isLastStep) {
-      print('Complete');
     } else {
       setState(() {
         currentStep += 1;
@@ -593,10 +570,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
           title: const SizedBox.shrink(),
           isActive: currentStep != 1 && currentStep != 2,
           label: Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0,
-                right:
-                    15.0), // Điều chỉnh khoảng cách giữa các số 1, 2, 3 ở đây
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0), // Điều chỉnh khoảng cách giữa các số 1, 2, 3 ở đây
             child: TextMonserats(register3),
           ),
           content: Column(
@@ -678,9 +652,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                 onChanged: (value) {
                   // Lưu giá trị email mới được nhập
                   confirmpassword = value;
-                  context
-                      .read<AuthCubit>()
-                      .checkConfrimPassword(password, confirmpassword);
+                  context.read<AuthCubit>().checkConfrimPassword(password, confirmpassword);
                   if (confirmpassword.isEmpty) {
                     setState(() {
                       errorConfrimPasswordMessage;
@@ -769,11 +741,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                           }
                           setState(() {
                             genderValueChanged(newValueGender);
-                            print(valueGender);
                           });
                         },
-                        itemLabel: (Gender gender) =>
-                            getGenderLabel(context, gender),
+                        itemLabel: (Gender gender) => getGenderLabel(context, gender),
                         isExpanded: false,
                       ),
                     ),
@@ -782,8 +752,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                   Expanded(
                     child: MyTextField(
                       keyboardType: TextInputType.number,
-                      controller:
-                          phoneController, // Thêm controller cho trường số điện thoại
+                      controller: phoneController, // Thêm controller cho trường số điện thoại
                       hintText: register_12,
                       obscureText: false,
                       prefixIcon: Icons.phone,
@@ -824,10 +793,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                   return DropdownCustom<Country>(
                     icon: Icons.location_city,
                     items: lstCountry,
-                    selectedItem: selectedCity == null
-                        ? null
-                        : lstCountry.firstWhere(
-                            (element) => element.name == selectedCity),
+                    selectedItem:
+                        selectedCity == null ? null : lstCountry.firstWhere((element) => element.name == selectedCity),
                     onChanged: (Country? newValueCountry) {
                       if (newValueCountry != null) {
                         cityChange(newValueCountry);
@@ -853,18 +820,13 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                       icon: Icons.map,
                       items: selectedCity == null
                           ? []
-                          : lstCountry
-                              .firstWhere(
-                                  (element) => element.name == selectedCity)
-                              .districts,
+                          : lstCountry.firstWhere((element) => element.name == selectedCity).districts,
                       selectedItem: selectedDistrict == null
                           ? null
                           : lstCountry
-                              .firstWhere(
-                                  (element) => element.name == selectedCity)
+                              .firstWhere((element) => element.name == selectedCity)
                               .districts
-                              .firstWhere((element) =>
-                                  element.name == selectedDistrict),
+                              .firstWhere((element) => element.name == selectedDistrict),
                       onChanged: (District? newValueDistrict) {
                         setState(() {
                           districtChange(newValueDistrict);
@@ -888,23 +850,18 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                       items: selectedDistrict == null
                           ? []
                           : lstCountry
-                              .firstWhere(
-                                  (element) => element.name == selectedCity)
+                              .firstWhere((element) => element.name == selectedCity)
                               .districts
-                              .firstWhere(
-                                  (element) => element.name == selectedDistrict)
+                              .firstWhere((element) => element.name == selectedDistrict)
                               .wards,
                       selectedItem: selectedWard == null
                           ? null
                           : lstCountry
-                              .firstWhere(
-                                  (element) => element.name == selectedCity)
+                              .firstWhere((element) => element.name == selectedCity)
                               .districts
-                              .firstWhere(
-                                  (element) => element.name == selectedDistrict)
+                              .firstWhere((element) => element.name == selectedDistrict)
                               .wards
-                              .firstWhere(
-                                  (element) => element.name == selectedWard),
+                              .firstWhere((element) => element.name == selectedWard),
                       onChanged: (Ward? newValueWard) {
                         setState(() {
                           wardChange(newValueWard);
@@ -937,10 +894,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
           title: const SizedBox.shrink(),
           isActive: currentStep != 0 && currentStep != 1,
           label: Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0,
-                right:
-                    15.0), // Điều chỉnh khoảng cách giữa các số 1, 2, 3 ở đây
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0), // Điều chỉnh khoảng cách giữa các số 1, 2, 3 ở đây
             child: TextMonserats(register5),
           ),
           content: Column(
@@ -961,18 +915,14 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                           items: lstCountrySchool,
                           selectedItem: selectedCountry == null
                               ? null
-                              : lstCountrySchool.firstWhere(
-                                  (element) => element == selectedCountry),
+                              : lstCountrySchool.firstWhere((element) => element == selectedCountry),
                           onChanged: (String? newValueCountry) {
                             setState(() {
                               selectedCountry = newValueCountry;
-                              if (context.read<AuthCubit>().state
-                                  is AuthLoadedState) {
-                                (context.read<AuthCubit>().state
-                                        as AuthLoadedState)
+                              if (context.read<AuthCubit>().state is AuthLoadedState) {
+                                (context.read<AuthCubit>().state as AuthLoadedState)
                                     .schools
-                                    .where((schools) =>
-                                        schools.country == selectedCountry)
+                                    .where((schools) => schools.country == selectedCountry)
                                     .toList();
                               }
                             });
@@ -1001,8 +951,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                         items: lstschools,
                         selectedItem: selectedSchool == null
                             ? null
-                            : lstschools.firstWhere(
-                                (element) => element.name == selectedSchool),
+                            : lstschools.firstWhere((element) => element.name == selectedSchool),
                         onChanged: (Schools? newValueSchool) {
                           setState(() {
                             schoolChange(newValueSchool);
@@ -1029,13 +978,11 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                         }
                         return DropdownCustom<SchoolProgram>(
                           icon: Icons.history_edu,
-                          items: selectedSchool == null
-                              ? []
-                              : selectedSchoolObject!.programs ?? [],
+                          items: selectedSchool == null ? [] : selectedSchoolObject!.programs ?? [],
                           selectedItem: selectedProgram == null
                               ? null
-                              : selectedSchoolObject!.programs?.firstWhere(
-                                  (element) => element.name == selectedProgram),
+                              : selectedSchoolObject!.programs
+                                  ?.firstWhere((element) => element.name == selectedProgram),
                           onChanged: (SchoolProgram? newValueProgram) {
                             setState(() {
                               programChange(newValueProgram);
@@ -1057,11 +1004,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                       onChanged: (DegreeType? newValueDegree) {
                         setState(() {
                           degreeValueChanged(newValueDegree);
-                          print(valueDegree);
                         });
                       },
-                      itemLabel: (DegreeType degreeType) =>
-                          degreeType.toString().split('.').last,
+                      itemLabel: (DegreeType degreeType) => degreeType.toString().split('.').last,
                       hintText: register_20,
                       isExpanded: true,
                     ),
@@ -1076,12 +1021,10 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                 onChanged: (CertificateType? newValueCertificateType) {
                   setState(() {
                     certificateTypeValueChanged(newValueCertificateType);
-                    print(selectedCertificateType);
                   });
                 },
                 selectedItem: selectedCertificateType,
-                itemLabel: (CertificateType certificateType) =>
-                    certificateType.toString().split('.').last,
+                itemLabel: (CertificateType certificateType) => certificateType.toString().split('.').last,
                 hintText: register_21,
                 isExpanded: false,
               ),
@@ -1098,10 +1041,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     Future<String?> imageValueChanged() async {
                       String? certiImg = await getImage();
                       if (certiImg != null) {
-                        print("Certificate ImageValue: $certiImg");
-                      } else {
-                        print("Certificate ImageValue: null");
-                      }
+                      } else {}
                       return null;
                     }
 
@@ -1169,13 +1109,10 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     });
                   } else if (value is double || value is int) {
                     gradeScore = value.toDouble();
-                    print("Grade Score: $gradeScore");
                     setState(() {
                       errorGradeMessage = null;
                     });
-                  } else {
-                    print("Vui lòng nhập một số thực.");
-                  }
+                  } else {}
                   context.read<AuthCubit>().checkGradeScore(gradeScore);
                 },
               ),
@@ -1192,90 +1129,39 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
     final screenWidth = MediaQuery.of(context).size.width;
     //Language
     final localizations = AppLocalizations.of(context);
-    final register1 =
-        localizations != null ? localizations.register_1 : 'Default Text';
-    final register2 =
-        localizations != null ? localizations.register_2 : 'Default Text';
-    final register3 =
-        localizations != null ? localizations.register_3 : 'Default Text';
-    final register4 =
-        localizations != null ? localizations.register_4 : 'Default Text';
-    final register5 =
-        localizations != null ? localizations.register_5 : 'Default Text';
-    final register6 =
-        localizations != null ? localizations.register_6 : 'Default Text';
-    final register_login_signin = localizations != null
-        ? localizations.register_login_signin
-        : 'Default Text';
-    final register_email = localizations != null
-        ? localizations.register_login_cpass__fg_mail
-        : 'Default Text';
-    final register_pass = localizations != null
-        ? localizations.register_login_cpass__fg_pass
-        : 'Default Text';
-    final register_7 = localizations != null
-        ? localizations.register_7_fullname
-        : 'Default Text';
-    final register_8 = localizations != null
-        ? localizations.register_8_confirm_pass
-        : 'Default Text';
-    final register_9 = localizations != null
-        ? localizations.register_9_idcard
-        : 'Default Text';
-    final register_10 =
-        localizations != null ? localizations.register_10_dob : 'Default Text';
-    final register_11 = localizations != null
-        ? localizations.register_11_gender
-        : 'Default Text';
-    final register_12 = localizations != null
-        ? localizations.register_12_phone
-        : 'Default Text';
-    final register_13 = localizations != null
-        ? localizations.register_13_address
-        : 'Default Text';
-    final register_14 =
-        localizations != null ? localizations.register_14_city : 'Default Text';
-    final register_15 = localizations != null
-        ? localizations.register_15_district
-        : 'Default Text';
-    final register_16 =
-        localizations != null ? localizations.register_16_ward : 'Default Text';
-    final register_17 = localizations != null
-        ? localizations.register_17_addressline
-        : 'Default Text';
-    final register_18 = localizations != null
-        ? localizations.register_18_school
-        : 'Default Text';
-    final register_18_1 = localizations != null
-        ? localizations.register_18_1_nation
-        : 'Default Text';
-    final register_19 = localizations != null
-        ? localizations.register_19_major
-        : 'Default Text';
-    final register_20 = localizations != null
-        ? localizations.register_20_degree
-        : 'Default Text';
-    final register_21 = localizations != null
-        ? localizations.register_21_certi
-        : 'Default Text';
-    final register_22 = localizations != null
-        ? localizations.register_22_upfile
-        : 'Default Text';
-    final register_23 = localizations != null
-        ? localizations.register_23_score
-        : 'Default Text';
-    final register_24 = localizations != null
-        ? localizations.register_24_gscore
-        : 'Default Text';
-    final register_25 =
-        localizations != null ? localizations.register_25_back : 'Default Text';
-    final register_26 =
-        localizations != null ? localizations.register_26_next : 'Default Text';
-    final register_signup =
-        localizations != null ? localizations.logout_3_signup : 'Default Text';
+    final register1 = localizations != null ? localizations.register_1 : 'Default Text';
+    final register2 = localizations != null ? localizations.register_2 : 'Default Text';
+    final register3 = localizations != null ? localizations.register_3 : 'Default Text';
+    final register4 = localizations != null ? localizations.register_4 : 'Default Text';
+    final register5 = localizations != null ? localizations.register_5 : 'Default Text';
+    final register6 = localizations != null ? localizations.register_6 : 'Default Text';
+    final register_login_signin = localizations != null ? localizations.register_login_signin : 'Default Text';
+    final register_email = localizations != null ? localizations.register_login_cpass__fg_mail : 'Default Text';
+    final register_pass = localizations != null ? localizations.register_login_cpass__fg_pass : 'Default Text';
+    final register_7 = localizations != null ? localizations.register_7_fullname : 'Default Text';
+    final register_8 = localizations != null ? localizations.register_8_confirm_pass : 'Default Text';
+    final register_9 = localizations != null ? localizations.register_9_idcard : 'Default Text';
+    final register_10 = localizations != null ? localizations.register_10_dob : 'Default Text';
+    final register_11 = localizations != null ? localizations.register_11_gender : 'Default Text';
+    final register_12 = localizations != null ? localizations.register_12_phone : 'Default Text';
+    final register_13 = localizations != null ? localizations.register_13_address : 'Default Text';
+    final register_14 = localizations != null ? localizations.register_14_city : 'Default Text';
+    final register_15 = localizations != null ? localizations.register_15_district : 'Default Text';
+    final register_16 = localizations != null ? localizations.register_16_ward : 'Default Text';
+    final register_17 = localizations != null ? localizations.register_17_addressline : 'Default Text';
+    final register_18 = localizations != null ? localizations.register_18_school : 'Default Text';
+    final register_18_1 = localizations != null ? localizations.register_18_1_nation : 'Default Text';
+    final register_19 = localizations != null ? localizations.register_19_major : 'Default Text';
+    final register_20 = localizations != null ? localizations.register_20_degree : 'Default Text';
+    final register_21 = localizations != null ? localizations.register_21_certi : 'Default Text';
+    final register_22 = localizations != null ? localizations.register_22_upfile : 'Default Text';
+    final register_23 = localizations != null ? localizations.register_23_score : 'Default Text';
+    final register_24 = localizations != null ? localizations.register_24_gscore : 'Default Text';
+    final register_25 = localizations != null ? localizations.register_25_back : 'Default Text';
+    final register_26 = localizations != null ? localizations.register_26_next : 'Default Text';
+    final register_signup = localizations != null ? localizations.logout_3_signup : 'Default Text';
     final screenHeight = MediaQuery.of(context).size.height;
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
@@ -1365,8 +1251,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
             isLoading = false;
           });
         } else if (state is AuthSuccessState) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const LoginPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
           isLoading = false;
         }
       },
@@ -1387,12 +1272,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
         } else if (state is AuthInitialState) {}
         return Stack(children: [
           Scaffold(
-            backgroundColor: context.select((ThemeSettingCubit cubit) =>
-                cubit.state.scaffoldBackgroundColor),
+            backgroundColor: context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
             body: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.03,
-                  vertical: screenHeight * 0.06),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03, vertical: screenHeight * 0.06),
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -1424,9 +1306,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     Expanded(
                       child: Theme(
                         data: Theme.of(context).copyWith(
-                            canvasColor: context.select(
-                                (ThemeSettingCubit cubit) =>
-                                    cubit.state.scaffoldBackgroundColor),
+                            canvasColor:
+                                context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
                             colorScheme: Theme.of(context).colorScheme.copyWith(
                                 onSurface: Colors.transparent,
                                 primary: AppColor.redButton,
@@ -1495,10 +1376,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                               color: AppColor.redButton,
                               fontWeight: FontWeight.w700,
                               decoration: TextDecoration.underline,
-                              decorationColor: const Color(
-                                  0xff7D1F1F), // Change the color of the underline
-                              decorationStyle: TextDecorationStyle
-                                  .solid, // Change the number of lines
+                              decorationColor: const Color(0xff7D1F1F), // Change the color of the underline
+                              decorationStyle: TextDecorationStyle.solid, // Change the number of lines
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.pushNamed(context, "/login");
@@ -1526,7 +1405,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                 BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                   child: Container(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                   ),
                 ),
                 const Center(

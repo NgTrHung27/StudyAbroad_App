@@ -51,7 +51,6 @@ Future<void> main() async {
   // Kiểm tra session đăng nhập
   final loginCubit = LoginCubit(APIRepository());
   final userAuth = await loginCubit.checkLoginStatus();
-  print('userAuth in main $userAuth');
   final isLoggedIn = userAuth != null;
 
   runApp(

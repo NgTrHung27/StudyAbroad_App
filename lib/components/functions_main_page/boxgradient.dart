@@ -25,7 +25,7 @@ class BoxGradient extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.4),
+              color: Colors.grey.withValues(alpha: 0.1),
               spreadRadius: 1,
               blurRadius: 3,
               offset: Offset.fromDirection(1.5, 2.5),
@@ -35,8 +35,8 @@ class BoxGradient extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           gradient: LinearGradient(
             colors: [
-              color1.withOpacity(1),
-              color2.withOpacity(0.85),
+              color1.withValues(alpha: 1),
+              color2.withValues(alpha: 0.85),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
