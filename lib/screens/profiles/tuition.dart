@@ -36,7 +36,6 @@ class TuitionStatusState extends BasePageState<TuitionStatus> {
   Widget build(BuildContext context) {
     final userAuth =
         this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
-    print('Check userAuth in TuitionList: $userAuth');
     final isDarkMode = context.select(
         (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
@@ -55,7 +54,6 @@ class TuitionStatusState extends BasePageState<TuitionStatus> {
             } else {
               // final userAuth = snapshot.data!;
               final List<Tuition>? tuitionList = userAuth?.student.tuitions;
-              print('Check Tuition List $tuitionList');
               return Stack(
                 children: [
                   Column(

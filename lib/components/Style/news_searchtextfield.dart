@@ -52,7 +52,7 @@ class NewsSearchTextField extends StatelessWidget {
               ),
               hintText: textSearch,
               hintStyle: GoogleFonts.getFont('Montserrat',
-                  color: AppColor.redButton.withOpacity(0.6),
+                  color: AppColor.redButton.withValues(alpha: 0.6),
                   fontSize: 19.0,
                   fontWeight: FontWeight.w500),
               prefixIcon: Icon(

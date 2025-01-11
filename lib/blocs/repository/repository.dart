@@ -59,9 +59,6 @@ class APIRepository {
         "certificateType": selectedCertificateType,
         "certificateImg": certificateImg,
       });
-
-      print('Sending JSON data: $jsonData');
-
       final response = await http.post(
         Uri.parse(
             'https://kltn-demo-deploy-admin.vercel.app/api/auth/register'),
@@ -89,11 +86,9 @@ class APIRepository {
         // Return an instance of UserAuthRegister with the error details
         return UserAuthRegister(error: 'Failed to register with status 406');
       } else {
-        print("Failed to register: ${response.statusCode}");
         return UserAuthRegister(error: 'Failed to register');
       }
     } catch (e) {
-      print("Exception occurred while registering: $e");
       return UserAuthRegister(error: 'Exception: $e');
     }
   }
@@ -115,9 +110,6 @@ class APIRepository {
         log('data: $data');
         return UserAuthLogin.fromJson(data);
       } else if (response.statusCode == 401) {
-        print("Failed to login 401: ${response.statusCode}");
-        print("Error body: $data");
-
         // Tạo một đối tượng UserAuthLogin với thông báo lỗi
         return UserAuthLogin(
           id: '',
@@ -134,9 +126,6 @@ class APIRepository {
           error: data['error'], // Lưu lỗi vào trường error
         );
       } else {
-        print("Failed to login: ${response.statusCode}");
-        print("Error body: $data");
-
         // Tương tự, trả về đối tượng UserAuthLogin với lỗi
         return UserAuthLogin(
           id: '',
@@ -153,7 +142,6 @@ class APIRepository {
         );
       }
     } catch (e) {
-      print("Exception occurred while logging in: $e");
       return null;
     }
   }
@@ -166,7 +154,6 @@ class APIRepository {
       if (response.statusCode == 200) {
         List<dynamic> data =
             jsonDecode(utf8.decode(latin1.encode(response.body)));
-        // print('API Country Response: $data');
         List<Country> countries = [];
         for (var item in data) {
           Country country = Country.fromJson(item);
@@ -189,7 +176,6 @@ class APIRepository {
       if (response.statusCode == 200) {
         List<dynamic> data =
             jsonDecode(utf8.decode(latin1.encode(response.body)));
-        // print('API School Response: $data'); // Add this line
         List<Schools> schools = [];
         for (var item in data) {
           // Tạo một đối tượng School từ JSON
@@ -224,17 +210,13 @@ class APIRepository {
       );
 
       final data = jsonDecode(utf8.decode(response.bodyBytes));
-      print('data: $data');
       if (response.statusCode == 200) {
         log('data: $data');
         return UserForgotpass.fromJson(data);
       } else {
-        print("Failed to send Fogot Pass: ${response.statusCode}");
-        print("Error body: $data");
         return UserForgotpass.fromJson(data);
       }
     } catch (e) {
-      print("Exception occurred while logging in: $e");
       return null;
     }
   }
@@ -254,11 +236,9 @@ class APIRepository {
         log('data: $data');
         return UserChangePass.fromJson(data);
       } else {
-        print("Failed to send Fogot Pass: ${response.statusCode}");
         return UserChangePass.fromJson(data);
       }
     } catch (e) {
-      print("Exception occurred while logging in: $e");
       return null;
     }
   }
@@ -271,7 +251,6 @@ class APIRepository {
       if (response.statusCode == 200) {
         List<dynamic> data =
             jsonDecode(utf8.decode(latin1.encode(response.body)));
-        // print('API News Response: $data');
         List<NewsList> news = [];
         for (var item in data) {
           try {
@@ -283,7 +262,6 @@ class APIRepository {
         }
         return news;
       } else {
-        print("Failed to loadNew: ${response.statusCode}");
         throw Exception('Failed to load news');
       }
     } catch (e) {
@@ -299,7 +277,6 @@ class APIRepository {
       if (response.statusCode == 200) {
         List<dynamic> data =
             jsonDecode(utf8.decode(latin1.encode(response.body)));
-        // print('API News Response: $data');
         List<NewsSchoolList> news = [];
         for (var item in data) {
           try {
@@ -311,7 +288,6 @@ class APIRepository {
         }
         return news;
       } else {
-        print("Failed to loadNew: ${response.statusCode}");
         throw Exception('Failed to load news');
       }
     } catch (e) {
@@ -336,9 +312,6 @@ class APIRepository {
         "message": message,
         "schoolId": schoolId,
       });
-
-      print('Sending JSON data: $jsonDataContact');
-
       final responseContactUs = await httpClient.post(
         Uri.parse('https://kltn-demo-deploy-admin.vercel.app/api/feedbacks'),
         headers: <String, String>{"Content-Type": "application/json"},
@@ -361,7 +334,6 @@ class APIRepository {
         return null;
       }
     } catch (e) {
-      print("Exception occurred while contacting us: $e");
       return null;
     }
     return null;

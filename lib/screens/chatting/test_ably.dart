@@ -80,16 +80,13 @@ class _AblyChatState extends BasePageState<AblyChat> {
     clientOptions.clientId = _clientId;
     try {
       realtimeInstance = ably.Realtime(options: clientOptions);
-      print('Ably instantiated');
       chatChannel = realtimeInstance.channels.get('support:$_clientId');
       subscribeToChatChannel();
       realtimeInstance.connection
           .on(ably.ConnectionEvent.connected)
           .listen((ably.ConnectionStateChange stateChange) async {
-        print('Realtime connection state changed: ${stateChange.event}');
       });
       chatChannel.subscribe().listen((ably.Message message) {
-        print('Received message: ${message.data}');
       });
     } catch (error) {
       print('Error creating Ably Realtime Instance: $error');
@@ -196,7 +193,6 @@ class _AblyChatState extends BasePageState<AblyChat> {
         // Message sent successfully
         _messageController.clear();
 
-        print('Check json $chatData');
         _loadChatSession(); // Refresh the chat session
       } else {
         // Handle error

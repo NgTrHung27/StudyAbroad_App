@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gif/gif.dart';
 import 'package:kltn_mobile/components/Style/montserrat.dart';
 import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:gif/gif.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroPage extends StatefulWidget {
@@ -47,8 +47,7 @@ class IntroPageState extends State<IntroPage> {
                   ),
                   BuildIntroPage(
                     img: 'assets/Graduation.gif',
-                    description:
-                        'Easily manage points and scholarships according to your wishes',
+                    description: 'Easily manage points and scholarships according to your wishes',
                   ),
                 ],
               )),
@@ -57,15 +56,14 @@ class IntroPageState extends State<IntroPage> {
               controller: _controller,
               count: 3,
               onDotClicked: (index) {
-                _controller.animateToPage(index,
-                    duration: const Duration(milliseconds: 600),
-                    curve: Curves.easeIn);
+                _controller.animateToPage(index, duration: const Duration(milliseconds: 600), curve: Curves.easeIn);
               },
               effect: ExpandingDotsEffect(
-                  activeDotColor: Colors.grey,
-                  dotHeight: 7.0,
-                  dotWidth: 7.0,
-                  dotColor: Colors.grey.withOpacity(0.5)),
+                activeDotColor: Colors.grey,
+                dotHeight: 7.0,
+                dotWidth: 7.0,
+                dotColor: Colors.grey.withValues(alpha: 0.5),
+              ),
             ),
           ),
           SizedBox(
@@ -86,9 +84,7 @@ class IntroPageState extends State<IntroPage> {
                         Navigator.pushReplacementNamed(context, '/mainpage');
                       }
                     : () {
-                        _controller.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn);
+                        _controller.nextPage(duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
                       },
                 child: TextMonserats(
                   isLastPage ? 'Done' : 'Next',

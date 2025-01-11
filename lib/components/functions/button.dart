@@ -21,7 +21,7 @@ class MyButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1), // Color of the shadow
+              color: Colors.black.withValues(alpha: 0.1), // Color of the shadow
               spreadRadius: 2, // Spread radius
               blurRadius: 3, // Blur radius
               offset: const Offset(0, 5), // Offset in x and y directions

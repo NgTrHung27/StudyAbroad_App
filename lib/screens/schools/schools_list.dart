@@ -182,7 +182,6 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
               ),
             );
           } else if (state is SchoolsError) {
-            print(state.message.toString());
             return Center(child: Text(errorConn));
           }
           return const Center(child: Text('Please wait...'));

@@ -16,7 +16,6 @@ class ForgotPassCubit extends Cubit<ForgotPassState> {
     RegExp regExp = RegExp(emailPattern);
 
     if (!regExp.hasMatch(email)) {
-      print("Email checked");
       emit(EmailError('Vui lòng nhập đúng định dạng email'));
     } else {
       emit(ForgotPassInitial());

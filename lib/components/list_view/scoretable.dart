@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kltn_mobile/components/Style/montserrat.dart';
 import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
 import 'package:provider/provider.dart';
 
@@ -19,8 +19,7 @@ class ScoreTable extends BasePage {
 class ScoreTableState extends BasePageState<ScoreTable> {
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     final screenWidth = MediaQuery.of(context).size.width;
 
     final localizations = AppLocalizations.of(context);
@@ -38,7 +37,7 @@ class ScoreTableState extends BasePageState<ScoreTable> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 3,
             spreadRadius: 3,
             offset: const Offset(1, 3),
@@ -89,9 +88,7 @@ class ScoreTableState extends BasePageState<ScoreTable> {
                   return DataRow(
                     color: WidgetStateProperty.resolveWith<Color>(
                       (Set<WidgetState> states) {
-                        return index.isEven
-                            ? Colors.white
-                            : const Color(0xffFFE9E4); // Màu xen kẽ các hàng
+                        return index.isEven ? Colors.white : const Color(0xffFFE9E4); // Màu xen kẽ các hàng
                       },
                     ),
                     cells: [

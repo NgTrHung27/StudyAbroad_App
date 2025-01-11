@@ -16,7 +16,6 @@ class AuthCubit extends Cubit<AuthState> {
     RegExp regExp = RegExp(emailPattern);
 
     if (!regExp.hasMatch(email)) {
-      print("Email checked");
       emit(AuthErrorEmailState('Vui lòng nhập đúng định dạng email'));
     } else {
       emit(AuthInitialState());
@@ -172,7 +171,6 @@ class AuthCubit extends Cubit<AuthState> {
       List<Country> city = await authRepo.fetchCountry();
       emit(AuthLoadedCityState(city));
     } catch (ex) {
-      print('City cubit: ` $ex');
       emit(AuthErrorCityState(ex.toString()));
     }
   }

@@ -21,22 +21,16 @@ class ActionTabStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.select(
-      (ThemeSettingCubit cubit) => cubit.state == AppTheme.blackTheme
-          ? AppColor.backgrTabDark
-          : AppColor.backgrTabLight,
+      (ThemeSettingCubit cubit) =>
+          cubit.state == AppTheme.blackTheme ? AppColor.backgrTabDark : AppColor.backgrTabLight,
     );
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColorRed = isDarkMode ? Colors.white : AppColor.redButton;
 
     final screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<ProfileStatusCubit, ProfileStatusState>(
       builder: (context, state) {
-        int currentStep =
-            (state is ProfileStatusLoaded && state.status == status)
-                ? state.currentStep
-                : 0;
-        print(status);
+        int currentStep = (state is ProfileStatusLoaded && state.status == status) ? state.currentStep : 0;
         return SingleChildScrollView(
           child: Container(
             width: screenWidth * 0.9,
@@ -45,7 +39,7 @@ class ActionTabStepper extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 10,
                   spreadRadius: 5,
                   offset: const Offset(0, 5),
@@ -82,8 +76,7 @@ class ActionTabStepper extends StatelessWidget {
                         ),
                         child: Stepper(
                           currentStep: currentStep,
-                          controlsBuilder: (BuildContext context,
-                              ControlsDetails controlsDetails) {
+                          controlsBuilder: (BuildContext context, ControlsDetails controlsDetails) {
                             return Container();
                           },
                           steps: List.generate(

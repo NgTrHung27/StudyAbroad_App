@@ -13,10 +13,8 @@ class SchoolsCubit extends Cubit<SchoolsState> {
     try {
       List<Schools> schoolList = await apiRepository.fetchSchools();
       emit(SchoolsLoaded(schoolList: schoolList));
-      print('SchoolsLoaded $schoolList');
     } catch (e) {
       emit(SchoolsError(message: e.toString()));
-      print('SchoolsError $e');
     }
   }
 
@@ -28,10 +26,8 @@ class SchoolsCubit extends Cubit<SchoolsState> {
       // Lọc danh sách trường học theo quốc gia
       List<Schools> filteredList = schoolList.where((school) => school.country == country).toList();
       emit(SchoolsLoaded(schoolList: filteredList));
-      print('SchoolsLoaded $filteredList');
     } catch (e) {
       emit(SchoolsError(message: e.toString()));
-      print('SchoolsError $e');
     }
   }
 }

@@ -22,7 +22,6 @@ FlutterLocalNotificationsPlugin initializeLocalNotificationsPlugin() {
 // Xử lý thông báo nền
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print("Handling a background message: ${message.messageId}");
 }
 
 final AndroidNotificationChannel channel = createNotificationChannel();
@@ -80,12 +79,7 @@ void handleMessage(RemoteMessage? message) {
 //ListenMess
 Future<void> listenToForegroundMessages() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('Received a message while in the foreground!');
-    print('Mess info 1 ${message.notification?.title}');
-    print('Mess info 2 ${message.notification?.body}');
-    print('Message data: ${message.data}');
     if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
       flutterLocalNotificationsPlugin.show(
         message.notification.hashCode,
         message.notification!.title,

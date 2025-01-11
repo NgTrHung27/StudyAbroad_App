@@ -25,13 +25,11 @@ class _RequestedState extends BasePageState<ResponseRequest> {
     super.didChangeDependencies();
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        print('getUserAuth func');
         getUserAuth(context);
       }
     });
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
-        print('checklogin func');
         checkLoginStatus();
       }
     });
@@ -46,29 +44,9 @@ class _RequestedState extends BasePageState<ResponseRequest> {
 
     logindata = await SharedPreferences.getInstance();
     final userString = logindata.getString('user');
-    print('Check UserString: $userString');
     if (userString != null) {
       final userMap = json.decode(userString);
-
-      // Log fields in the desired order
-      print('ID: ${userMap['id']}');
-      print('Email: ${userMap['email']}');
-      print('Password: ${userMap['password']}');
-      print('Email Verified: ${userMap['emailVerified']}');
-      print('Name: ${userMap['name']}');
-      print('DOB: ${userMap['dob']}');
-      print('Phone Number: ${userMap['phoneNumber']}');
-
       if (userMap['student'] != null) {
-        final studentMap = userMap['student'];
-        print('Student ID: ${studentMap['id']}');
-        print('Student Code: ${studentMap['studentCode']}');
-        print('Scholarship: ${studentMap['scholarship']}');
-        print('Tuitions: ${studentMap['tuitions']}');
-        print('Requirements: ${studentMap['requirements']}');
-        print('Status: ${studentMap['status']}');
-        print('School: ${studentMap['school']}');
-        print('Program: ${studentMap['program']}');
       }
     }
     return userAuth;
@@ -88,7 +66,6 @@ class _RequestedState extends BasePageState<ResponseRequest> {
     //userAuth
     final userAuth =
         this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
-    print('Check userAuth in requested: $userAuth');
 
     return Scaffold(
         appBar: AppBar(
@@ -136,8 +113,6 @@ class _RequestedState extends BasePageState<ResponseRequest> {
                 final List<Requirement>? pendingRequirements = requirementList
                     ?.where((requirement) => requirement.status == 'PENDING')
                     .toList();
-
-                print('Check Requirement List $pendingRequirements');
                 return Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: screenWidth * 0.05,

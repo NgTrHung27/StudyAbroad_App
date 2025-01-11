@@ -26,7 +26,6 @@ class _ForgetPassState extends BasePageState<ForgetPass> {
       email = usermailController.text.trim();
       await context.read<ForgotPassCubit>().accept(email);
     } catch (e) {
-      print('API Error: $e'); // Print the error
       setState(() {
         errorMessage = e.toString();
       });
@@ -185,7 +184,6 @@ class _ForgetPassState extends BasePageState<ForgetPass> {
                               MyButton(
                                 text: forgot4,
                                 onTap: () {
-                                  print('Button pressed');
                                   userForgetPass(context);
                                 },
                               ),

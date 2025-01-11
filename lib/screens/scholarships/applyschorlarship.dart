@@ -115,7 +115,7 @@ class ApplyPageState extends BasePageState<ApplyPage> {
           backdropWidget = BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
             child: Container(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               child: const Center(
                 child: CircularProgressIndicator(),
               ),
@@ -126,7 +126,7 @@ class ApplyPageState extends BasePageState<ApplyPage> {
           backdropWidget = BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
             child: Container(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               child: const Center(
                 child: AlertDialogComponent(),
               ),

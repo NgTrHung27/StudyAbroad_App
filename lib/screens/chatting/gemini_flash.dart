@@ -54,7 +54,6 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
     _loadApiKey().then((_) {
       setState(() {
         gemini = Gemini.init(apiKey: apiKey!);
-        print("API Key loaded: $apiKey");
       });
     });
   }
@@ -275,18 +274,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
         images = [
           File(chatMessage.medias!.first.url).readAsBytesSync(),
         ];
-      }
-
-      // Log the request details
-      print("Sending request to Gemini API");
-      print("Question: $question");
-      if (images != null) {
-        print("Images: ${images.length} image(s) attached");
-        for (var image in images) {
-          print("Image size: ${image.lengthInBytes} bytes");
-        }
-      }
-
+      }    
       // Assuming gemini is an instance of a class that handles API requests
       gemini
           ?.streamGenerateContent(
@@ -320,11 +308,8 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
           });
         }
       }).onError((error) {
-        print("Error occurred: $error");
         // Handle specific GeminiException
         if (error is GeminiException) {
-          print("GeminiException: ${error.message}");
-          print("Status Code: ${error.statusCode}");
           // Display error message to the user
           // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
@@ -335,7 +320,6 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
         }
       });
     } catch (e) {
-      print("Exception: $e");
       // Display error message to the user
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -369,10 +353,6 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
       );
 
       try {
-        // Log the request details
-        print("Sending media message with description: $desPic");
-        print("Image path: ${file.path}");
-
         // Send the message
         _sendMessage(chatMessage);
       } catch (e) {
@@ -380,7 +360,6 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
         print("Exception occurred while sending media message: $e");
       }
     } else {
-      print("No image selected.");
     }
   }
 }
