@@ -32,7 +32,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: any
+  intl: ^0.19.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -43,48 +43,51 @@ dependencies:
   google_fonts: ^6.1.0
   fluttertoast: ^8.2.4
   image_picker: ^1.0.7
-  flutter_bloc: ^8.1.5
+  flutter_bloc: ^9.1.1
   line_icons: ^2.0.3
-  bottom_picker: ^2.7.0
-  bloc: ^8.1.4
+  bottom_picker: ^3.2.0
+  bloc: ^9.0.0
   meta: ^1.12.0
   carousel_slider_plus: ^7.0.0
   shimmer: ^3.0.0
   equatable: ^2.0.5
   cached_network_image: ^3.3.1
   shared_preferences: ^2.2.3
-  flutter_html: 3.0.0-beta.2
+  flutter_html: ^3.0.0
   rflutter_alert: ^2.0.7
   provider: ^6.1.2
   floating_chat_button: ^1.0.1
   google_generative_ai: ^0.4.3
   flutter_markdown: ^0.7.3
   url_launcher: ^6.3.0
-  dash_chat_2: ^0.0.20
-  flutter_gemini: ^2.0.4
+  dash_chat_2: ^0.0.21
+  flutter_gemini: ^3.0.0
   web_socket_channel: ^3.0.0
   firebase_core: ^3.2.0
   connectivity_plus: ^6.0.3
   firebase_messaging: ^15.0.3
   firebase_analytics: ^11.2.0
-  flutter_local_notifications: ^17.2.1+2
+  flutter_local_notifications: ^19.2.1
   easy_stepper: ^0.8.5+1
   casa_vertical_stepper: ^0.0.5
   gif: ^2.3.0
   smooth_page_indicator:
-  permission_handler: ^11.3.1
-  showcaseview: ^3.0.0
+  permission_handler: ^12.0.0+1
+  showcaseview: ^4.0.1
   pdf: ^3.11.1
   open_file: ^3.3.2
   path_provider: ^2.1.4
   ably_flutter: ^1.2.36
   flutter_speed_dial: ^7.0.0
 
+dependency_overrides:
+  intl: ^0.19.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
-  flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.3
+  flutter_lints: ^5.0.0
 
 flutter_launcher_icons:
   android: "launcher_icon"

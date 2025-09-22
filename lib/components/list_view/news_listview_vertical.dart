@@ -5,7 +5,7 @@ import 'package:kltn_mobile/blocs/news_cubit_bloc/news_school_state.dart';
 import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
 import 'package:kltn_mobile/components/constant/color_constant.dart';
 import 'package:kltn_mobile/components/style/montserrat.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:kltn_mobile/screens/news/news_school_detail.dart';
 
 class VerticalNewsListView extends StatefulWidget {
@@ -28,13 +28,11 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
     final bgColor = isDarkMode ? AppColor.backgrTabDark : Colors.white;
     final localizations = AppLocalizations.of(context);
-    final errorConn =
-        localizations != null ? localizations.error_connection : "Defalut Text";
+    final errorConn = localizations != null ? localizations.error_connection : "Defalut Text";
     return BlocBuilder<NewsSchoolCubit, NewsSchoolState>(
       builder: (context, state) {
         if (state is NewsSchoolLoading) {
@@ -60,8 +58,7 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NewsSchoolDetailPage(
-                          newsSchool: newsSchoolList[index]),
+                      builder: (context) => NewsSchoolDetailPage(newsSchool: newsSchoolList[index]),
                     ),
                   );
                 },
@@ -84,8 +81,7 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
                           child: Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image:
-                                    NetworkImage(newsSchoolList[index].cover),
+                                image: NetworkImage(newsSchoolList[index].cover),
                                 fit: BoxFit.cover,
                               ),
                             ),

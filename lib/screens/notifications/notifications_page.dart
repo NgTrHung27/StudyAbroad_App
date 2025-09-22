@@ -1,14 +1,14 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
 import 'package:kltn_mobile/components/Style/news_searchtextfield.dart';
-import 'package:kltn_mobile/components/list_view/noti_list.dart';
 import 'package:kltn_mobile/components/functions_main_page/hello_avt.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
+import 'package:kltn_mobile/components/list_view/noti_list.dart';
 import 'package:kltn_mobile/models/notifications.dart';
 import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationsPage extends BasePage {
   const NotificationsPage({super.key});
@@ -63,21 +63,17 @@ class NotificationsPageState extends BasePageState<NotificationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
     //Language
     final localizations = AppLocalizations.of(context);
-    final notidelete =
-        localizations != null ? localizations.noti_dele : 'Default Text';
+    final notidelete = localizations != null ? localizations.noti_dele : 'Default Text';
     return Scaffold(
-      backgroundColor: context.select(
-          (ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
+      backgroundColor: context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
         child: ListView(children: [
           WelcomeAVT(username: userAuth?.name ?? 'User'),
           SizedBox(height: screenHeight * 0.01),

@@ -16,7 +16,7 @@ import 'package:kltn_mobile/models/chat_session_role.dart';
 import 'package:kltn_mobile/screens/chatting/client_id.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -90,26 +90,22 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
   }
 
   void _sortMessages() {
-    _currentChatSession.messages
-        ?.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    _currentChatSession.messages?.sort((a, b) => b.createdAt.compareTo(a.createdAt));
   }
 
   Future<void> _loadChatSession() async {
     final chatSessionResponse = await http.get(
-      Uri.parse(
-          'https://admin-cemc-co.vercel.app/api/chat-session/$_clientId/$_clientId'),
+      Uri.parse('https://admin-cemc-co.vercel.app/api/chat-session/$_clientId/$_clientId'),
     );
 
     if (chatSessionResponse.statusCode == 200) {
-      final chatSessionData =
-          json.decode(utf8.decode(chatSessionResponse.bodyBytes));
+      final chatSessionData = json.decode(utf8.decode(chatSessionResponse.bodyBytes));
       final newChatSession = ChatSession.fromJson(chatSessionData);
 
       setState(() {
         _currentChatSession = newChatSession;
         _sortMessages();
       });
-
     } else {
       _loadChatSession();
     }
@@ -128,10 +124,8 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
       subscribeToChatChannel();
       realtimeInstance.connection
           .on(ably.ConnectionEvent.connected)
-          .listen((ably.ConnectionStateChange stateChange) async {
-      });
-      chatChannel.subscribe().listen((ably.Message message) {
-      });
+          .listen((ably.ConnectionStateChange stateChange) async {});
+      chatChannel.subscribe().listen((ably.Message message) {});
     } catch (error) {
       print('Error creating Ably Realtime Instance: $error');
       rethrow;
@@ -143,8 +137,7 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
       var newMsgFromAbly = message.data;
 
       // Kiểm tra nếu tin nhắn này là của chính người dùng
-      if (newMsgFromAbly is String &&
-          newMsgFromAbly == _messageController.text) {
+      if (newMsgFromAbly is String && newMsgFromAbly == _messageController.text) {
         // Tin nhắn này đã được gửi bởi người dùng, không cần thêm vào danh sách nữa
         return;
       }
@@ -244,17 +237,12 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
   Widget build(BuildContext context) {
     //Language
     final localizations = AppLocalizations.of(context);
-    final title =
-        localizations != null ? localizations.chat_system : 'Default Text';
-    final hintText = localizations != null
-        ? localizations.ai_chatting_input
-        : 'Default Text';
+    final title = localizations != null ? localizations.chat_system : 'Default Text';
+    final hintText = localizations != null ? localizations.ai_chatting_input : 'Default Text';
     //Theme
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final redCorlor = AppColor.redButton;
-    final containerUserBox =
-        isDarkMode ? const Color(0xffD9D9D9) : Colors.white;
+    final containerUserBox = isDarkMode ? const Color(0xffD9D9D9) : Colors.white;
 
     return Scaffold(
         appBar: AppBar(
@@ -278,8 +266,7 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
               children: [
                 Expanded(
                   child: Material(
-                    color: context.select((ThemeSettingCubit cubit) =>
-                        cubit.state.scaffoldBackgroundColor),
+                    color: context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
                     child: DashChat(
                       inputOptions: InputOptions(
                         alwaysShowSend: true,
@@ -346,9 +333,7 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
                       },
                       messages: _currentChatSession.messages
                               ?.map((message) => ChatMessage(
-                                    user: message.role == ChatSessionRole.ADMIN
-                                        ? system
-                                        : currentUser,
+                                    user: message.role == ChatSessionRole.ADMIN ? system : currentUser,
                                     createdAt: message.createdAt,
                                     text: message.message,
                                   ))
@@ -366,14 +351,12 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
                         showOtherUsersAvatar: true,
                         showTime: true,
                         showOtherUsersName: true,
-                        avatarBuilder:
-                            (user, onPressAvatar, onLongPressAvatar) {
+                        avatarBuilder: (user, onPressAvatar, onLongPressAvatar) {
                           return GestureDetector(
                             onTap: () => onPressAvatar?.call(user),
                             onLongPress: () => onLongPressAvatar?.call(user),
                             child: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(user.profileImage ?? ''),
+                              backgroundImage: NetworkImage(user.profileImage ?? ''),
                               backgroundColor: Colors.white,
                               radius: 20,
                             ),
@@ -395,15 +378,13 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
-                          margin: const EdgeInsets.only(
-                              bottom: 100), // Khoảng cách từ đáy màn hình
+                          margin: const EdgeInsets.only(bottom: 100), // Khoảng cách từ đáy màn hình
                           decoration: const BoxDecoration(
                             color: Colors.grey,
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                           child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
                             child: Container(
                               height: 62,
                               width: 420,

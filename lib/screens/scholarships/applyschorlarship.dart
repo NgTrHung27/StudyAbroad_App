@@ -11,14 +11,13 @@ import 'package:kltn_mobile/components/functions/alert_form.dart';
 import 'package:kltn_mobile/models/apply_scholar.dart';
 import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:http/http.dart' as http;
 
 class ApplyScholarCubit extends Cubit<ApplyScholarState> {
   ApplyScholarCubit() : super(ApplyScholarInitial());
 
-  Future<void> sendApplyScholar(
-      String url, String studentId, String additional) async {
+  Future<void> sendApplyScholar(String url, String studentId, String additional) async {
     emit(ApplyScholarLoading());
     try {
       final response = await http.post(
@@ -33,12 +32,10 @@ class ApplyScholarCubit extends Cubit<ApplyScholarState> {
       );
 
       if (response.statusCode == 200) {
-        emit(ApplyScholarSuccess(ApplyScholarModel.fromJson(
-            jsonDecode(utf8.decode(response.bodyBytes)))));
+        emit(ApplyScholarSuccess(ApplyScholarModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)))));
       } else {
         emit(ApplyScholarFailure(
-          applyScholarModel: ApplyScholarModel.fromJson(
-              jsonDecode(utf8.decode(response.bodyBytes))),
+          applyScholarModel: ApplyScholarModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes))),
         ));
       }
     } catch (e) {
@@ -91,24 +88,16 @@ class ApplyPageState extends BasePageState<ApplyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final localizations = AppLocalizations.of(context);
-    final scholarDescTextfield = localizations != null
-        ? localizations.scholar_desc_textfield
-        : "Default Text";
-    final scholarDescHint = localizations != null
-        ? localizations.scholar_desc_hint
-        : "Default Text";
-    final scholarDescSubmit = localizations != null
-        ? localizations.scholar_desc_submit
-        : "Default Text";
+    final scholarDescTextfield = localizations != null ? localizations.scholar_desc_textfield : "Default Text";
+    final scholarDescHint = localizations != null ? localizations.scholar_desc_hint : "Default Text";
+    final scholarDescSubmit = localizations != null ? localizations.scholar_desc_submit : "Default Text";
     return BlocProvider(
       create: (_) => ApplyScholarCubit(),
-      child: BlocBuilder<ApplyScholarCubit, ApplyScholarState>(
-          builder: (context, state) {
+      child: BlocBuilder<ApplyScholarCubit, ApplyScholarState>(builder: (context, state) {
         ApplyScholarModel? responseModel;
         Widget? backdropWidget;
         if (state is ApplyScholarLoading) {
@@ -151,23 +140,16 @@ class ApplyPageState extends BasePageState<ApplyPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextMonserats(scholarDescTextfield,
-                              fontSize: screenWidth * 0.04,
-                              fontWeight: FontWeight.w700),
+                              fontSize: screenWidth * 0.04, fontWeight: FontWeight.w700),
                           TextField(
                             style: GoogleFonts.getFont('Montserrat',
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                                height: 1.75),
+                                color: Colors.black, fontWeight: FontWeight.w600, fontSize: 14, height: 1.75),
                             controller: descriptionController,
                             onChanged: (value) {},
                             decoration: InputDecoration(
                               hintText: scholarDescHint,
                               hintStyle: GoogleFonts.getFont('Montserrat',
-                                  color: Colors.black38,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                  height: 1.75),
+                                  color: Colors.black38, fontWeight: FontWeight.w600, fontSize: 14, height: 1.75),
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
@@ -198,16 +180,13 @@ class ApplyPageState extends BasePageState<ApplyPage> {
                             onPressed: () {
                               final url =
                                   'https://kltn-demo-deploy-admin.vercel.app/api/schools/${userAuth?.student.school.id}/scholarships/${widget.id}';
-                              context
-                                  .read<ApplyScholarCubit>()
-                                  .sendApplyScholar(
+                              context.read<ApplyScholarCubit>().sendApplyScholar(
                                     url,
                                     userAuth?.student.id ?? '',
                                     descriptionController.text,
                                   );
                             },
-                            child: TextMonserats(scholarDescSubmit,
-                                color: Colors.white),
+                            child: TextMonserats(scholarDescSubmit, color: Colors.white),
                           ),
                         ],
                       ),
@@ -217,21 +196,15 @@ class ApplyPageState extends BasePageState<ApplyPage> {
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).padding.top +
-                              screenHeight * 0.005,
-                          left: screenWidth * 0.04),
+                          top: MediaQuery.of(context).padding.top + screenHeight * 0.005, left: screenWidth * 0.04),
                       child: const BackButtonCircle(),
                     ),
                   ),
                   Align(
                     alignment: Alignment.topCenter,
                     child: Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).padding.top +
-                              screenHeight * 0.009),
-                      child: TextMonserats(widget.name,
-                          fontSize: screenWidth * 0.05,
-                          fontWeight: FontWeight.w700),
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + screenHeight * 0.009),
+                      child: TextMonserats(widget.name, fontSize: screenWidth * 0.05, fontWeight: FontWeight.w700),
                     ),
                   ),
                 ],

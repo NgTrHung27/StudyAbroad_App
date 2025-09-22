@@ -3,7 +3,7 @@ import 'package:kltn_mobile/components/Style/backbutton.dart';
 import 'package:kltn_mobile/components/Style/montserrat.dart';
 import 'package:kltn_mobile/components/constant/color_constant.dart';
 import 'package:kltn_mobile/models/user_login.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 
 class ResponseRequestedDetail extends StatelessWidget {
   final String title;
@@ -24,8 +24,7 @@ class ResponseRequestedDetail extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final localizations = AppLocalizations.of(context);
     final resq = localizations != null ? localizations.resq : 'Default Text';
-    final request =
-        localizations != null ? localizations.resq_4 : 'Default Text';
+    final request = localizations != null ? localizations.resq_4 : 'Default Text';
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: screenHeight * 0.09,
@@ -50,8 +49,7 @@ class ResponseRequestedDetail extends StatelessWidget {
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.06, vertical: screenWidth * 0.06),
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06, vertical: screenWidth * 0.06),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           decoration: BoxDecoration(

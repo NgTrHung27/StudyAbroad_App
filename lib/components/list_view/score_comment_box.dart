@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kltn_mobile/components/Style/montserrat.dart';
 import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 
 class ScoreCommentBox extends StatelessWidget {
   final String comment;
@@ -16,8 +16,7 @@ class ScoreCommentBox extends StatelessWidget {
     final cmt = localizations != null ? localizations.scr_cmt : "Default Text";
     return Container(
       width: screenWidth,
-      padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.05, vertical: screenHeight * 0.015),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.015),
       constraints: BoxConstraints(minHeight: screenHeight * 0.1),
       decoration: BoxDecoration(
         color: Colors.white,

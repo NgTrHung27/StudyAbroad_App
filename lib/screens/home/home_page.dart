@@ -16,7 +16,7 @@ import 'package:kltn_mobile/components/functions_main_page/gridview_box.dart';
 import 'package:kltn_mobile/components/functions_main_page/hello_avt.dart';
 import 'package:kltn_mobile/components/functions_main_page/carousel_loading.dart';
 import 'package:kltn_mobile/components/functions_main_page/carousel_slider_data_found.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:kltn_mobile/models/news.dart';
 import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
 import 'package:kltn_mobile/screens/chatting/client_id.dart';
@@ -62,13 +62,11 @@ class _HomePageState extends BasePageState<HomePage> {
   }
 
   Future<void> _initializeNotifications(BuildContext context) async {
-    final userAuth =
-        this.userAuth ?? context.read<UserAuthProvider>().userAuthLogin;
+    final userAuth = this.userAuth ?? context.read<UserAuthProvider>().userAuthLogin;
     print('checkuserAuth _initializeNotifications: $userAuth');
 
     if (userAuth == null) {
-    } else {
-    }
+    } else {}
 
     final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
     await firebaseMessaging.requestPermission();
@@ -106,35 +104,26 @@ class _HomePageState extends BasePageState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     //Language
     final localizations = AppLocalizations.of(context);
-    final homeActionText =
-        localizations != null ? localizations.home_action : 'Default Text';
-    final homeExploreText =
-        localizations != null ? localizations.home_exlore : 'Default Text';
-    final homeNewListText =
-        localizations != null ? localizations.home_NewList : 'Default Text';
-    final errorConn =
-        localizations != null ? localizations.error_connection : "Defalut Text";
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final homeActionText = localizations != null ? localizations.home_action : 'Default Text';
+    final homeExploreText = localizations != null ? localizations.home_exlore : 'Default Text';
+    final homeNewListText = localizations != null ? localizations.home_NewList : 'Default Text';
+    final errorConn = localizations != null ? localizations.error_connection : "Defalut Text";
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColorRed = isDarkMode ? Colors.white : AppColor.redButton;
     return Scaffold(
-        backgroundColor: context.select(
-            (ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
+        backgroundColor: context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
         body: Stack(
           children: [
             BlocBuilder<LanguageBloc, Locale>(
               builder: (context, state) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.04,
-                      vertical: screenHeight * 0.01),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
                   child: RefreshIndicator(
                     color: textColorRed,
                     onRefresh: () => Future.delayed(
@@ -194,57 +183,40 @@ class _HomePageState extends BasePageState<HomePage> {
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SchoolsListPage(
-                                                  country: 'CANADA'),
+                                          builder: (context) => const SchoolsListPage(country: 'CANADA'),
                                         ),
                                       );
                                     },
-                                    child: SizedBox(
-                                        width: 330,
-                                        child: Image.asset(
-                                            'assets/countries/Canada.png')),
+                                    child: SizedBox(width: 330, child: Image.asset('assets/countries/Canada.png')),
                                   ),
                                   SizedBox(width: screenWidth * 0.02),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SchoolsListPage(
-                                                  country: 'AUSTRALIA'),
+                                          builder: (context) => const SchoolsListPage(country: 'AUSTRALIA'),
                                         ),
                                       );
                                     },
-                                    child: SizedBox(
-                                        width: 330,
-                                        child: Image.asset(
-                                            'assets/countries/Australia.png')),
+                                    child: SizedBox(width: 330, child: Image.asset('assets/countries/Australia.png')),
                                   ),
                                   SizedBox(width: screenWidth * 0.02),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SchoolsListPage(
-                                                  country: 'KOREA'),
+                                          builder: (context) => const SchoolsListPage(country: 'KOREA'),
                                         ),
                                       );
                                     },
-                                    child: SizedBox(
-                                        width: 330,
-                                        child: Image.asset(
-                                            'assets/countries/Korea.png')),
+                                    child: SizedBox(width: 330, child: Image.asset('assets/countries/Korea.png')),
                                   ),
                                 ],
                               ), // Add the image here
                             ),
                             SizedBox(height: screenHeight * 0.02),
                             TextMonserats(homeNewListText,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color: textColorRed),
+                                fontSize: 20, fontWeight: FontWeight.w700, color: textColorRed),
                             SizedBox(height: screenHeight * 0.02),
                             const NewsListViewShort(
                               nullSchool: null,

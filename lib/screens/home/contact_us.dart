@@ -2,7 +2,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:kltn_mobile/blocs/contact_us_bloc/contact_cubit.dart';
 import 'package:kltn_mobile/blocs/contact_us_bloc/contact_state.dart';
@@ -91,8 +91,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
       'message': message
     };
     items.forEach((key, value) {
-      if (value == null || (value is String && value.isEmpty)) {
-      }
+      if (value == null || (value is String && value.isEmpty)) {}
     });
 
     if (selectedSchool == null ||

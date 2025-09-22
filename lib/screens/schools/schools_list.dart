@@ -8,7 +8,7 @@ import 'package:kltn_mobile/components/constant/color_constant.dart';
 import 'package:kltn_mobile/components/list_view/school_box.dart';
 import 'package:kltn_mobile/components/style/montserrat.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:kltn_mobile/screens/schools/compare_schools.dart';
 
 class SchoolsListPage extends BasePage {
@@ -43,24 +43,16 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final exploreColor = isDarkMode ? Colors.white : AppColor.redButton;
     final localizations = AppLocalizations.of(context);
-    final schExplore =
-        localizations != null ? localizations.sch_explore : 'Default Text';
-    final schCanada =
-        localizations != null ? localizations.sch_Canada : 'Default Text';
-    final schAustra =
-        localizations != null ? localizations.sch_Australia : 'Default Text';
-    final schKorea =
-        localizations != null ? localizations.sch_Korea : 'Default Text';
-    final errorConn =
-        localizations != null ? localizations.error_connection : "Defalut Text";
-    final schRvallSch =
-        localizations != null ? localizations.sch_RvAllSch : 'Default Text';
-    final schDisMore =
-        localizations != null ? localizations.sch_DisMore : 'Default Text';
+    final schExplore = localizations != null ? localizations.sch_explore : 'Default Text';
+    final schCanada = localizations != null ? localizations.sch_Canada : 'Default Text';
+    final schAustra = localizations != null ? localizations.sch_Australia : 'Default Text';
+    final schKorea = localizations != null ? localizations.sch_Korea : 'Default Text';
+    final errorConn = localizations != null ? localizations.error_connection : "Defalut Text";
+    final schRvallSch = localizations != null ? localizations.sch_RvAllSch : 'Default Text';
+    final schDisMore = localizations != null ? localizations.sch_DisMore : 'Default Text';
     String countryText;
     switch (widget.country.toUpperCase()) {
       case 'CANADA':
@@ -105,8 +97,7 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.08),
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
                         child: Padding(
                           padding: EdgeInsets.only(top: screenHeight * 0.025),
                           child: TextMonserats(
@@ -118,8 +109,7 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.08),
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
                         child: Padding(
                           padding: EdgeInsets.only(top: screenHeight * 0.025),
                           child: SimpleButton(
@@ -128,9 +118,7 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CompareSchoolsPage(
-                                    schoolNames: state.schoolList
-                                        .map((school) => school.name)
-                                        .toList(),
+                                    schoolNames: state.schoolList.map((school) => school.name).toList(),
                                   ),
                                 ),
                               );
@@ -160,8 +148,7 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.08),
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
                         child: ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -174,10 +161,7 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                       ),
                     ],
                   ),
-                  Positioned(
-                      top: screenHeight * 0.06,
-                      left: screenWidth * 0.03,
-                      child: const BackButtonCircle()),
+                  Positioned(top: screenHeight * 0.06, left: screenWidth * 0.03, child: const BackButtonCircle()),
                 ],
               ),
             );

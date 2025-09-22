@@ -15,7 +15,7 @@ import 'package:kltn_mobile/components/constant/color_constant.dart';
 import 'package:kltn_mobile/components/constant/theme.dart';
 import 'package:kltn_mobile/components/functions/button.dart';
 import 'package:kltn_mobile/components/functions/text_field.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
 
@@ -47,10 +47,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
     log('data pass: $password');
 
     // Call login method from LoginCubit
-    context
-        .read<LoginCubit>()
-        .login(email, password, isRememberChange!)
-        .then((_) {
+    context.read<LoginCubit>().login(email, password, isRememberChange!).then((_) {
       final loginCubit = context.read<LoginCubit>();
       if (loginCubit.state is LoginSuccess) {
         final userAuth = (loginCubit.state as LoginSuccess).userAuthLogin;
@@ -80,36 +77,22 @@ class _LoginPageState extends BasePageState<LoginPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     //language
     final localizations = AppLocalizations.of(context);
-    final welcome =
-        localizations != null ? localizations.login_welcome : 'Default Text';
-    final loginContinue =
-        localizations != null ? localizations.login_continue : 'Default Text';
-    final emailText = localizations != null
-        ? localizations.register_login_cpass__fg_mail
-        : 'Default Text';
-    final passText = localizations != null
-        ? localizations.register_login_cpass__fg_pass
-        : 'Default Text';
-    final remem =
-        localizations != null ? localizations.login_remember : 'Default Text';
-    final signin = localizations != null
-        ? localizations.register_login_signin
-        : 'Default Text';
-    final signup =
-        localizations != null ? localizations.logout_3_signup : 'Default Text';
-    final forgot =
-        localizations != null ? localizations.login_forgot : 'Default Text';
-    final notAccout =
-        localizations != null ? localizations.login_donot : 'Default Text';
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final welcome = localizations != null ? localizations.login_welcome : 'Default Text';
+    final loginContinue = localizations != null ? localizations.login_continue : 'Default Text';
+    final emailText = localizations != null ? localizations.register_login_cpass__fg_mail : 'Default Text';
+    final passText = localizations != null ? localizations.register_login_cpass__fg_pass : 'Default Text';
+    final remem = localizations != null ? localizations.login_remember : 'Default Text';
+    final signin = localizations != null ? localizations.register_login_signin : 'Default Text';
+    final signup = localizations != null ? localizations.logout_3_signup : 'Default Text';
+    final forgot = localizations != null ? localizations.login_forgot : 'Default Text';
+    final notAccout = localizations != null ? localizations.login_donot : 'Default Text';
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
     final textColorRed = isDarkMode ? Colors.white : AppColor.redButton;
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(context.watch<ThemeSettingCubit>().state ==
-                      AppTheme.blackTheme
+              image: AssetImage(context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme
                   ? "assets/backgrounds/bckgr_login_dark.jpg"
                   : "assets/backgrounds/bckgr_login.jpg"),
               fit: BoxFit.cover)),
@@ -151,9 +134,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
                 child: BlocBuilder<LanguageBloc, Locale>(
                   builder: (context, state) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.05,
-                          vertical: screenHeight * 0.05),
+                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.05),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -166,8 +147,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
                               //Logo
                               SizedBox(width: screenWidth * 0.20),
                               Image.asset(
-                                context.watch<ThemeSettingCubit>().state ==
-                                        AppTheme.blackTheme
+                                context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme
                                     ? "assets/logo/logo_white.png"
                                     : "assets/logo/logo_red.png",
                                 height: 80,
@@ -242,16 +222,14 @@ class _LoginPageState extends BasePageState<LoginPage> {
                           Row(
                             children: [
                               Transform.scale(
-                                  scale:
-                                      0.8, // Adjust the scale factor as needed
+                                  scale: 0.8, // Adjust the scale factor as needed
                                   child: Checkbox(
                                     checkColor: Colors.white,
                                     value: isRememberChange,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50),
                                     ),
-                                    fillColor: WidgetStateProperty.all<Color>(
-                                        AppColor.redButton),
+                                    fillColor: WidgetStateProperty.all<Color>(AppColor.redButton),
                                     onChanged: (bool? value) {
                                       changeSelectedValueRadio(value!);
                                     },
@@ -320,14 +298,11 @@ class _LoginPageState extends BasePageState<LoginPage> {
                                         color: AppColor.redButton,
                                         fontWeight: FontWeight.w700,
                                         decoration: TextDecoration.underline,
-                                        decorationColor: const Color(
-                                            0xff7D1F1F), // Change the color of the underline
-                                        decorationStyle: TextDecorationStyle
-                                            .solid, // Change the number of lines
+                                        decorationColor: const Color(0xff7D1F1F), // Change the color of the underline
+                                        decorationStyle: TextDecorationStyle.solid, // Change the number of lines
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Navigator.pushNamed(
-                                                context, "/register");
+                                            Navigator.pushNamed(context, "/register");
                                           },
                                       ),
                                     ],

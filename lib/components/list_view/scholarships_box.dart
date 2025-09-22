@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
 import 'package:kltn_mobile/components/Style/montserrat.dart';
 import 'package:kltn_mobile/components/constant/color_constant.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:kltn_mobile/models/schools.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
 import 'package:kltn_mobile/screens/scholarships/scholarships_detail.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScholarshipsBox extends BasePage {
   final List<SchoolScholarship> scholarships;
@@ -21,10 +21,8 @@ class ScholarshipsBoxState extends BasePageState<ScholarshipsBox> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    final schonull =
-        localizations != null ? localizations.schlar_null : "Default Text";
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final schonull = localizations != null ? localizations.schlar_null : "Default Text";
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
     final boxColor = isDarkMode ? AppColor.backgrTabDark : Colors.white;
     final scholarships = widget.scholarships;

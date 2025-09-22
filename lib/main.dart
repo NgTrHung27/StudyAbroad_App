@@ -16,11 +16,11 @@ import 'package:kltn_mobile/blocs/profile_status_cubit_bloc/profile_status_cubit
 import 'package:kltn_mobile/blocs/repository/repository.dart';
 import 'package:kltn_mobile/blocs/schools_cubit/schools_cubit.dart';
 import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:kltn_mobile/components/notifications/noti_services.dart';
 import 'package:kltn_mobile/firebase_options.dart';
 import 'package:kltn_mobile/models/user_login.dart';
 import 'package:kltn_mobile/routes/app_route.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
 import 'package:kltn_mobile/screens/authentication/auth_notify.dart';
 import 'package:kltn_mobile/screens/chatting/client_id.dart';
@@ -47,7 +47,7 @@ Future<void> main() async {
     await listenToForegroundMessages();
     setupFirebaseMessagingBackgroundHandler();
   }
-  
+
   // Kiểm tra session đăng nhập
   final loginCubit = LoginCubit(APIRepository());
   final userAuth = await loginCubit.checkLoginStatus();
@@ -58,13 +58,10 @@ Future<void> main() async {
       providers: [
         BlocProvider(create: (_) => ThemeSettingCubit()),
         BlocProvider(create: (_) => AuthCubit()),
-        BlocProvider(
-            create: (_) => loginCubit), // Sử dụng loginCubit đã khởi tạo
+        BlocProvider(create: (_) => loginCubit), // Sử dụng loginCubit đã khởi tạo
         BlocProvider(create: (_) => ProfileStatusCubit()),
         BlocProvider(create: (_) => ForgotPassCubit(APIRepository())),
-        BlocProvider(
-            create: (context) =>
-                CarouselBloc(APIRepository())..add(FetchCarousel())),
+        BlocProvider(create: (context) => CarouselBloc(APIRepository())..add(FetchCarousel())),
         BlocProvider(create: (_) => NewsCubit()),
         BlocProvider(create: (_) => NewsSchoolCubit()),
         BlocProvider(create: (_) => ApplyScholarCubit()),
@@ -72,8 +69,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => SchoolsCubit()),
         BlocProvider(create: (_) => ContactUsCubit(APIRepository())),
         ChangeNotifierProvider(create: (_) => UserAuthProvider()),
-        ChangeNotifierProvider(
-            create: (_) => AuthNotifier()..setLoggedIn(isLoggedIn)),
+        ChangeNotifierProvider(create: (_) => AuthNotifier()..setLoggedIn(isLoggedIn)),
         ChangeNotifierProvider(
           create: (context) => ClientIdProvider(),
         ),
@@ -118,7 +114,7 @@ class _MyAppState extends State<MyApp> {
                 Locale('vi') // Vietnamese
               ],
               //Language
-              localizationsDelegates: const [
+              localizationsDelegates: [
                 AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,

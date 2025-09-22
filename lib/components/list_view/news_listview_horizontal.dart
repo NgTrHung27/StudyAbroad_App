@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kltn_mobile/blocs/news_cubit_bloc/news_cubit.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:kltn_mobile/components/style/montserrat.dart';
 import 'package:kltn_mobile/screens/news/news_detail.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewsListView extends StatefulWidget {
   const NewsListView({super.key, required this.nullSchool});
@@ -25,8 +25,7 @@ class NewsListViewState extends State<NewsListView> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    final errorConn =
-        localizations != null ? localizations.error_connection : "Defalut Text";
+    final errorConn = localizations != null ? localizations.error_connection : "Defalut Text";
     return BlocBuilder<NewsCubit, NewsState>(
       builder: (context, state) {
         if (state is NewsLoading) {
@@ -55,9 +54,7 @@ class NewsListViewState extends State<NewsListView> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              NewsDetailPage(news: newsList[index])),
+                      MaterialPageRoute(builder: (context) => NewsDetailPage(news: newsList[index])),
                     );
                   },
                   child: Container(

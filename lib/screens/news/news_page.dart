@@ -10,7 +10,7 @@ import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
 import '../../components/style/montserrat.dart';
 import '../../components/list_view/news_listview_horizontal.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 
 class NewsPage extends BasePage {
   const NewsPage({super.key});
@@ -23,29 +23,23 @@ class NewsPage extends BasePage {
 class _NewsPageState extends BasePageState<NewsPage> {
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     final isLoggedIn = userAuth != null;
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     //theme
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
     //Language
     final localizations = AppLocalizations.of(context);
-    final news1 =
-        localizations != null ? localizations.new_main : 'Default Text';
-    final news2 =
-        localizations != null ? localizations.new_post : 'Default Text';
+    final news1 = localizations != null ? localizations.new_main : 'Default Text';
+    final news2 = localizations != null ? localizations.new_post : 'Default Text';
     final news3 = localizations != null ? localizations.noti_1 : 'Default Text';
     return Scaffold(
-      backgroundColor: context.select(
-          (ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
+      backgroundColor: context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
         child: ListView(
           children: [
             Row(
@@ -57,9 +51,7 @@ class _NewsPageState extends BasePageState<NewsPage> {
                   },
                 ),
                 CirleAvatarImage(
-                    avatarImgUrl: userAuth?.student.school.logo != null
-                        ? userAuth!.student.school.logo
-                        : null,
+                    avatarImgUrl: userAuth?.student.school.logo != null ? userAuth!.student.school.logo : null,
                     avatarImgPath: 'assets/logo/logo_red.png',
                     width: 60,
                     height: 60),

@@ -10,7 +10,7 @@ import 'package:kltn_mobile/components/style/backbutton.dart';
 import 'package:kltn_mobile/components/style/montserrat.dart';
 import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 
 class ProfileStatus extends BasePage {
   const ProfileStatus({super.key});
@@ -21,28 +21,20 @@ class ProfileStatus extends BasePage {
 class _ProfileStatusState extends BasePageState<ProfileStatus> {
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
     //language
     final localizations = AppLocalizations.of(context);
-    final pfStatus = localizations != null
-        ? localizations.profile_status_ps
-        : 'Default Text';
-    final pfStatus1 =
-        localizations != null ? localizations.pfs_step1 : 'Default Text';
-    final pfStatus2 =
-        localizations != null ? localizations.pfs_step2 : 'Default Text';
-    final pfStatus3 =
-        localizations != null ? localizations.pfs_step3 : 'Default Text';
+    final pfStatus = localizations != null ? localizations.profile_status_ps : 'Default Text';
+    final pfStatus1 = localizations != null ? localizations.pfs_step1 : 'Default Text';
+    final pfStatus2 = localizations != null ? localizations.pfs_step2 : 'Default Text';
+    final pfStatus3 = localizations != null ? localizations.pfs_step3 : 'Default Text';
     //Theme
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColorRed = isDarkMode ? Colors.white : AppColor.redButton;
     return BlocProvider(
-      create: (context) =>
-          ProfileStatusCubit()..updateStatus(userAuth?.student.status ?? 'N/A'),
+      create: (context) => ProfileStatusCubit()..updateStatus(userAuth?.student.status ?? 'N/A'),
       child: BlocBuilder<ProfileStatusCubit, ProfileStatusState>(
         builder: (context, state) {
           return Scaffold(
@@ -82,9 +74,7 @@ class _ProfileStatusState extends BasePageState<ProfileStatus> {
                           IdTab(
                             userName: userAuth?.name ?? 'N/A',
                             idUser: userAuth?.email ?? 'N/A',
-                            avatarImgUrl: userAuth?.student.school.logo != null
-                                ? userAuth!.student.school.logo
-                                : null,
+                            avatarImgUrl: userAuth?.student.school.logo != null ? userAuth!.student.school.logo : null,
                             avatarImgPath: 'assets/logo/logo_red.png',
                           ),
                         ], // parameters userName+idUser and avatarUser
@@ -107,8 +97,7 @@ class _ProfileStatusState extends BasePageState<ProfileStatus> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ActiontabResult(
-                              result: userAuth?.student.status ?? 'N/A'),
+                          ActiontabResult(result: userAuth?.student.status ?? 'N/A'),
                         ],
                       ),
                     ],

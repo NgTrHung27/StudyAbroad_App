@@ -5,7 +5,7 @@ import 'package:kltn_mobile/components/Style/montserrat.dart';
 import 'package:kltn_mobile/components/Style/simplebutton.dart';
 import 'package:kltn_mobile/components/constant/color_constant.dart';
 import 'package:kltn_mobile/components/list_view/scoretable.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:kltn_mobile/models/user_login.dart';
 import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
@@ -28,8 +28,7 @@ class ScoreDetailState extends BasePageState<ScoreDetail> {
     final localizations = AppLocalizations.of(context);
     final sms = localizations != null ? localizations.scr_sms : "Default Text";
     final dwn = localizations != null ? localizations.scr_dwn : "Default Text";
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     List<Score>? scores = userAuth?.student.program?.scores;
 
     return Scaffold(
@@ -66,9 +65,7 @@ class ScoreDetailState extends BasePageState<ScoreDetail> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.04,
-                  vertical: screenHeight * 0.01),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
               child: Column(
                 children: [
                   SizedBox(height: screenHeight * 0.025),
@@ -82,8 +79,7 @@ class ScoreDetailState extends BasePageState<ScoreDetail> {
                     backgroundColor: const Color(0xffF58218),
                     onPressed: () async {
                       print('Download');
-                      final pdfFile =
-                          await PdfScoreApi.generateScorePdf(scores!);
+                      final pdfFile = await PdfScoreApi.generateScorePdf(scores!);
                       print(pdfFile);
                       PdfApi.openFile(pdfFile);
                     },

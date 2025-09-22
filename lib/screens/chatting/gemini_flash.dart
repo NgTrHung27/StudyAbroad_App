@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
 import 'package:kltn_mobile/components/constant/color_constant.dart';
 import 'package:kltn_mobile/components/style/montserrat.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
 
@@ -40,8 +40,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
   ChatUser geminiUser = ChatUser(
     id: "1",
     firstName: "Gemini",
-    profileImage:
-        "https://seeklogo.com/images/G/google-gemini-logo-A5787B2669-seeklogo.com.png",
+    profileImage: "https://seeklogo.com/images/G/google-gemini-logo-A5787B2669-seeklogo.com.png",
   );
 
   @override
@@ -69,14 +68,12 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
   Future<void> _loadApiKey() async {
     final jsonString = await rootBundle.loadString('env.json');
     final jsonResponse = jsonDecode(jsonString);
-    apiKey = jsonResponse[
-        'api_key']; // Fixed to correctly update the class-level variable
+    apiKey = jsonResponse['api_key']; // Fixed to correctly update the class-level variable
   }
 
   void checkNetworkConnection() async {
     final localizations = AppLocalizations.of(context);
-    final errorConn =
-        localizations != null ? localizations.error_connection : "Default Text";
+    final errorConn = localizations != null ? localizations.error_connection : "Default Text";
     String errorsubtitle = errorConn;
     var connectivityResult = await (Connectivity().checkConnectivity());
     // ignore: unrelated_type_equality_checks
@@ -95,8 +92,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
 
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     // Cập nhật userName từ userAuth
     String newUserName = userAuth?.name ?? 'N/A';
     String newAvtUser = userAuth?.student.school.logo ??
@@ -106,30 +102,20 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
       setState(() {
         userName = newUserName;
         // Cập nhật currentUser với userName mới
-        currentUser =
-            ChatUser(id: "0", firstName: userName, profileImage: newAvtUser);
+        currentUser = ChatUser(id: "0", firstName: userName, profileImage: newAvtUser);
       });
     }
     //Language
     final localizations = AppLocalizations.of(context);
-    final title = localizations != null
-        ? localizations.ai_chatting_title
-        : 'Default Text';
-    final subtitle = localizations != null
-        ? localizations.ai_chatting_subtitle
-        : 'Default Text';
-    final hintText = localizations != null
-        ? localizations.ai_chatting_input
-        : 'Default Text';
-    final errorConn =
-        localizations != null ? localizations.error_connection : "Default Text";
+    final title = localizations != null ? localizations.ai_chatting_title : 'Default Text';
+    final subtitle = localizations != null ? localizations.ai_chatting_subtitle : 'Default Text';
+    final hintText = localizations != null ? localizations.ai_chatting_input : 'Default Text';
+    final errorConn = localizations != null ? localizations.error_connection : "Default Text";
     //Theme
-    final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final redCorlor = AppColor.redButton;
     final textColorWhite = isDarkMode ? Colors.white : Colors.black;
-    final containerUserBox =
-        isDarkMode ? const Color(0xffD9D9D9) : Colors.white;
+    final containerUserBox = isDarkMode ? const Color(0xffD9D9D9) : Colors.white;
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
@@ -145,13 +131,11 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
             color: Colors.white,
             onPressed: () => Navigator.pushNamed(context, '/mainpage'),
           )),
-      body: _buildUI(redCorlor, subtitle, hintText, containerUserBox,
-          textColorWhite, errorConn),
+      body: _buildUI(redCorlor, subtitle, hintText, containerUserBox, textColorWhite, errorConn),
     );
   }
 
-  Widget _buildUI(redCorlor, subtitle, hintText, containerUserBox,
-      textColorWhite, errorConn) {
+  Widget _buildUI(redCorlor, subtitle, hintText, containerUserBox, textColorWhite, errorConn) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Stack(children: [
@@ -274,9 +258,10 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
         images = [
           File(chatMessage.medias!.first.url).readAsBytesSync(),
         ];
-      }    
+      }
       // Assuming gemini is an instance of a class that handles API requests
       gemini
+          // ignore: deprecated_member_use
           ?.streamGenerateContent(
         question,
         images: images,
@@ -287,17 +272,15 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
 
         if (lastMessage != null && lastMessage.user == geminiUser) {
           lastMessage = messages.removeAt(0);
-          String response = event.content?.parts?.fold(
-                  "", (previous, current) => "$previous ${current.text}") ??
-              "";
+          String response =
+              event.content?.parts?.fold("", (previous, current) => "$previous ${current.toString()}") ?? "";
           lastMessage.text += response;
           setState(() {
             messages = [lastMessage!, ...messages];
           });
         } else {
-          String response = event.content?.parts?.fold(
-                  "", (previous, current) => "$previous ${current.text}") ??
-              "";
+          String response =
+              event.content?.parts?.fold("", (previous, current) => "$previous ${current.toString()}") ?? "";
           ChatMessage message = ChatMessage(
             user: geminiUser,
             createdAt: DateTime.now(),
@@ -331,9 +314,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
 
   void _sendMediaMessage() async {
     final localizations = AppLocalizations.of(context);
-    final desPic = localizations != null
-        ? localizations.ai_chatting_desPic
-        : 'Default Text';
+    final desPic = localizations != null ? localizations.ai_chatting_desPic : 'Default Text';
     ImagePicker picker = ImagePicker();
     XFile? file = await picker.pickImage(
       source: ImageSource.gallery,
@@ -359,7 +340,6 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
         // Log the error details
         print("Exception occurred while sending media message: $e");
       }
-    } else {
-    }
+    } else {}
   }
 }

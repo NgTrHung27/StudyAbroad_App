@@ -8,7 +8,7 @@ import 'package:kltn_mobile/components/constant/theme.dart';
 import 'package:kltn_mobile/components/functions/button.dart';
 import 'package:kltn_mobile/components/functions/text_field.dart';
 import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kltn_mobile/components/language/app_localizations.dart';
 
 class ChangePass extends BasePage {
   const ChangePass({super.key});
@@ -39,27 +39,19 @@ class _ForgetPassState extends BasePageState<ChangePass> {
     final screenHeight = MediaQuery.of(context).size.height;
     //lang
     final localizations = AppLocalizations.of(context);
-    final change1 =
-        localizations != null ? localizations.chang_pass_1 : 'Default Text';
-    final change2 =
-        localizations != null ? localizations.chang_pass_2 : 'Default Text';
-    final forgot3 =
-        localizations != null ? localizations.forgot_3 : 'Default Text';
-    final emailText = localizations != null
-        ? localizations.register_login_cpass__fg_mail
-        : 'Default Text';
-    final forgot4 =
-        localizations != null ? localizations.forgot_4 : 'Default Text';
-    final forgot5 =
-        localizations != null ? localizations.forgot_5 : 'Default Text';
+    final change1 = localizations != null ? localizations.chang_pass_1 : 'Default Text';
+    final change2 = localizations != null ? localizations.chang_pass_2 : 'Default Text';
+    final forgot3 = localizations != null ? localizations.forgot_3 : 'Default Text';
+    final emailText = localizations != null ? localizations.register_login_cpass__fg_mail : 'Default Text';
+    final forgot4 = localizations != null ? localizations.forgot_4 : 'Default Text';
+    final forgot5 = localizations != null ? localizations.forgot_5 : 'Default Text';
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme
-                    ? 'assets/backgrounds/bckgr_fgpass_dark.jpg'
-                    : 'assets/backgrounds/bckgr_fgpass.jpg'),
+            image: AssetImage(context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme
+                ? 'assets/backgrounds/bckgr_fgpass_dark.jpg'
+                : 'assets/backgrounds/bckgr_fgpass.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -89,9 +81,7 @@ class _ForgetPassState extends BasePageState<ChangePass> {
             builder: (context, state) {
               return SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.05,
-                      vertical: screenHeight * 0.05),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.05),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -104,8 +94,7 @@ class _ForgetPassState extends BasePageState<ChangePass> {
                           //Logo
                           SizedBox(width: screenWidth * 0.20),
                           Image.asset(
-                            context.watch<ThemeSettingCubit>().state ==
-                                    AppTheme.blackTheme
+                            context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme
                                 ? "assets/logo/logo_white.png"
                                 : "assets/logo/logo_red.png",
                             height: 80,
@@ -161,9 +150,7 @@ class _ForgetPassState extends BasePageState<ChangePass> {
                                     prefixIcon: Icons.email,
                                     onChanged: (value) {
                                       email = value;
-                                      context
-                                          .read<ForgotPassCubit>()
-                                          .errorEmail(email);
+                                      context.read<ForgotPassCubit>().errorEmail(email);
                                     },
                                   ),
                                   // Display errorMessage if it is not null

@@ -1,6 +1,6 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kltn_mobile/main.dart';
 
 // Tạo kênh thông báo với mức độ quan trọng cao
@@ -8,8 +8,7 @@ AndroidNotificationChannel createNotificationChannel() {
   return const AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
-    description:
-        'This channel is used for important notifications.', // description
+    description: 'This channel is used for important notifications.', // description
     importance: Importance.high,
   );
 }
@@ -25,21 +24,20 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 final AndroidNotificationChannel channel = createNotificationChannel();
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    initializeLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = initializeLocalNotificationsPlugin();
 
 Future<void> initializeNotifications() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/launcher_icon');
 
-  final DarwinInitializationSettings initializationSettingsDarwin =
-      DarwinInitializationSettings(
-          requestAlertPermission: true,
-          requestBadgePermission: true,
-          requestSoundPermission: true,
-          onDidReceiveLocalNotification: (id, title, body, payload) async {
-            // Handle notification tapped logic here
-          });
+  final DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings(
+    requestAlertPermission: true,
+    requestBadgePermission: true,
+    requestSoundPermission: true,
+    // onDidReceiveLocalNotification: (id, title, body, payload) async {
+    //   // Handle notification tapped logic here
+    // },
+  );
 
   InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
@@ -51,8 +49,7 @@ Future<void> initializeNotifications() async {
 
 Future<void> setupNotificationChannel() async {
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 }
 
