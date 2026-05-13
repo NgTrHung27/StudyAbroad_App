@@ -135,7 +135,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
     );
   }
 
-  Widget _buildUI(redCorlor, subtitle, hintText, containerUserBox, textColorWhite, errorConn) {
+  Widget _buildUI(Color redCorlor, String subtitle, String hintText, Color containerUserBox, Color textColorWhite, String errorConn) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Stack(children: [

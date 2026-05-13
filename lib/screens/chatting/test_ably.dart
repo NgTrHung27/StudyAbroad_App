@@ -27,7 +27,7 @@ class _AblyChatState extends BasePageState<AblyChat> {
   //Text Controller
   final TextEditingController _messageController = TextEditingController();
   // ignore: prefer_typing_uninitialized_variables
-  var newMsgFromAbly;
+  dynamic newMsgFromAbly;
   late ChatSession _currentChatSession;
   //User Initialization
   String userName = "User";
@@ -201,7 +201,7 @@ class _AblyChatState extends BasePageState<AblyChat> {
     }
   }
 
-  _buildMessageComposer() {
+  Widget _buildMessageComposer() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       height: 50.0,

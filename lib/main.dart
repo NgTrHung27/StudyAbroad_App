@@ -25,7 +25,6 @@ import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
 import 'package:kltn_mobile/screens/authentication/auth_notify.dart';
 import 'package:kltn_mobile/screens/chatting/client_id.dart';
 import 'package:provider/provider.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 import 'screens/scholarships/applyschorlarship.dart';
 
@@ -74,9 +73,7 @@ Future<void> main() async {
           create: (context) => ClientIdProvider(),
         ),
       ],
-      child: ShowCaseWidget(
-        builder: (context) => MyApp(userAuth: userAuth),
-      ),
+      child: MyApp(userAuth: userAuth),
     ),
   );
 }

@@ -24,8 +24,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ContactUs extends BasePage {
   const ContactUs({super.key});
 
-  get error => null;
-
   @override
   State<ContactUs> createState() => _ContactUsState();
 }

@@ -5,15 +5,11 @@ import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
 
 class CustomRadio<T> extends StatelessWidget {
   final T value;
-  final T? groupValue;
-  final Function(T?) onChanged;
   final String title;
 
   const CustomRadio({
     super.key,
     required this.value,
-    this.groupValue,
-    required this.onChanged,
     required this.title,
   });
 
@@ -25,24 +21,17 @@ class CustomRadio<T> extends StatelessWidget {
     return Expanded(
       child: SizedBox(
         height: 37,
-        child: ListTile(
-          title: Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              title,
-              style: GoogleFonts.getFont(
-                'Montserrat',
-                color: textColor,
-                fontWeight: FontWeight.w500,
-                fontSize: 12,
-              ),
+        child: RadioListTile<T>(
+          title: Text(
+            title,
+            style: GoogleFonts.getFont(
+              'Montserrat',
+              color: textColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
             ),
           ),
-          leading: Radio<T>(
-            value: value,
-            groupValue: groupValue,
-            onChanged: onChanged,
-          ),
+          value: value,
           dense: true,
           visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
           contentPadding: EdgeInsets.zero,

@@ -51,7 +51,7 @@ class DropdownCustom<T> extends StatelessWidget {
           Icons.arrow_drop_down,
           color: iconColor,
         ),
-        value: selectedItem,
+        initialValue: selectedItem,
         onChanged: onChanged,
         items: items.map<DropdownMenuItem<T>>((T value) {
           return DropdownMenuItem<T>(

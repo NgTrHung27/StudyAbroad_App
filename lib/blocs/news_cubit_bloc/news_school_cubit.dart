@@ -7,7 +7,7 @@ class NewsSchoolCubit extends Cubit<NewsSchoolState> {
   NewsSchoolCubit() : super(NewsSchoolInitial());
   APIRepository apiRepository = APIRepository();
 
-  getNewsByUserSchool(String nameSchool) async {
+  Future<void> getNewsByUserSchool(String nameSchool) async {
     emit(NewsSchoolLoading());
     try {
       List<NewsSchoolList> newsSchoolList =

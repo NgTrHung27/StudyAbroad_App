@@ -44,7 +44,7 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
   //Text Controller
   final TextEditingController _messageController = TextEditingController();
   // ignore: prefer_typing_uninitialized_variables
-  var newMsgFromAbly;
+  dynamic newMsgFromAbly;
   late ChatSession _currentChatSession;
   //User Initialization
   late ChatUser currentUser;

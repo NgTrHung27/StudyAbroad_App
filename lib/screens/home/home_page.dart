@@ -43,12 +43,20 @@ class _HomePageState extends BasePageState<HomePage> {
     super.initState();
     context.read<CarouselBloc>().add(FetchCarousel());
     context.read<ThemeSettingCubit>().loadTheme();
+    ShowcaseView.register(
+      onComplete: (index, key) {
+        debugPrint('onComplete: $index, $key');
+      },
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ShowCaseWidget.of(context).startShowCase([_one, _two, _three]);
+      ShowcaseView.get().startShowCase([_one, _two, _three]);
     });
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _initializeNotifications(context);
-    // });
+  }
+
+  @override
+  void dispose() {
+    ShowcaseView.get().unregister();
+    super.dispose();
   }
 
   @override

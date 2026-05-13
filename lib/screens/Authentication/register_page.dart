@@ -347,10 +347,12 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
           fontWeight: FontWeight.w600,
         ),
       ),
-      pickerTextStyle: GoogleFonts.montserrat(
-        color: Colors.black,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
+      pickerThemeData: const BottomPickerThemeData(
+        pickerTextStyle: TextStyle(
+          color: Colors.black,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       dateOrder: DatePickerDateOrder.dmy,
       bottomPickerTheme: BottomPickerTheme.blue,
@@ -386,7 +388,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
 
 //-----------------------------------------------------------------------------------
 //Stepper Method
-  continueStep() {
+  void continueStep() {
     final isLastStep = currentStep ==
         getSteps(
                     register_1,
@@ -430,7 +432,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
     }
   }
 
-  cancelStep() {
+  void cancelStep() {
     if (currentStep > 0) {
       setState(() {
         currentStep = currentStep - 1;
@@ -438,13 +440,13 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
     }
   }
 
-  onStepTapped(int value) {
+  void onStepTapped(int value) {
     setState(() {
       currentStep = value;
     });
   }
 
-  Widget controlsBuilder(context, details, {String? register_25, register_26}) {
+  Widget controlsBuilder(BuildContext context, ControlsDetails details, {String? register_25, String? register_26}) {
     return BlocBuilder<LanguageBloc, Locale>(
       builder: (context, state) {
         String currentLanguageCode = state.languageCode;
@@ -477,7 +479,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                       child: SimpleButton(
                         backgroundColor: Colors.transparent,
                         borderColor: AppColor.redButton,
-                        onPressed: details.onStepCancel,
+                        onPressed: details.onStepCancel ?? () {},
                         child: TextMonserats(
                           backText,
                           color: AppColor.redButton,
@@ -506,7 +508,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                         child: SimpleButton(
                           backgroundColor: Colors.transparent,
                           borderColor: AppColor.redButton,
-                          onPressed: details.onStepCancel,
+                          onPressed: details.onStepCancel ?? () {},
                           child: TextMonserats(
                             backText,
                             color: AppColor.redButton,
@@ -517,7 +519,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     const SizedBox(width: 120),
                     Expanded(
                       child: SimpleButton(
-                        onPressed: details.onStepContinue,
+                        onPressed: details.onStepContinue ?? () {},
                         child: TextMonserats(
                           continueText,
                           color: Colors.white,
@@ -533,7 +535,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
 
 // List Steps
   List<Step> getSteps(
-          register1,
+          String register1,
           register2,
           register3,
           register4,
@@ -1070,28 +1072,26 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                 ],
               ),
               //GPA - CGPA
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomRadio<GradeType>(
-                    value: GradeType.GPA,
-                    groupValue: radioGradeTypeValue,
-                    onChanged: (GradeType? newGradeTypeValue) {
-                      radioValueChanged(newGradeTypeValue);
-                    },
-                    title: 'GPA (?/4.0)',
-                  ),
-                  CustomRadio<GradeType>(
-                    value: GradeType.CGPA,
-                    groupValue: radioGradeTypeValue,
-                    onChanged: (GradeType? newGradeTypeValue) {
-                      radioValueChanged(newGradeTypeValue);
-                    },
-                    title: 'GGPA (?/10.0)',
-                  ),
-                ],
+              RadioGroup<GradeType>(
+                groupValue: radioGradeTypeValue,
+                onChanged: (GradeType? newGradeTypeValue) {
+                  radioValueChanged(newGradeTypeValue);
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomRadio<GradeType>(
+                      value: GradeType.GPA,
+                      title: 'GPA (?/4.0)',
+                    ),
+                    CustomRadio<GradeType>(
+                      value: GradeType.CGPA,
+                      title: 'GGPA (?/10.0)',
+                    ),
+                  ],
+                ),
               ),
               //Grade Score
               const SizedBox(height: 10),

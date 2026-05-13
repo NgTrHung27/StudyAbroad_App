@@ -8,7 +8,8 @@ AndroidNotificationChannel createNotificationChannel() {
   return const AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
-    description: 'This channel is used for important notifications.', // description
+    description:
+        'This channel is used for important notifications.', // description
     importance: Importance.high,
   );
 }
@@ -24,13 +25,15 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 final AndroidNotificationChannel channel = createNotificationChannel();
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = initializeLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    initializeLocalNotificationsPlugin();
 
 Future<void> initializeNotifications() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/launcher_icon');
 
-  final DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings(
+  final DarwinInitializationSettings initializationSettingsDarwin =
+      DarwinInitializationSettings(
     requestAlertPermission: true,
     requestBadgePermission: true,
     requestSoundPermission: true,
@@ -44,12 +47,18 @@ Future<void> initializeNotifications() async {
     iOS: initializationSettingsDarwin,
   );
 
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  await flutterLocalNotificationsPlugin.initialize(
+    settings: initializationSettings,
+    onDidReceiveNotificationResponse: (NotificationResponse response) async {
+      // Handle notification tapped logic here
+    },
+  );
 }
 
 Future<void> setupNotificationChannel() async {
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 }
 
@@ -78,10 +87,11 @@ Future<void> listenToForegroundMessages() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     if (message.notification != null) {
       flutterLocalNotificationsPlugin.show(
-        message.notification.hashCode,
-        message.notification!.title,
-        message.notification!.body,
-        NotificationDetails(
+        id: message.notification.hashCode,
+        title: message.notification!.title,
+        body: message.notification!.body,
+        payload: message.data['payload'],
+        notificationDetails: NotificationDetails(
           android: AndroidNotificationDetails(
             channel.id,
             channel.name,

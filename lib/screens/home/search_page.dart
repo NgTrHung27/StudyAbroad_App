@@ -122,7 +122,7 @@ class _SearchPageState extends State<SearchPage> {
     return _filteredData.isEmpty ? _isNotFound(textColor, bgColor, errorConn) : _isFound(textColor, bgColor);
   }
 
-  Widget _isNotFound(textColor, bgColor, errorConn) {
+  Widget _isNotFound(Color textColor, Color bgColor, String errorConn) {
     return Column(children: [
       Transform.translate(
         offset: const Offset(100, 0),
@@ -141,7 +141,7 @@ class _SearchPageState extends State<SearchPage> {
     ]);
   }
 
-  Widget _isFound(textColor, bgColor) {
+  Widget _isFound(Color textColor, Color bgColor) {
     return Column(
       children: [
         Expanded(

@@ -1,18 +1,19 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kltn_mobile/components/constant/color_constant.dart';
 import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:kltn_mobile/components/style/montserrat.dart';
-import 'package:kltn_mobile/screens/chatting/flash_dismissible_chatting_gemini_ai.dart';
 import 'package:kltn_mobile/screens/chatting/ably_websocket.dart';
+import 'package:kltn_mobile/screens/chatting/flash_dismissible_chatting_gemini_ai.dart';
 import 'package:kltn_mobile/screens/chatting/floating_chatting_position.dart';
 import 'package:kltn_mobile/screens/chatting/pro_dismissible_chatting_gemini_ai.dart';
 
-import 'home_page.dart';
 import '../notifications/notifications_page.dart';
 import '../profiles/profile.dart';
+import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
   final int initialIndex = 0;
@@ -117,18 +118,28 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
               right: 0,
               child: Container(
                 color: Colors.transparent,
-                height: 105,
+                height: 110,
                 padding: const EdgeInsets.all(12),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50.0),
-                  child: Container(
-                    height: 80,
-                    color: Colors.white.withValues(alpha: 0.1),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(_icons.length, (index) {
-                        return _tabItem(_icons[index], labels[index], index);
-                      }),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.3),
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(_icons.length, (index) {
+                          return _tabItem(_icons[index], labels[index], index);
+                        }),
+                      ),
                     ),
                   ),
                 ),
