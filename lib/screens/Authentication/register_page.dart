@@ -339,21 +339,19 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
   //Date
   Future<void> openDatePicker(BuildContext context) async {
     BottomPicker.date(
-      pickerTitle: Text(
-        'Date of Birth',
-        style: GoogleFonts.montserrat(
-          color: Colors.black,
-          fontSize: 17,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      pickerThemeData: const BottomPickerThemeData(
-        pickerTextStyle: TextStyle(
-          color: Colors.black,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
+      headerBuilder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Text(
+            'Date of Birth',
+            style: GoogleFonts.montserrat(
+              color: Colors.black,
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        );
+      },
       dateOrder: DatePickerDateOrder.dmy,
       bottomPickerTheme: BottomPickerTheme.blue,
       initialDateTime: DateTime(2000, 01, 01),
