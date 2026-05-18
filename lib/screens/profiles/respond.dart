@@ -21,7 +21,8 @@ import 'package:kltn_mobile/screens/home/base_lang.dart';
 class ResponseCubit extends Cubit<ResponseState> {
   ResponseCubit() : super(ResponseInitial());
 
-  Future<void> sendResponse(String url, String message, List<String> images) async {
+  Future<void> sendResponse(
+      String url, String message, List<String> images) async {
     emit(ResponseLoading());
     try {
       final response = await http.post(
@@ -36,9 +37,11 @@ class ResponseCubit extends Cubit<ResponseState> {
       );
 
       if (response.statusCode == 200) {
-        emit(ResponseSuccess(ResponseModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)))));
+        emit(ResponseSuccess(ResponseModel.fromJson(
+            jsonDecode(utf8.decode(response.bodyBytes)))));
       } else {
-        emit(ResponseFailure(ResponseModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)))));
+        emit(ResponseFailure(ResponseModel.fromJson(
+            jsonDecode(utf8.decode(response.bodyBytes)))));
       }
     } catch (e) {
       emit(ResponseError(e.toString()));
@@ -114,7 +117,8 @@ class _RespondState extends BasePageState<Respond> {
     final localizations = AppLocalizations.of(context);
     final resq = localizations != null ? localizations.resq : 'Default Text';
 
-    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
 
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -170,8 +174,10 @@ class _RespondState extends BasePageState<Respond> {
     );
   }
 
-  Widget _buildResponseContent(BuildContext context, ResponseState state, bool isDarkMode, double screenHeight) {
-    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+  Widget _buildResponseContent(BuildContext context, ResponseState state,
+      bool isDarkMode, double screenHeight) {
+    final userAuth =
+        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     ResponseModel? responseModel;
     if (state is ResponseSuccess) {
       responseModel = state.responseModel;
@@ -195,9 +201,12 @@ class _RespondState extends BasePageState<Respond> {
                 constraints: BoxConstraints(
                   minHeight: screenHeight,
                 ),
-                color: isDarkMode ? AppColor.scafflodBgColorDark : Colors.white, //backscreen color
+                color: isDarkMode
+                    ? AppColor.scafflodBgColorDark
+                    : Colors.white, //backscreen color
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -209,7 +218,8 @@ class _RespondState extends BasePageState<Respond> {
                           fontWeight: FontWeight.w700,
                           color: isDarkMode ? Colors.white : Colors.black,
                         ),
-                        if (widget.images == null || widget.images!.isEmpty) Container(),
+                        if (widget.images == null || widget.images!.isEmpty)
+                          Container(),
                         if (widget.images != null && widget.images!.isNotEmpty)
                           SizedBox(
                             height: screenHeight * 0.3,
@@ -218,7 +228,8 @@ class _RespondState extends BasePageState<Respond> {
                               child: Row(
                                 children: widget.images!.map((image) {
                                   return Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.006),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: screenHeight * 0.006),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image.network(
@@ -263,7 +274,8 @@ class _RespondState extends BasePageState<Respond> {
                         const SizedBox(height: 10),
                         SimpleButton(
                           backgroundColor: Colors.transparent,
-                          borderColor: isDarkMode ? Colors.white : AppColor.redButton,
+                          borderColor:
+                              isDarkMode ? Colors.white : AppColor.redButton,
                           onPressed: _pickImages,
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -272,12 +284,14 @@ class _RespondState extends BasePageState<Respond> {
                                 Icon(
                                   Icons.upload_file,
                                   size: 21,
-                                  color: isDarkMode ? Colors.white : Colors.black,
+                                  color:
+                                      isDarkMode ? Colors.white : Colors.black,
                                 ),
                                 const SizedBox(width: 10),
                                 TextMonserats(
                                   resq3,
-                                  color: isDarkMode ? Colors.white : Colors.black,
+                                  color:
+                                      isDarkMode ? Colors.white : Colors.black,
                                 )
                               ]),
                         ),
@@ -292,7 +306,8 @@ class _RespondState extends BasePageState<Respond> {
                           const SizedBox(height: 10),
                           SimpleButton(
                             backgroundColor: Colors.transparent,
-                            borderColor: isDarkMode ? Colors.white : AppColor.redButton,
+                            borderColor:
+                                isDarkMode ? Colors.white : AppColor.redButton,
                             onPressed: () {
                               setState(() {
                                 imageBase64List.clear();
@@ -305,12 +320,16 @@ class _RespondState extends BasePageState<Respond> {
                                   Icon(
                                     Icons.clear,
                                     size: 21,
-                                    color: isDarkMode ? Colors.white : Colors.black,
+                                    color: isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                   const SizedBox(width: 10),
                                   TextMonserats(
                                     'Clear Images',
-                                    color: isDarkMode ? Colors.white : Colors.black,
+                                    color: isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                                   )
                                 ]),
                           ),
@@ -320,7 +339,7 @@ class _RespondState extends BasePageState<Respond> {
                           backgroundColor: AppColor.redButton,
                           onPressed: () {
                             final url =
-                                'https://kltn-demo-deploy-admin.vercel.app/api/accounts/students/${userAuth?.student.id}/requirements/${widget.id}';
+                                'https://study-abroad-cemc-admin.vercel.app/api/accounts/students/${userAuth?.student.id}/requirements/${widget.id}';
                             context.read<ResponseCubit>().sendResponse(
                                   url,
                                   contentController.text,

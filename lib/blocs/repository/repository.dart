@@ -61,7 +61,7 @@ class APIRepository {
       });
       final response = await http.post(
         Uri.parse(
-            'https://kltn-demo-deploy-admin.vercel.app/api/auth/register'),
+            'https://study-abroad-cemc-admin.vercel.app/api/auth/register'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -99,7 +99,7 @@ class APIRepository {
   ) async {
     try {
       final response = await httpClient.post(
-        Uri.parse('https://kltn-demo-deploy-admin.vercel.app/api/auth/login'),
+        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/auth/login'),
         headers: {"Content-Type": "application/json"},
         body: utf8.encode(jsonEncode({"email": email, "password": password})),
       );
@@ -149,7 +149,7 @@ class APIRepository {
   Future<List<Country>> fetchCountry() async {
     try {
       final response = await http.get(
-        Uri.parse('https://kltn-demo-deploy-admin.vercel.app/api/country'),
+        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/country'),
       );
       if (response.statusCode == 200) {
         List<dynamic> data =
@@ -171,7 +171,8 @@ class APIRepository {
   Future<List<Schools>> fetchSchools() async {
     try {
       final response = await httpClient.get(
-        Uri.parse('https://kltn-demo-deploy-admin.vercel.app/api/schools/full'),
+        Uri.parse(
+            'https://study-abroad-cemc-admin.vercel.app/api/schools/full'),
       );
       if (response.statusCode == 200) {
         List<dynamic> data =
@@ -194,7 +195,7 @@ class APIRepository {
 
   Future<List<String>> fetchUniqueCountries() async {
     final response = await httpClient.get(
-        Uri.parse('https://kltn-demo-deploy-admin.vercel.app/api/schools'));
+        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/schools'));
     final schools = schoolsFromJson(response.body);
     final countries = schools.map((school) => school.country).toSet().toList();
     return countries;
@@ -204,7 +205,7 @@ class APIRepository {
     try {
       final response = await httpClient.post(
         Uri.parse(
-            'https://kltn-demo-deploy-admin.vercel.app/api/auth/reset-password'),
+            'https://study-abroad-cemc-admin.vercel.app/api/auth/reset-password'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"email": email}),
       );
@@ -225,7 +226,7 @@ class APIRepository {
     try {
       final response = await httpClient.post(
         Uri.parse(
-            'https://kltn-demo-deploy-admin.vercel.app/api/auth/reset-password'),
+            'https://study-abroad-cemc-admin.vercel.app/api/auth/reset-password'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"email": email}),
       );
@@ -246,7 +247,7 @@ class APIRepository {
   Future<List<NewsList>> fetchNews() async {
     try {
       final response = await httpClient.get(
-        Uri.parse('https://kltn-demo-deploy-admin.vercel.app/api/news'),
+        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/news'),
       );
       if (response.statusCode == 200) {
         List<dynamic> data =
@@ -272,7 +273,7 @@ class APIRepository {
   Future<List<NewsSchoolList>> fetchSchoolNews() async {
     try {
       final response = await httpClient.get(
-        Uri.parse('https://kltn-demo-deploy-admin.vercel.app/api/news'),
+        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/news'),
       );
       if (response.statusCode == 200) {
         List<dynamic> data =
@@ -313,7 +314,7 @@ class APIRepository {
         "schoolId": schoolId,
       });
       final responseContactUs = await httpClient.post(
-        Uri.parse('https://kltn-demo-deploy-admin.vercel.app/api/feedbacks'),
+        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/feedbacks'),
         headers: <String, String>{"Content-Type": "application/json"},
         body: jsonDataContact,
       );
