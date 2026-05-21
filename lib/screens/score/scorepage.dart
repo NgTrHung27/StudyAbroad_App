@@ -22,14 +22,17 @@ class ScorePageState extends BasePageState<ScorePage> {
   @override
   void initState() {
     super.initState();
-    latestSemester =
-        userAuth?.student.program?.scores?.map((e) => int.parse(e.semester)).reduce((a, b) => a > b ? a : b) ?? 0;
+    latestSemester = userAuth?.student?.program?.scores
+            ?.map((e) => int.parse(e.semester))
+            .reduce((a, b) => a > b ? a : b) ??
+        0;
   }
 
   @override
   Widget build(BuildContext context) {
-    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
-    List<Score>? scores = userAuth?.student.program?.scores;
+    final userAuth =
+        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    List<Score>? scores = userAuth?.student?.program?.scores;
 
     Score? latestScore;
     List<Score> previousScores = [];
@@ -45,7 +48,8 @@ class ScorePageState extends BasePageState<ScorePage> {
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
 
     return Scaffold(
@@ -80,7 +84,8 @@ class ScorePageState extends BasePageState<ScorePage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenWidth * 0.05),
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.05, vertical: screenWidth * 0.05),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -130,7 +135,8 @@ class ScorePageState extends BasePageState<ScorePage> {
                                   onPressed: () {
                                     // Handle download action
                                   },
-                                  icon: const Icon(Icons.download_for_offline_outlined),
+                                  icon: const Icon(
+                                      Icons.download_for_offline_outlined),
                                   label: TextMonserats(
                                     'Download',
                                     color: Colors.white,
@@ -151,7 +157,8 @@ class ScorePageState extends BasePageState<ScorePage> {
                             color: Colors.grey,
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.04),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -161,7 +168,8 @@ class ScorePageState extends BasePageState<ScorePage> {
                                   color: Colors.black,
                                 ),
                                 TextMonserats(
-                                  calculateGPA(latestScore.subjects).toStringAsFixed(1),
+                                  calculateGPA(latestScore.subjects)
+                                      .toStringAsFixed(1),
                                   fontSize: screenWidth * 0.05,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red[800],
@@ -173,7 +181,8 @@ class ScorePageState extends BasePageState<ScorePage> {
                             color: Colors.grey,
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.04),
                             child: ListTile(
                               contentPadding: EdgeInsets.zero,
                               leading: const Icon(
@@ -195,8 +204,9 @@ class ScorePageState extends BasePageState<ScorePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ScoreDetail(semester: latestScore!.semester, year: latestScore.year),
+                                    builder: (context) => ScoreDetail(
+                                        semester: latestScore!.semester,
+                                        year: latestScore.year),
                                   ),
                                 );
                               },
@@ -219,10 +229,12 @@ class ScorePageState extends BasePageState<ScorePage> {
                         ),
                         SizedBox(height: screenHeight * 0.013),
                         Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0), // Inner padding for the box
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0), // Inner padding for the box
                           decoration: BoxDecoration(
                             color: Colors.white, // White background
-                            borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                            borderRadius:
+                                BorderRadius.circular(10.0), // Rounded corners
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.withValues(alpha: 0.2),
@@ -236,7 +248,8 @@ class ScorePageState extends BasePageState<ScorePage> {
                             child: Column(
                               children: previousScores.map((semesterScore) {
                                 // Get the index of the current item
-                                int index = previousScores.indexOf(semesterScore);
+                                int index =
+                                    previousScores.indexOf(semesterScore);
                                 // Get the total number of items
                                 int itemCount = previousScores.length;
                                 return Column(

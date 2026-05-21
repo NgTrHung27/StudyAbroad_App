@@ -339,7 +339,7 @@ class _RespondState extends BasePageState<Respond> {
                           backgroundColor: AppColor.redButton,
                           onPressed: () {
                             final url =
-                                'https://study-abroad-cemc-admin.vercel.app/api/accounts/students/${userAuth?.student.id}/requirements/${widget.id}';
+                                'https://study-abroad-cemc-admin.vercel.app/api/accounts/students/${userAuth?.student?.id}/requirements/${widget.id}';
                             context.read<ResponseCubit>().sendResponse(
                                   url,
                                   contentController.text,

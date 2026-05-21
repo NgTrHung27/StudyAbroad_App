@@ -47,8 +47,8 @@ class _NotificationDetailPageState
                   },
                 ),
                 CirleAvatarImage(
-                    avatarImgUrl: userAuth?.student.school.logo != null
-                        ? userAuth!.student.school.logo
+                    avatarImgUrl: userAuth?.student?.school.logo != null
+                        ? userAuth!.student?.school.logo
                         : null,
                     avatarImgPath: 'assets/logo/logo_red.png',
                     width: 60,
@@ -69,8 +69,8 @@ class _NotificationDetailPageState
                           children: [
                             CirleAvatarImage(
                                 avatarImgUrl:
-                                    userAuth?.student.school.logo != null
-                                        ? userAuth!.student.school.logo
+                                    userAuth?.student?.school.logo != null
+                                        ? userAuth!.student?.school.logo
                                         : null,
                                 avatarImgPath: 'assets/logo/logo_red.png',
                                 width: 60,

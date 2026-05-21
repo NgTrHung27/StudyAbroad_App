@@ -70,8 +70,8 @@ class _ScholarStuStatusState extends BasePageState<ScholarStuStatus> {
                           IdTab(
                             userName: userAuth?.name ?? 'N/A',
                             idUser: userAuth?.email ?? 'N/A',
-                            avatarImgUrl: userAuth?.student.school.logo != null
-                                ? userAuth!.student.school.logo
+                            avatarImgUrl: userAuth?.student?.school.logo != null
+                                ? userAuth!.student?.school.logo
                                 : null,
                             avatarImgPath: 'assets/logo/logo_red.png',
                           ),

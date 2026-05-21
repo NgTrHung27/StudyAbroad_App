@@ -51,7 +51,7 @@ class _NewsPageState extends BasePageState<NewsPage> {
                   },
                 ),
                 CirleAvatarImage(
-                    avatarImgUrl: userAuth?.student.school.logo != null ? userAuth!.student.school.logo : null,
+                    avatarImgUrl: userAuth?.student?.school.logo != null ? userAuth!.student?.school.logo : null,
                     avatarImgPath: 'assets/logo/logo_red.png',
                     width: 60,
                     height: 60),
@@ -70,7 +70,7 @@ class _NewsPageState extends BasePageState<NewsPage> {
             const NewsListView(nullSchool: null),
             SizedBox(height: screenHeight * 0.02),
             TextMonserats(
-              '$news2 \n${userAuth?.student.school.name ?? ''} ',
+              '$news2 \n${userAuth?.student?.school.name ?? ''} ',
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: textColor,
@@ -90,7 +90,7 @@ class _NewsPageState extends BasePageState<NewsPage> {
             SizedBox(height: screenHeight * 0.02),
             if (isLoggedIn)
               VerticalNewsListView(
-                schoolName: userAuth.student.school.name,
+                schoolName: userAuth.student?.school.name ?? '',
               ),
           ],
         ),

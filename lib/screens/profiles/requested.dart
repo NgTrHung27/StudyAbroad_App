@@ -102,7 +102,7 @@ class _RequestedState extends BasePageState<ResponseRequest> {
                 return const Center(child: Text('User not logged in'));
               } else {
                 // final userAuth = snapshot.data!;
-                final List<Requirement>? requirementList = userAuth?.student.requirements;
+                final List<Requirement>? requirementList = userAuth?.student?.requirements;
                 if (requirementList != null && requirementList != []) {
                   // Lọc danh sách requirementList để chỉ giữ lại các mục có status là PENDING
                   final List<Requirement> pendingRequirements =

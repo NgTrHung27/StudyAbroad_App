@@ -103,7 +103,7 @@ class _RequestedState extends BasePageState<ResponseRequested> {
                 return const Center(child: Text('User not logged in'));
               } else {
                 // final userAuth = snapshot.data!;
-                final List<Requirement>? requirementList = userAuth?.student.requirements;
+                final List<Requirement>? requirementList = userAuth?.student?.requirements;
                 if (requirementList != null && requirementList != []) {
                   // Lọc danh sách requirementList để chỉ giữ lại các mục có status là RESOLVE hoặc REPLIED
                   // ignore: unnecessary_nullable_for_final_variable_declarations

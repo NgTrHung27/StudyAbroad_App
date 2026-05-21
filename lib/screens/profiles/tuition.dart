@@ -53,7 +53,7 @@ class TuitionStatusState extends BasePageState<TuitionStatus> {
               return const Center(child: Text('User not logged in'));
             } else {
               // final userAuth = snapshot.data!;
-              final List<Tuition>? tuitionList = userAuth?.student.tuitions;
+              final List<Tuition>? tuitionList = userAuth?.student?.tuitions;
               return Stack(
                 children: [
                   Column(
@@ -72,8 +72,8 @@ class TuitionStatusState extends BasePageState<TuitionStatus> {
                         child: IdTab(
                           userName: userAuth?.name ?? 'N/A',
                           idUser: userAuth?.email ?? 'N/A',
-                          avatarImgUrl: userAuth?.student.school.logo != null
-                              ? userAuth!.student.school.logo
+                          avatarImgUrl: userAuth?.student?.school.logo != null
+                              ? userAuth!.student?.school.logo
                               : null, // Sử dụng hình ảnh từ API nếu có
                           avatarImgPath: 'assets/logo/logo_white.png',
                         ),

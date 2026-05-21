@@ -51,41 +51,73 @@ class _UserProfileState extends BasePageState<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth =
+        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     final isLoggedIn = userAuth != null;
     final localizations = AppLocalizations.of(context);
-    final helloSignin = localizations != null ? localizations.register_login_signin : 'Default Text';
-    final hello = localizations != null ? localizations.home_hello : 'Default Text';
-    final account = localizations != null ? localizations.profile_account : 'Default Text';
-    final account1 = localizations != null ? localizations.profile_account_profilesInfo : 'Default Text';
-    final account2 = localizations != null ? localizations.profile_account_changePassword : 'Default Text';
-    final status = localizations != null ? localizations.profile_status : 'Default Text';
-    final status1 = localizations != null ? localizations.profile_status_ps : 'Default Text';
-    final status2 = localizations != null ? localizations.profile_status_ps1 : 'Default Text';
-    final status3 = localizations != null ? localizations.profile_status_ps2 : 'Default Text';
-    final setting = localizations != null ? localizations.profile_setting : 'Default Text';
-    final setting1 = localizations != null ? localizations.profile_setting_Language : 'Default Text';
-    final setting2 = localizations != null ? localizations.profile_setting_Screenmode : 'Default Text';
-    final setting3 = localizations != null ? localizations.profile_setting_Support : 'Default Text';
-    final logout = localizations != null ? localizations.profile_logout_ss1 : 'Default Text';
-    final logout2 = localizations != null ? localizations.profile_logout_ss2 : 'Default Text';
-    final reqSta = localizations != null ? localizations.reqest_sta : 'Default Text';
+    final helloSignin = localizations != null
+        ? localizations.register_login_signin
+        : 'Default Text';
+    final hello =
+        localizations != null ? localizations.home_hello : 'Default Text';
+    final account =
+        localizations != null ? localizations.profile_account : 'Default Text';
+    final account1 = localizations != null
+        ? localizations.profile_account_profilesInfo
+        : 'Default Text';
+    final account2 = localizations != null
+        ? localizations.profile_account_changePassword
+        : 'Default Text';
+    final status =
+        localizations != null ? localizations.profile_status : 'Default Text';
+    final status1 = localizations != null
+        ? localizations.profile_status_ps
+        : 'Default Text';
+    final status2 = localizations != null
+        ? localizations.profile_status_ps1
+        : 'Default Text';
+    final status3 = localizations != null
+        ? localizations.profile_status_ps2
+        : 'Default Text';
+    final setting =
+        localizations != null ? localizations.profile_setting : 'Default Text';
+    final setting1 = localizations != null
+        ? localizations.profile_setting_Language
+        : 'Default Text';
+    final setting2 = localizations != null
+        ? localizations.profile_setting_Screenmode
+        : 'Default Text';
+    final setting3 = localizations != null
+        ? localizations.profile_setting_Support
+        : 'Default Text';
+    final logout = localizations != null
+        ? localizations.profile_logout_ss1
+        : 'Default Text';
+    final logout2 = localizations != null
+        ? localizations.profile_logout_ss2
+        : 'Default Text';
+    final reqSta =
+        localizations != null ? localizations.reqest_sta : 'Default Text';
     final req1 = localizations != null ? localizations.request : 'Default Text';
-    final req2 = localizations != null ? localizations.request_2 : 'Default Text';
+    final req2 =
+        localizations != null ? localizations.request_2 : 'Default Text';
 
     final logoutText = isLoggedIn ? logout : logout2;
 
     final screenHeight = MediaQuery.of(context).size.height;
     final backgroundColor = context.select(
-      (ThemeSettingCubit cubit) =>
-          cubit.state == AppTheme.blackTheme ? AppColor.backgrTabDark : AppColor.backgrTabLight,
+      (ThemeSettingCubit cubit) => cubit.state == AppTheme.blackTheme
+          ? AppColor.backgrTabDark
+          : AppColor.backgrTabLight,
     );
     final colorIcon = context.select(
-      (ThemeSettingCubit cubit) => cubit.state == AppTheme.blackTheme ? Colors.white : Colors.black,
+      (ThemeSettingCubit cubit) =>
+          cubit.state == AppTheme.blackTheme ? Colors.white : Colors.black,
     );
 
     return Scaffold(
-      backgroundColor: context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
+      backgroundColor: context.select(
+          (ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
       body: RefreshIndicator(
         onRefresh: () => Future.delayed(
             const Duration(seconds: 2),
@@ -107,7 +139,8 @@ class _UserProfileState extends BasePageState<Profile> {
                             ? IdTab(
                                 userName: hello,
                                 idUser: userAuth.name ?? 'User',
-                                avatarImgUrl: userAuth.student.school.logo, // Sử dụng hình ảnh từ API nếu có
+                                avatarImgUrl: userAuth.student?.school
+                                    .logo, // Sử dụng hình ảnh từ API nếu có
                                 avatarImgPath: 'assets/logo/logo_white.png',
                               )
                             : IdTabLogout(
@@ -127,7 +160,8 @@ class _UserProfileState extends BasePageState<Profile> {
                             icon: Icons.person,
                             onTap: () {
                               isLoggedIn
-                                  ? Navigator.pushNamed(context, '/profiledetail')
+                                  ? Navigator.pushNamed(
+                                      context, '/profiledetail')
                                   : showCustomDialog(
                                       context: context,
                                       onConfirm: () {
@@ -161,7 +195,8 @@ class _UserProfileState extends BasePageState<Profile> {
                             icon: Icons.account_circle,
                             onTap: () {
                               isLoggedIn
-                                  ? Navigator.pushNamed(context, '/profilestatus')
+                                  ? Navigator.pushNamed(
+                                      context, '/profilestatus')
                                   : showCustomDialog(
                                       context: context,
                                       onConfirm: () {
@@ -232,13 +267,19 @@ class _UserProfileState extends BasePageState<Profile> {
                           dropdownCallback: (Locale newValue) {
                             switch (newValue.languageCode) {
                               case 'en':
-                                context.read<LanguageBloc>().add(LanguageEvent.setEnglish);
+                                context
+                                    .read<LanguageBloc>()
+                                    .add(LanguageEvent.setEnglish);
                                 break;
                               case 'ko':
-                                context.read<LanguageBloc>().add(LanguageEvent.setKorean);
+                                context
+                                    .read<LanguageBloc>()
+                                    .add(LanguageEvent.setKorean);
                                 break;
                               case 'vi':
-                                context.read<LanguageBloc>().add(LanguageEvent.setVietnamese);
+                                context
+                                    .read<LanguageBloc>()
+                                    .add(LanguageEvent.setVietnamese);
                                 break;
                             }
                           },
@@ -263,7 +304,10 @@ class _UserProfileState extends BasePageState<Profile> {
                         userLogout(context);
                         Navigator.pushNamed(context, '/logout');
                       },
-                      child: TextMonserats(logoutText, color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
+                      child: TextMonserats(logoutText,
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700),
                     ),
                     SizedBox(height: screenHeight * 0.2),
                   ],

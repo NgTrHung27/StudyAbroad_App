@@ -95,7 +95,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
     final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     // Cập nhật userName từ userAuth
     String newUserName = userAuth?.name ?? 'N/A';
-    String newAvtUser = userAuth?.student.school.logo ??
+    String newAvtUser = userAuth?.student?.school.logo ??
         'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg';
     // Kiểm tra và cập nhật currentUser nếu userName thay đổi
     if (newUserName != userName) {

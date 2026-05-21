@@ -18,11 +18,14 @@ class WelcomeAVT extends BasePage {
 class _WelcomeAVTState extends BasePageState<WelcomeAVT> {
   @override
   Widget build(BuildContext context) {
-    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth =
+        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
 
     final localizations = AppLocalizations.of(context);
-    final homeHello = localizations != null ? localizations.home_hello : 'Default Text';
-    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final homeHello =
+        localizations != null ? localizations.home_hello : 'Default Text';
+    final isDarkMode = context.select(
+        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColorRed = isDarkMode ? Colors.white : AppColor.redButton;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +54,9 @@ class _WelcomeAVTState extends BasePageState<WelcomeAVT> {
         Transform.translate(
             offset: const Offset(-5, -5),
             child: CirleAvatarImage(
-                avatarImgUrl: userAuth?.student.school.logo != null ? userAuth!.student.school.logo : null,
+                avatarImgUrl: userAuth?.student?.school.logo != null
+                    ? userAuth!.student?.school.logo
+                    : null,
                 avatarImgPath: 'assets/logo/logo_red.png',
                 width: 60,
                 height: 60)),

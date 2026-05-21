@@ -17,7 +17,7 @@ class UserAuthLogin {
   String? name;
   DateTime dob;
   String phoneNumber;
-  Student student;
+  Student? student;
   bool isLocked;
   String? error;
   String token;
@@ -89,7 +89,7 @@ class UserAuthLogin {
         "name": name,
         "dob": dob.toIso8601String(),
         "phoneNumber": phoneNumber,
-        "student": student.toJson(),
+        "student": student?.toJson(),
         "isLocked": isLocked,
         "error": error,
         "token": token,

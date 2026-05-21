@@ -40,7 +40,7 @@ class ScholarDetailState extends BasePageState<ScholarDetail> {
             } else {
               final userAuth = snapshot.data!;
               final List<StudentSchoolScholarship>? scholarshipList =
-                  userAuth.student.scholarship;
+                  userAuth.student?.scholarship;
               return Stack(
                 children: [
                   Column(
@@ -67,7 +67,7 @@ class ScholarDetailState extends BasePageState<ScholarDetail> {
                         child: IdTab(
                           userName: userAuth.name ?? 'N/A',
                           idUser: userAuth.email,
-                          avatarImgUrl: userAuth.student.school
+                          avatarImgUrl: userAuth.student?.school
                               .logo, // Sử dụng hình ảnh từ API nếu có
                           avatarImgPath: 'assets/logo/logo_white.png',
                         ),

@@ -197,12 +197,12 @@ class ApplyPageState extends BasePageState<ApplyPage> {
                           SimpleButton(
                             onPressed: () {
                               final url =
-                                  'https://study-abroad-cemc-admin.vercel.app/api/schools/${userAuth?.student.school.id}/scholarships/${widget.id}';
+                                  'https://study-abroad-cemc-admin.vercel.app/api/schools/${userAuth?.student?.school.id}/scholarships/${widget.id}';
                               context
                                   .read<ApplyScholarCubit>()
                                   .sendApplyScholar(
                                     url,
-                                    userAuth?.student.id ?? '',
+                                    userAuth?.student?.id ?? '',
                                     descriptionController.text,
                                   );
                             },

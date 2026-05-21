@@ -25,7 +25,7 @@ class ScoreTableState extends BasePageState<ScoreTable> {
     final localizations = AppLocalizations.of(context);
 
     // Lọc điểm theo semester và year
-    final filteredScores = userAuth?.student.program?.scores?.where((score) {
+    final filteredScores = userAuth?.student?.program?.scores?.where((score) {
       return score.semester == widget.semester && score.year == widget.year;
     }).toList();
 

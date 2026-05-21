@@ -27,7 +27,7 @@ class TuitionBoxDetailState extends BasePageState<TuitionBox> {
         this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     Color statusColor;
     final List<String?> tuitionStatuses =
-        userAuth?.student.tuitions?.map((tuition) => tuition.status).toList() ??
+        userAuth?.student?.tuitions?.map((tuition) => tuition.status).toList() ??
             [];
     final String? currentStatus =
         tuitionStatuses.isNotEmpty ? tuitionStatuses[0] : 'Unknown';

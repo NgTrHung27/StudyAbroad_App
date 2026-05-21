@@ -32,14 +32,9 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
   Future<void> _loadUserAuth() async {
     context.read<LoginCubit>().checkLoginStatus();
     final logindata = await SharedPreferences.getInstance();
-    final userString = logindata.getString('user');
-    setState(() {
-      if (userString != null) {
-        userAuth = UserAuthLogin.fromJson(jsonDecode(userString));
-      } else {
-        userAuth = null;
-      }
-    });
+    print('logindata  ${logindata.toString()}');
+    userAuth =
+        UserAuthLogin.fromJson(jsonDecode(logindata.getString('user') ?? '{}'));
   }
 
   Future<void> _loadLanguage() async {

@@ -22,7 +22,7 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
   Future<List<schools.SchoolScholarship>> fetchScholarships() async {
     final userAuth = context.read<UserAuthProvider>().userAuthLogin;
     if (userAuth != null) {
-      final schoolId = userAuth.student.school.id;
+      final schoolId = userAuth.student?.school.id;
       final apiRepository = APIRepository();
       final schoolsList = await apiRepository.fetchSchools();
 
@@ -33,7 +33,8 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
           name: 'Default Name', // Cung cấp giá trị mặc định cho name
           logo: 'default_logo.png', // Cung cấp giá trị mặc định cho logo
           color: 'default_color', // Cung cấp giá trị mặc định cho color
-          background: 'default_background.png', // Cung cấp giá trị mặc định cho background
+          background:
+              'default_background.png', // Cung cấp giá trị mặc định cho background
           isPublished: false, // Cung cấp giá trị mặc định cho isPublished
           country: 'default_country', // Cung cấp giá trị mặc định cho country
           locations: [], // Cung cấp giá trị mặc định cho locations
@@ -44,7 +45,10 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
           news: [], // Cung cấp giá trị mặc định cho news
         ),
       );
-      final publishedScholarships = school.scholarships?.where((scholarship) => scholarship.isPublished).toList() ?? [];
+      final publishedScholarships = school.scholarships
+              ?.where((scholarship) => scholarship.isPublished)
+              .toList() ??
+          [];
       return publishedScholarships;
     }
     return [];
@@ -53,12 +57,15 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    final schonull = localizations != null ? localizations.schlar_null : "Default Text";
+    final schonull =
+        localizations != null ? localizations.schlar_null : "Default Text";
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
-    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth =
+        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
 
     return Scaffold(
       body: Padding(
@@ -89,7 +96,9 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
                               height: screenHeight * 0.2,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: NetworkImage(userAuth?.student.school.background ?? ''),
+                                  image: NetworkImage(
+                                      userAuth?.student?.school.background ??
+                                          ''),
                                   fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.circular(20),
@@ -98,7 +107,7 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
                             Padding(
                               padding: EdgeInsets.all(screenWidth * 0.04),
                               child: TextMonserats(
-                                userAuth?.student.school.name ?? '',
+                                userAuth?.student?.school.name ?? '',
                                 fontSize: screenWidth * 0.05,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -147,7 +156,9 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
                               height: screenHeight * 0.2,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: NetworkImage(userAuth?.student.school.background ?? ''),
+                                  image: NetworkImage(
+                                      userAuth?.student?.school.background ??
+                                          ''),
                                   fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.circular(20),
@@ -156,7 +167,7 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
                             Padding(
                               padding: EdgeInsets.all(screenWidth * 0.04),
                               child: TextMonserats(
-                                userAuth?.student.school.name ?? '',
+                                userAuth?.student?.school.name ?? '',
                                 fontSize: screenWidth * 0.05,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -178,13 +189,16 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
             Positioned(
               top: MediaQuery.of(context).padding.top,
               left: 0,
-              child: const BackButtonCircle(), // Đặt BackButtonCircle ở góc trái trên
+              child:
+                  const BackButtonCircle(), // Đặt BackButtonCircle ở góc trái trên
             ),
             Positioned(
               top: MediaQuery.of(context).padding.top,
               right: 0,
               child: CirleAvatarImage(
-                  avatarImgUrl: userAuth?.student.school.logo != null ? userAuth!.student.school.logo : null,
+                  avatarImgUrl: userAuth?.student?.school.logo != null
+                      ? userAuth!.student?.school.logo
+                      : null,
                   avatarImgPath: 'assets/logo/logo_red.png',
                   width: 60,
                   height: 60),

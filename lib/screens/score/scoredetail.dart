@@ -29,7 +29,7 @@ class ScoreDetailState extends BasePageState<ScoreDetail> {
     final sms = localizations != null ? localizations.scr_sms : "Default Text";
     final dwn = localizations != null ? localizations.scr_dwn : "Default Text";
     final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
-    List<Score>? scores = userAuth?.student.program?.scores;
+    List<Score>? scores = userAuth?.student?.program?.scores;
 
     return Scaffold(
       body: SingleChildScrollView(
