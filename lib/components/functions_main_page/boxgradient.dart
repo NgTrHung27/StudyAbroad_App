@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 
 class BoxGradient extends StatelessWidget {
   final Color color1;

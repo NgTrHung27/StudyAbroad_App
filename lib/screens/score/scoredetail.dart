@@ -1,15 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/components/Style/backbutton.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/Style/simplebutton.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/list_view/scoretable.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
-import 'package:kltn_mobile/models/user_login.dart';
-import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:kltn_mobile/screens/score/pdf_score_api.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/simplebutton.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/list_view/scoretable.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/models/user_login.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/screens/score/pdf_score_api.dart';
 
 class ScoreDetail extends BasePage {
   final String semester;
@@ -25,11 +26,8 @@ class ScoreDetailState extends BasePageState<ScoreDetail> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final localizations = AppLocalizations.of(context);
-    final sms = localizations != null ? localizations.scr_sms : "Default Text";
-    final dwn = localizations != null ? localizations.scr_dwn : "Default Text";
     final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
-    List<Score>? scores = userAuth?.student.program?.scores;
+    List<Score>? scores = userAuth?.student?.program?.scores;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -48,7 +46,7 @@ class ScoreDetailState extends BasePageState<ScoreDetail> {
                       children: [
                         const BackButtonCircle(),
                         TextMonserats(
-                          '$sms ${widget.semester} \n ${widget.year}',
+                          '${scrSmsKey.tr()} ${widget.semester} \n ${widget.year}',
                           color: Colors.white,
                           fontSize: screenWidth * 0.06,
                           fontWeight: FontWeight.w700,
@@ -95,7 +93,7 @@ class ScoreDetailState extends BasePageState<ScoreDetail> {
                             width: screenWidth * 0.009,
                           ),
                           TextMonserats(
-                            dwn,
+                            scrDwnKey.tr(),
                             color: Colors.white,
                             fontSize: screenWidth * 0.04,
                           ),

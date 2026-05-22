@@ -1,4 +1,4 @@
-part of 'carousel_bloc.dart';
+import 'package:equatable/equatable.dart';
 
 abstract class CarouselEvent extends Equatable {
   const CarouselEvent();

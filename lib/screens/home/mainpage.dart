@@ -1,15 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
-import 'package:kltn_mobile/screens/chatting/ably_websocket.dart';
-import 'package:kltn_mobile/screens/chatting/flash_dismissible_chatting_gemini_ai.dart';
-import 'package:kltn_mobile/screens/chatting/floating_chatting_position.dart';
-import 'package:kltn_mobile/screens/chatting/pro_dismissible_chatting_gemini_ai.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/ably_websocket.dart';
+import 'package:study_abroad_cemc_mobile/features/chatting/presentation/widgets/flash_dismissible_chatting_gemini_ai.dart';
+import 'package:study_abroad_cemc_mobile/features/chatting/presentation/widgets/floating_chatting_position.dart';
+import 'package:study_abroad_cemc_mobile/features/chatting/presentation/widgets/pro_dismissible_chatting_gemini_ai.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 
 import '../notifications/notifications_page.dart';
 import '../profiles/profile.dart';
@@ -97,12 +98,12 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
     bool isRunningOnAndroid = Platform.isAndroid;
     final floatingHeight = isRunningOnAndroid ? 0.12 : 0.08;
     final screenHeight = MediaQuery.of(context).size.height;
-    final localizations = AppLocalizations.of(context);
-    final home = localizations != null ? localizations.nav_home : 'Default Text';
-    final chatAI = localizations != null ? localizations.ai_chatting_nav : 'Default Text';
-    final noti = localizations != null ? localizations.nav_noti : 'Default Text';
-    final profile = localizations != null ? localizations.nav_profile : 'Default Text';
-    final List<String> labels = [home, chatAI, noti, profile];
+    final List<String> labels = [
+      navHomeKey.tr(),
+      aiChattingNavKey.tr(),
+      navNotiKey.tr(),
+      navProfileKey.tr(),
+    ];
     return Scaffold(
       body: Stack(
         children: [

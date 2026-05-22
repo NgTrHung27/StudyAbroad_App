@@ -17,7 +17,7 @@ class UserAuthLogin {
   String? name;
   DateTime dob;
   String phoneNumber;
-  Student student;
+  Student? student;
   bool isLocked;
   String? error;
   String token;
@@ -30,7 +30,7 @@ class UserAuthLogin {
     required this.name,
     required this.dob,
     required this.phoneNumber,
-    required this.student,
+    this.student,
     required this.isLocked,
     this.error,
     required this.token,
@@ -73,9 +73,7 @@ class UserAuthLogin {
         name: json["name"],
         dob: json["dob"] != null ? DateTime.parse(json["dob"]) : DateTime.now(),
         phoneNumber: json["phoneNumber"] ?? '',
-        student: json["student"] != null
-            ? Student.fromJson(json["student"])
-            : Student.empty(),
+        student: json["student"] != null ? Student.fromJson(json["student"]) : null,
         isLocked: json["isLocked"] ?? false,
         token: json["token"] ?? '',
         error: json["error"],
@@ -89,7 +87,7 @@ class UserAuthLogin {
         "name": name,
         "dob": dob.toIso8601String(),
         "phoneNumber": phoneNumber,
-        "student": student.toJson(),
+        "student": student?.toJson(),
         "isLocked": isLocked,
         "error": error,
         "token": token,

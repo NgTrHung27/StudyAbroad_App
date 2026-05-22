@@ -1,52 +1,37 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kltn_mobile/components/Style/backbutton.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/Style/simplebutton.dart';
-import 'package:kltn_mobile/components/functions/alert_form.dart';
-import 'package:kltn_mobile/models/apply_scholar.dart';
-import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/simplebutton.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/alert_form.dart';
+import 'package:study_abroad_cemc_mobile/core/api/api_url.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/models/apply_scholar.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 import 'package:http/http.dart' as http;
 
-class ApplyScholarCubit extends Cubit<ApplyScholarState> {
-  ApplyScholarCubit() : super(ApplyScholarInitial());
+// Events
+abstract class ApplyScholarEvent {}
 
-  Future<void> sendApplyScholar(
-      String url, String studentId, String additional) async {
-    emit(ApplyScholarLoading());
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'studentId': studentId,
-          'additional': additional,
-        }),
-      );
+class SendApplyScholarEvent extends ApplyScholarEvent {
+  final String url;
+  final String studentId;
+  final String additional;
 
-      if (response.statusCode == 200) {
-        emit(ApplyScholarSuccess(ApplyScholarModel.fromJson(
-            jsonDecode(utf8.decode(response.bodyBytes)))));
-      } else {
-        emit(ApplyScholarFailure(
-          applyScholarModel: ApplyScholarModel.fromJson(
-              jsonDecode(utf8.decode(response.bodyBytes))),
-        ));
-      }
-    } catch (e) {
-      emit(ApplyScholarError(e.toString()));
-    }
-  }
+  SendApplyScholarEvent({
+    required this.url,
+    required this.studentId,
+    required this.additional,
+  });
 }
 
+// States
 abstract class ApplyScholarState {}
 
 class ApplyScholarInitial extends ApplyScholarState {}
@@ -72,6 +57,42 @@ class ApplyScholarError extends ApplyScholarState {
   ApplyScholarError(this.error);
 }
 
+// Bloc
+class ApplyScholarBloc extends Bloc<ApplyScholarEvent, ApplyScholarState> {
+  ApplyScholarBloc() : super(ApplyScholarInitial()) {
+    on<SendApplyScholarEvent>(_onSendApplyScholar);
+  }
+
+  Future<void> _onSendApplyScholar(
+      SendApplyScholarEvent event, Emitter<ApplyScholarState> emit) async {
+    emit(ApplyScholarLoading());
+    try {
+      final response = await http.post(
+        Uri.parse(event.url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'studentId': event.studentId,
+          'additional': event.additional,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        emit(ApplyScholarSuccess(ApplyScholarModel.fromJson(
+            jsonDecode(utf8.decode(response.bodyBytes)))));
+      } else {
+        emit(ApplyScholarFailure(
+          applyScholarModel: ApplyScholarModel.fromJson(
+              jsonDecode(utf8.decode(response.bodyBytes))),
+        ));
+      }
+    } catch (e) {
+      emit(ApplyScholarError(e.toString()));
+    }
+  }
+}
+
 class ApplyPage extends BasePage {
   final String name;
   final String id;
@@ -95,19 +116,9 @@ class ApplyPageState extends BasePageState<ApplyPage> {
         this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final localizations = AppLocalizations.of(context);
-    final scholarDescTextfield = localizations != null
-        ? localizations.scholar_desc_textfield
-        : "Default Text";
-    final scholarDescHint = localizations != null
-        ? localizations.scholar_desc_hint
-        : "Default Text";
-    final scholarDescSubmit = localizations != null
-        ? localizations.scholar_desc_submit
-        : "Default Text";
     return BlocProvider(
-      create: (_) => ApplyScholarCubit(),
-      child: BlocBuilder<ApplyScholarCubit, ApplyScholarState>(
+      create: (_) => ApplyScholarBloc(),
+      child: BlocBuilder<ApplyScholarBloc, ApplyScholarState>(
           builder: (context, state) {
         ApplyScholarModel? responseModel;
         Widget? backdropWidget;
@@ -150,7 +161,7 @@ class ApplyPageState extends BasePageState<ApplyPage> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextMonserats(scholarDescTextfield,
+                          TextMonserats(scholarDescTextfieldKey.tr(),
                               fontSize: screenWidth * 0.04,
                               fontWeight: FontWeight.w700),
                           TextField(
@@ -162,7 +173,7 @@ class ApplyPageState extends BasePageState<ApplyPage> {
                             controller: descriptionController,
                             onChanged: (value) {},
                             decoration: InputDecoration(
-                              hintText: scholarDescHint,
+                              hintText: scholarDescHintKey.tr(),
                               hintStyle: GoogleFonts.getFont('Montserrat',
                                   color: Colors.black38,
                                   fontWeight: FontWeight.w600,
@@ -196,17 +207,19 @@ class ApplyPageState extends BasePageState<ApplyPage> {
                           ],
                           SimpleButton(
                             onPressed: () {
-                              final url =
-                                  'https://study-abroad-cemc-admin.vercel.app/api/schools/${userAuth?.student.school.id}/scholarships/${widget.id}';
+                              final url = ApiUrls.schoolScholarships(
+                                userAuth?.student?.school.id ?? '',
+                                widget.id,
+                              );
                               context
-                                  .read<ApplyScholarCubit>()
-                                  .sendApplyScholar(
-                                    url,
-                                    userAuth?.student.id ?? '',
-                                    descriptionController.text,
-                                  );
+                                  .read<ApplyScholarBloc>()
+                                  .add(SendApplyScholarEvent(
+                                    url: url,
+                                    studentId: userAuth?.student?.id ?? '',
+                                    additional: descriptionController.text,
+                                  ));
                             },
-                            child: TextMonserats(scholarDescSubmit,
+                            child: TextMonserats(scholarDescSubmitKey.tr(),
                                 color: Colors.white),
                           ),
                         ],

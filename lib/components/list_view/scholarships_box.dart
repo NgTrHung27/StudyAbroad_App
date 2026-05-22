@@ -1,11 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
-import 'package:kltn_mobile/models/schools.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:kltn_mobile/screens/scholarships/scholarships_detail.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/models/schools.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/screens/scholarships/scholarships_detail.dart';
 import 'package:provider/provider.dart';
 
 class ScholarshipsBox extends BasePage {
@@ -20,9 +21,7 @@ class ScholarshipsBox extends BasePage {
 class ScholarshipsBoxState extends BasePageState<ScholarshipsBox> {
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-    final schonull = localizations != null ? localizations.schlar_null : "Default Text";
-    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
     final boxColor = isDarkMode ? AppColor.backgrTabDark : Colors.white;
     final scholarships = widget.scholarships;
@@ -41,7 +40,7 @@ class ScholarshipsBoxState extends BasePageState<ScholarshipsBox> {
               ),
               const SizedBox(height: 20),
               TextMonserats(
-                schonull,
+                scholarNullKey.tr(),
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
                 color: textColor,

@@ -1,9 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 void showCustomDialog({
@@ -13,11 +14,10 @@ void showCustomDialog({
   VoidCallback? onCancel,
   VoidCallback? onConfirm,
 }) {
-  final localizations = AppLocalizations.of(context);
-  final String notiTitle = localizations != null ? localizations.noti : 'Default Text';
-  final String notiContent = localizations != null ? localizations.noti_1 : 'Default Text';
-  final String notiCancel = localizations != null ? localizations.noti_2 : 'Default Text';
-  final String notiOk = localizations != null ? localizations.register_login_signin : 'Default Text';
+  final String notiTitle = notiTitleKey.tr();
+  final String notiContent = notiContentKey.tr();
+  final String notiCancel = notiCancelKey.tr();
+  final String notiOk = registerSignInKey.tr();
   showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -31,7 +31,7 @@ void showCustomDialog({
               notiContent,
               textAlign: TextAlign.center,
             ),
-            backgroundColor: newContext.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
+            backgroundColor: newContext.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),

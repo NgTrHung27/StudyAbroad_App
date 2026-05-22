@@ -1,13 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kltn_mobile/blocs/news_cubit_bloc/news_cubit.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
-import 'package:kltn_mobile/models/news.dart';
-import 'package:kltn_mobile/screens/news/news_detail.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
+import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_bloc.dart';
+import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_event.dart';
+import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_state.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/features/news/domain/entities/news_entity.dart';
+import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_detail.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key, this.nullSchool});
@@ -18,17 +21,17 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  List<NewsList> newsList = [];
+  List<NewsEntity> newsList = [];
   final TextEditingController _searchController = TextEditingController();
 
-  final List<NewsList> _data = [];
-  List<NewsList> _filteredData = [];
+  final List<NewsEntity> _data = [];
+  List<NewsEntity> _filteredData = [];
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_performSearch);
-    context.read<NewsCubit>().getNewsList(widget.nullSchool);
+    context.read<NewsBloc>().add(const LoadGeneralNewsEvent());
   }
 
   @override
@@ -47,12 +50,9 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
     final bgColor = isDarkMode ? Colors.black : Colors.white;
-    final localizations = AppLocalizations.of(context);
-    final inputHint = localizations != null ? localizations.input_hintext : "Defalut Text";
-    final errorConn = localizations != null ? localizations.error_connection : "Defalut Text";
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -85,7 +85,7 @@ class _SearchPageState extends State<SearchPage> {
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
               borderSide: BorderSide(color: Colors.transparent),
             ),
-            hintText: inputHint,
+            hintText: inputHintKey.tr(),
             hintStyle: const TextStyle(
               fontSize: 13,
             ),
@@ -94,14 +94,14 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
-      body: BlocBuilder<NewsCubit, NewsState>(
+      body: BlocBuilder<NewsBloc, NewsState>(
         builder: (context, state) {
           if (state is NewsLoading) {
             return const Center(child: CircularProgressIndicator());
           }
           if (state is NewsError) {
-            return _isNotFound(textColor, bgColor, errorConn);
-          }
+            return _isNotFound(textColor, bgColor);
+          }  
           if (state is NewsLoaded) {
             Future.microtask(() {
               setState(() {
@@ -110,7 +110,7 @@ class _SearchPageState extends State<SearchPage> {
                 _performSearch();
               });
             });
-            return buildNewsList(textColor, bgColor, errorConn);
+            return buildNewsList(textColor, bgColor);
           }
           return Container();
         },
@@ -118,11 +118,11 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget buildNewsList(Color textColor, Color bgColor, String errorConn) {
-    return _filteredData.isEmpty ? _isNotFound(textColor, bgColor, errorConn) : _isFound(textColor, bgColor);
+  Widget buildNewsList(Color textColor, Color bgColor) {
+    return _filteredData.isEmpty ? _isNotFound(textColor, bgColor) : _isFound(textColor, bgColor);
   }
 
-  Widget _isNotFound(Color textColor, Color bgColor, String errorConn) {
+  Widget _isNotFound(Color textColor, Color bgColor) {
     return Column(children: [
       Transform.translate(
         offset: const Offset(100, 0),
@@ -132,7 +132,7 @@ class _SearchPageState extends State<SearchPage> {
           color: Theme.of(context).scaffoldBackgroundColor,
           child: Center(
             child: TextMonserats(
-              errorConn,
+              errorConnectionKey.tr(),
               textAlign: TextAlign.center,
             ),
           ),

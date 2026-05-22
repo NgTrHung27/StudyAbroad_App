@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/constant/theme.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 
 class TextFieldTitle extends StatefulWidget {
   final String title, hintText;
@@ -54,8 +53,7 @@ class _TextFieldTitleState extends State<TextFieldTitle> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isFocused = _focusNode.hasFocus;
-    final isDarkMode =
-        context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme;
+    final isDarkMode = context.watch<ThemeSettingBloc>().state.isDarkMode;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,16 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/blocs/repository/repository.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/Style/backbutton.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/functions/circle_avatarimg.dart';
-import 'package:kltn_mobile/components/list_view/scholarships_box.dart';
-import 'package:kltn_mobile/models/schools.dart' as schools;
-import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
+import 'package:study_abroad_cemc_mobile/blocs/repository/repository.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/circle_avatarimg.dart';
+import 'package:study_abroad_cemc_mobile/components/list_view/scholarships_box.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/models/schools.dart' as schools;
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 
 class ScholarshipsList extends BasePage {
   const ScholarshipsList({super.key});
@@ -22,7 +23,7 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
   Future<List<schools.SchoolScholarship>> fetchScholarships() async {
     final userAuth = context.read<UserAuthProvider>().userAuthLogin;
     if (userAuth != null) {
-      final schoolId = userAuth.student.school.id;
+      final schoolId = userAuth.student?.school.id;
       final apiRepository = APIRepository();
       final schoolsList = await apiRepository.fetchSchools();
 
@@ -33,7 +34,8 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
           name: 'Default Name', // Cung cấp giá trị mặc định cho name
           logo: 'default_logo.png', // Cung cấp giá trị mặc định cho logo
           color: 'default_color', // Cung cấp giá trị mặc định cho color
-          background: 'default_background.png', // Cung cấp giá trị mặc định cho background
+          background:
+              'default_background.png', // Cung cấp giá trị mặc định cho background
           isPublished: false, // Cung cấp giá trị mặc định cho isPublished
           country: 'default_country', // Cung cấp giá trị mặc định cho country
           locations: [], // Cung cấp giá trị mặc định cho locations
@@ -44,7 +46,10 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
           news: [], // Cung cấp giá trị mặc định cho news
         ),
       );
-      final publishedScholarships = school.scholarships?.where((scholarship) => scholarship.isPublished).toList() ?? [];
+      final publishedScholarships = school.scholarships
+              ?.where((scholarship) => scholarship.isPublished)
+              .toList() ??
+          [];
       return publishedScholarships;
     }
     return [];
@@ -52,13 +57,13 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-    final schonull = localizations != null ? localizations.schlar_null : "Default Text";
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
-    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth =
+        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
 
     return Scaffold(
       body: Padding(
@@ -89,7 +94,9 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
                               height: screenHeight * 0.2,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: NetworkImage(userAuth?.student.school.background ?? ''),
+                                  image: NetworkImage(
+                                      userAuth?.student?.school.background ??
+                                          ''),
                                   fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.circular(20),
@@ -98,7 +105,7 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
                             Padding(
                               padding: EdgeInsets.all(screenWidth * 0.04),
                               child: TextMonserats(
-                                userAuth?.student.school.name ?? '',
+                                userAuth?.student?.school.name ?? '',
                                 fontSize: screenWidth * 0.05,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -120,7 +127,7 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
                                 ),
                                 const SizedBox(height: 20),
                                 TextMonserats(
-                                  schonull,
+                                  scholarNullKey.tr(),
                                   fontSize: screenWidth * 0.04,
                                   fontWeight: FontWeight.bold,
                                   color: textColor,
@@ -147,7 +154,9 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
                               height: screenHeight * 0.2,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: NetworkImage(userAuth?.student.school.background ?? ''),
+                                  image: NetworkImage(
+                                      userAuth?.student?.school.background ??
+                                          ''),
                                   fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.circular(20),
@@ -156,7 +165,7 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
                             Padding(
                               padding: EdgeInsets.all(screenWidth * 0.04),
                               child: TextMonserats(
-                                userAuth?.student.school.name ?? '',
+                                userAuth?.student?.school.name ?? '',
                                 fontSize: screenWidth * 0.05,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -178,13 +187,16 @@ class ScholarshipsListState extends BasePageState<ScholarshipsList> {
             Positioned(
               top: MediaQuery.of(context).padding.top,
               left: 0,
-              child: const BackButtonCircle(), // Đặt BackButtonCircle ở góc trái trên
+              child:
+                  const BackButtonCircle(), // Đặt BackButtonCircle ở góc trái trên
             ),
             Positioned(
               top: MediaQuery.of(context).padding.top,
               right: 0,
               child: CirleAvatarImage(
-                  avatarImgUrl: userAuth?.student.school.logo != null ? userAuth!.student.school.logo : null,
+                  avatarImgUrl: userAuth?.student?.school.logo != null
+                      ? userAuth!.student?.school.logo
+                      : null,
                   avatarImgPath: 'assets/logo/logo_red.png',
                   width: 60,
                   height: 60),

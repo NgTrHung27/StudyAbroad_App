@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/screens/profiles/scholar_status.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/screens/profiles/scholar_status.dart';
 
 class ScholarStatusWidget extends StatelessWidget {
   final String scholarStatus;
@@ -31,7 +31,7 @@ class ScholarStatusWidget extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final boxColor = isDarkMode ? const Color(0xff3F3F46) : Colors.white;
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
 

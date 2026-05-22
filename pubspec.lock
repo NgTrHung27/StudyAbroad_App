@@ -81,14 +81,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
-  bottom_picker:
-    dependency: "direct main"
-    description:
-      name: bottom_picker
-      sha256: "721b95e389b1c91e387832833fdcd0fa8658a1e3f9b9d75a966af9354bb24ada"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.1.1"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -162,7 +154,7 @@ packages:
     source: hosted
     version: "1.1.2"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       sha256: "2f5709ae4d3d59dd8f7cd309b4e023046b57d8a6c82130785d2b0e5868084e76"
@@ -173,10 +165,10 @@ packages:
     dependency: "direct main"
     description:
       name: connectivity_plus
-      sha256: "62ffa266d9a23b79fb3fcbc206afc00bb979417ba57b1324c546b5aab95ba057"
+      sha256: b5e72753cf63becce2c61fd04dfe0f1c430cc5278b53a1342dc5ad839eab29ec
       url: "https://pub.dev"
     source: hosted
-    version: "7.1.1"
+    version: "6.1.5"
   connectivity_plus_platform_interface:
     dependency: transitive
     description:
@@ -234,7 +226,7 @@ packages:
     source: hosted
     version: "0.7.12"
   dio:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dio
       sha256: aff32c08f92787a557dd5c0145ac91536481831a01b4648136373cddb0e64f8c
@@ -249,14 +241,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  easy_localization:
+    dependency: "direct main"
+    description:
+      name: easy_localization
+      sha256: "2ccdf9db8fe4d9c5a75c122e6275674508fd0f0d49c827354967b8afcc56bbed"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.8"
+  easy_logger:
+    dependency: transitive
+    description:
+      name: easy_logger
+      sha256: c764a6e024846f33405a2342caf91c62e357c24b02c04dbc712ef232bf30ffb7
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   easy_stepper:
     dependency: "direct main"
     description:
       name: easy_stepper
-      sha256: "9063d526c194aa4a5601d629040a2f1f5de77552019e878f89cb2b3964034305"
+      sha256: "3fae7f3ad9857cecfb97c72261e198884243c911e0339d68e7ad6b3994f75866"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   equatable:
     dependency: "direct main"
     description:
@@ -549,6 +557,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.0.0"
+  fpdart:
+    dependency: "direct main"
+    description:
+      name: fpdart
+      sha256: f8e9d0989ba293946673e382c59ac513e30cb6746a9452df195f29e3357a73d4
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
+  get_it:
+    dependency: "direct main"
+    description:
+      name: get_it
+      sha256: "568d62f0e68666fb5d95519743b3c24a34c7f19d834b0658c46e26d778461f66"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.2.1"
   gif:
     dependency: "direct main"
     description:
@@ -573,6 +597,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.7"
+  hive_ce:
+    dependency: transitive
+    description:
+      name: hive_ce
+      sha256: "8e9980e68643afb1e765d3af32b47996552a64e190d03faf622cea07c1294418"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.19.3"
   html:
     dependency: transitive
     description:
@@ -597,6 +629,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
+  hydrated_bloc:
+    dependency: "direct main"
+    description:
+      name: hydrated_bloc
+      sha256: "1444375ee775d25e1c2ad175f8fe3b2041b3d5db63b27ca939a927020c90a208"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.0.0"
   image:
     dependency: transitive
     description:
@@ -669,6 +709,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.2"
+  internet_connection_checker:
+    dependency: "direct main"
+    description:
+      name: internet_connection_checker
+      sha256: ee08f13d8b13b978affe226e9274ca3ba7a9bed07c9479e8ae245f785b7a488a
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   intl:
     dependency: "direct main"
     description:
@@ -677,6 +725,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.0"
+  isolate_channel:
+    dependency: transitive
+    description:
+      name: isolate_channel
+      sha256: a9d3d620695bc984244dafae00b95e4319d6974b2d77f4b9e1eb4f2efe099094
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.1"
   json_annotation:
     dependency: transitive
     description:
@@ -709,14 +765,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
-  line_icons:
-    dependency: "direct main"
-    description:
-      name: line_icons
-      sha256: "249d781d922f5437ac763d9c8f5a02cf5b499a6dc3f85e4b92e074cff0a932ab"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3"
   lints:
     dependency: transitive
     description:
@@ -733,6 +781,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  logger:
+    dependency: "direct main"
+    description:
+      name: logger
+      sha256: "25aee487596a6257655a1e091ec2ae66bc30e7af663592cc3a27e6591e05035c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.0"
   lottie:
     dependency: transitive
     description:

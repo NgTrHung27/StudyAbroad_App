@@ -1,54 +1,41 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/Style/backbutton.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/Style/simplebutton.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/functions/alert_form.dart';
-import 'package:kltn_mobile/components/functions/textfield_title.dart';
-import 'package:kltn_mobile/models/response.dart';
-import 'package:kltn_mobile/models/user_login.dart';
-import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/simplebutton.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/alert_form.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/textfield_title.dart';
+import 'package:study_abroad_cemc_mobile/core/api/api_url.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/models/response.dart';
+import 'package:study_abroad_cemc_mobile/models/user_login.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 
-class ResponseCubit extends Cubit<ResponseState> {
-  ResponseCubit() : super(ResponseInitial());
+// Events
+abstract class ResponseEvent {}
 
-  Future<void> sendResponse(
-      String url, String message, List<String> images) async {
-    emit(ResponseLoading());
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'message': message,
-          'images': images,
-        }),
-      );
+class SendResponseEvent extends ResponseEvent {
+  final String url;
+  final String message;
+  final List<String> images;
 
-      if (response.statusCode == 200) {
-        emit(ResponseSuccess(ResponseModel.fromJson(
-            jsonDecode(utf8.decode(response.bodyBytes)))));
-      } else {
-        emit(ResponseFailure(ResponseModel.fromJson(
-            jsonDecode(utf8.decode(response.bodyBytes)))));
-      }
-    } catch (e) {
-      emit(ResponseError(e.toString()));
-    }
-  }
+  SendResponseEvent({
+    required this.url,
+    required this.message,
+    required this.images,
+  });
 }
 
+// States
 abstract class ResponseState {}
 
 class ResponseInitial extends ResponseState {}
@@ -71,6 +58,40 @@ class ResponseError extends ResponseState {
   final String error;
 
   ResponseError(this.error);
+}
+
+// Bloc
+class ResponseBloc extends Bloc<ResponseEvent, ResponseState> {
+  ResponseBloc() : super(ResponseInitial()) {
+    on<SendResponseEvent>(_onSendResponse);
+  }
+
+  Future<void> _onSendResponse(
+      SendResponseEvent event, Emitter<ResponseState> emit) async {
+    emit(ResponseLoading());
+    try {
+      final response = await http.post(
+        Uri.parse(event.url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'message': event.message,
+          'images': event.images,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        emit(ResponseSuccess(ResponseModel.fromJson(
+            jsonDecode(utf8.decode(response.bodyBytes)))));
+      } else {
+        emit(ResponseFailure(ResponseModel.fromJson(
+            jsonDecode(utf8.decode(response.bodyBytes)))));
+      }
+    } catch (e) {
+      emit(ResponseError(e.toString()));
+    }
+  }
 }
 
 class Respond extends BasePage {
@@ -114,11 +135,8 @@ class _RespondState extends BasePageState<Respond> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-    final resq = localizations != null ? localizations.resq : 'Default Text';
-
     final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
 
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -134,24 +152,24 @@ class _RespondState extends BasePageState<Respond> {
                 Navigator.pop(context);
               },
             ),
-            Expanded(
-              child: Center(
-                child: TextMonserats(
-                  resq,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+              Expanded(
+                child: Center(
+                  child: TextMonserats(
+                    respondKey.tr(),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
             const SizedBox(width: 48),
           ],
         ),
       ),
       backgroundColor: Colors.white,
       body: BlocProvider(
-        create: (_) => ResponseCubit(),
-        child: BlocBuilder<ResponseCubit, ResponseState>(
+        create: (_) => ResponseBloc(),
+        child: BlocBuilder<ResponseBloc, ResponseState>(
           builder: (context, state) {
             return Stack(
               children: [
@@ -186,11 +204,6 @@ class _RespondState extends BasePageState<Respond> {
     } else if (state is ResponseError) {
       return Center(child: Text(state.error));
     }
-    final localizations = AppLocalizations.of(context);
-    final resq = localizations != null ? localizations.resq : 'Default Text';
-    final resq1 = localizations != null ? localizations.resq_1 : 'Default Text';
-    final resq2 = localizations != null ? localizations.resq_2 : 'Default Text';
-    final resq3 = localizations != null ? localizations.resq_3 : 'Default Text';
 
     return Stack(
       children: [
@@ -255,9 +268,9 @@ class _RespondState extends BasePageState<Respond> {
                         ),
                         const SizedBox(height: 20),
                         TextFieldTitle(
-                          title: resq1,
+                          title: respondDescKey.tr(),
                           controller: contentController,
-                          hintText: resq2,
+                          hintText: respondHintKey.tr(),
                           color: Colors.white,
                           onChanged: (value) {},
                         ),
@@ -289,7 +302,7 @@ class _RespondState extends BasePageState<Respond> {
                                 ),
                                 const SizedBox(width: 10),
                                 TextMonserats(
-                                  resq3,
+                                  respondUploadKey.tr(),
                                   color:
                                       isDarkMode ? Colors.white : Colors.black,
                                 )
@@ -338,16 +351,18 @@ class _RespondState extends BasePageState<Respond> {
                         SimpleButton(
                           backgroundColor: AppColor.redButton,
                           onPressed: () {
-                            final url =
-                                'https://study-abroad-cemc-admin.vercel.app/api/accounts/students/${userAuth?.student.id}/requirements/${widget.id}';
-                            context.read<ResponseCubit>().sendResponse(
-                                  url,
-                                  contentController.text,
-                                  imageBase64List,
-                                );
+                            final url = ApiUrls.studentRequirements(
+                              userAuth?.student?.id ?? '',
+                              widget.id,
+                            );
+                            context.read<ResponseBloc>().add(SendResponseEvent(
+                                  url: url,
+                                  message: contentController.text,
+                                  images: imageBase64List,
+                                ));
                           },
                           child: TextMonserats(
-                            resq,
+                            respondKey.tr(),
                             color: Colors.white,
                           ),
                         ),

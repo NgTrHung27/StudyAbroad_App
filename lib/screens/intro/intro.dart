@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gif/gif.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroPage extends StatefulWidget {

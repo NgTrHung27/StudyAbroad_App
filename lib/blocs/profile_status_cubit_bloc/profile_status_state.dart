@@ -1,4 +1,4 @@
-part of 'profile_status_cubit.dart';
+import 'package:meta/meta.dart';
 
 @immutable
 abstract class ProfileStatusState {}

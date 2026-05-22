@@ -1,10 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/blocs/news_cubit_bloc/news_cubit.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
-import 'package:kltn_mobile/models/news.dart';
-import 'package:kltn_mobile/screens/news/news_detail.dart';
+import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_bloc.dart';
+import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_event.dart';
+import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_state.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/models/news.dart';
+import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_detail.dart';
 
 class NewsListViewShort extends StatefulWidget {
   const NewsListViewShort({super.key, required this.nullSchool});
@@ -20,14 +23,12 @@ class NewsListViewShortState extends State<NewsListViewShort> {
   @override
   void initState() {
     super.initState();
-    context.read<NewsCubit>().getNewsList(widget.nullSchool);
+    context.read<NewsBloc>().add(const LoadGeneralNewsEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-    final errorConn = localizations != null ? localizations.error_connection : "Defalut Text";
-    return BlocBuilder<NewsCubit, NewsState>(
+    return BlocBuilder<NewsBloc, NewsState>(
       builder: (context, state) {
         if (state is NewsLoading) {
           return const Center(
@@ -35,10 +36,7 @@ class NewsListViewShortState extends State<NewsListViewShort> {
           );
         }
         if (state is NewsError) {
-          return Center(child: Text(errorConn));
-        }
-        if (state is NewsSchoolLoaded) {
-          return Center(child: Text(errorConn));
+          return Center(child: Text(errorConnectionKey.tr()));
         }
         if (state is NewsLoaded) {
           final newsList = state.newsList;
@@ -56,7 +54,9 @@ class NewsListViewShortState extends State<NewsListViewShort> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => NewsDetailPage(news: newsList[index])),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              NewsDetailPage(news: newsList[index])),
                     );
                   },
                   child: Container(

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kltn_mobile/blocs/profile_status_cubit_bloc/profile_status_cubit.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/constant/theme.dart';
+import 'package:study_abroad_cemc_mobile/blocs/profile_status_cubit_bloc/profile_status_bloc.dart';
+import 'package:study_abroad_cemc_mobile/blocs/profile_status_cubit_bloc/profile_status_state.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class ActionTabStepper extends StatelessWidget {
-  final String header; // parameter header
+  final String header;
   final List<String> stepTexts;
   final String status;
 
@@ -20,17 +20,19 @@ class ActionTabStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = context.select(
-      (ThemeSettingCubit cubit) =>
-          cubit.state == AppTheme.blackTheme ? AppColor.backgrTabDark : AppColor.backgrTabLight,
-    );
-    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode =
+        context.select((ThemeSettingBloc bloc) => bloc.state.isDarkMode);
+    final backgroundColor =
+        isDarkMode ? AppColor.backgrTabDark : AppColor.backgrTabLight;
     final textColorRed = isDarkMode ? Colors.white : AppColor.redButton;
 
     final screenWidth = MediaQuery.of(context).size.width;
-    return BlocBuilder<ProfileStatusCubit, ProfileStatusState>(
+    return BlocBuilder<ProfileStatusBloc, ProfileStatusState>(
       builder: (context, state) {
-        int currentStep = (state is ProfileStatusLoaded && state.status == status) ? state.currentStep : 0;
+        int currentStep = 0;
+        if (state is ProfileStatusLoaded && state.status == status) {
+          currentStep = state.currentStep;
+        }
         return SingleChildScrollView(
           child: Container(
             width: screenWidth * 0.9,
@@ -50,60 +52,87 @@ class ActionTabStepper extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(
-                    top: 25.0,
-                    left: 20,
-                    right: 20,
-                  ),
+                  padding: const EdgeInsets.all(16.0),
                   child: Text(
                     header,
-                    style: GoogleFonts.montserrat(
-                      fontSize: 17,
+                    style: GoogleFonts.getFont(
+                      'Montserrat',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
                       color: textColorRed,
-                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Theme(
-                        data: ThemeData(
-                          colorScheme: ColorScheme.light(
-                            primary: AppColor.redButton,
-                          ),
-                        ),
-                        child: Stepper(
-                          currentStep: currentStep,
-                          controlsBuilder: (BuildContext context, ControlsDetails controlsDetails) {
-                            return Container();
-                          },
-                          steps: List.generate(
-                            stepTexts.length,
-                            (index) => Step(
-                              title: Text(
-                                stepTexts[index],
-                                style: GoogleFonts.montserrat(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
-                                  color: textColorRed,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(stepTexts.length, (index) {
+                    final isCompleted = index < currentStep;
+                    final isCurrent = index == currentStep;
+                    return Expanded(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (index > 0)
+                                Expanded(
+                                  child: Container(
+                                    height: 2,
+                                    color: isCompleted
+                                        ? AppColor.backgrTabLight
+                                        : Colors.grey[300],
+                                  ),
+                                ),
+                              Container(
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: isCompleted
+                                      ? textColorRed
+                                      : (isCurrent
+                                          ? textColorRed.withValues(alpha: 0.5)
+                                          : Colors.grey[300]),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '${index + 1}',
+                                    style: TextStyle(
+                                      color: isCompleted || isCurrent
+                                          ? Colors.white
+                                          : Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              content: Container(),
-                              isActive: currentStep >= index,
-                              state: currentStep == index
-                                  ? StepState.indexed
-                                  : currentStep > index
-                                      ? StepState.complete
-                                      : StepState.indexed,
+                              if (index < stepTexts.length - 1)
+                                Expanded(
+                                  child: Container(
+                                    height: 2,
+                                    color: isCompleted
+                                        ? textColorRed
+                                        : Colors.grey[300],
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            stepTexts[index],
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.getFont(
+                              'Montserrat',
+                              fontSize: 10,
+                              color: isDarkMode ? Colors.white : Colors.black,
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ),
-                  ],
+                    );
+                  }),
                 ),
+                const SizedBox(height: 16),
               ],
             ),
           ),

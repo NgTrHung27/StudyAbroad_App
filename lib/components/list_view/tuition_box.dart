@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/models/user_login.dart';
-import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/models/user_login.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 
 class TuitionBox extends BasePage {
   const TuitionBox({
@@ -27,7 +27,7 @@ class TuitionBoxDetailState extends BasePageState<TuitionBox> {
         this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     Color statusColor;
     final List<String?> tuitionStatuses =
-        userAuth?.student.tuitions?.map((tuition) => tuition.status).toList() ??
+        userAuth?.student?.tuitions?.map((tuition) => tuition.status).toList() ??
             [];
     final String? currentStatus =
         tuitionStatuses.isNotEmpty ? tuitionStatuses[0] : 'Unknown';
@@ -45,7 +45,7 @@ class TuitionBoxDetailState extends BasePageState<TuitionBox> {
         statusColor = Colors.grey;
     }
     final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final boxColor = isDarkMode ? const Color(0xff3F3F46) : Colors.white;
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
 

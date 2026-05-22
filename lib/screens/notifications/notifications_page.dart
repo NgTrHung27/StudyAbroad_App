@@ -1,14 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/Style/news_searchtextfield.dart';
-import 'package:kltn_mobile/components/functions_main_page/hello_avt.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
-import 'package:kltn_mobile/components/list_view/noti_list.dart';
-import 'package:kltn_mobile/models/notifications.dart';
-import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/news_searchtextfield.dart';
+import 'package:study_abroad_cemc_mobile/components/functions_main_page/hello_avt.dart';
+import 'package:study_abroad_cemc_mobile/components/list_view/noti_list.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/models/notifications.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 
 class NotificationsPage extends BasePage {
   const NotificationsPage({super.key});
@@ -23,7 +24,7 @@ class NotificationsPageState extends BasePageState<NotificationsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<ThemeSettingCubit>().loadTheme();
+    context.read<ThemeSettingBloc>().loadTheme();
     _loadNotifications();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
@@ -67,11 +68,8 @@ class NotificationsPageState extends BasePageState<NotificationsPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    //Language
-    final localizations = AppLocalizations.of(context);
-    final notidelete = localizations != null ? localizations.noti_dele : 'Default Text';
     return Scaffold(
-      backgroundColor: context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
+      backgroundColor: context.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
         child: ListView(children: [
@@ -84,7 +82,7 @@ class NotificationsPageState extends BasePageState<NotificationsPage> {
             child: GestureDetector(
               onTap: _clearNotifications,
               child: Text(
-                notidelete,
+                notiDeleteKey.tr(),
                 textAlign: TextAlign.right,
               ),
             ),
