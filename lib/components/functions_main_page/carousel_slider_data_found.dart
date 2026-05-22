@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
-import 'package:kltn_mobile/models/schools.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/models/schools.dart';
 
 class CarouselSliderDataFound extends StatefulWidget {
   final List<Schools> carouselList;
@@ -69,7 +69,7 @@ class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final circleBG = isDarkMode ? const Color(0xff616161) : Colors.white;
     final circleHL = isDarkMode ? Colors.white : const Color(0xff959595);
 

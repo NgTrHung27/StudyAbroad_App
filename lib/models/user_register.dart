@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:kltn_mobile/models/enum.dart';
+import 'package:study_abroad_cemc_mobile/models/enum.dart';
 
 class UserAuthRegister {
   String? id;

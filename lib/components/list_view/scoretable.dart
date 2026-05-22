@@ -1,11 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 import 'package:provider/provider.dart';
 
-import '../../screens/Authentication/auth_data_notify.dart';
+import '../../core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
 
 class ScoreTable extends BasePage {
   final String semester;
@@ -22,15 +23,10 @@ class ScoreTableState extends BasePageState<ScoreTable> {
     final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final localizations = AppLocalizations.of(context);
-
     // Lọc điểm theo semester và year
     final filteredScores = userAuth?.student?.program?.scores?.where((score) {
       return score.semester == widget.semester && score.year == widget.year;
     }).toList();
-
-    final subjectLabel = localizations?.scr_subject ?? "Default Text";
-    final scoreLabel = localizations?.scr_score ?? "Default Text";
 
     return Container(
       decoration: BoxDecoration(
@@ -65,7 +61,7 @@ class ScoreTableState extends BasePageState<ScoreTable> {
               label: Padding(
                 padding: EdgeInsets.only(left: screenWidth * 0.05),
                 child: TextMonserats(
-                  subjectLabel,
+                  scrSubjectKey.tr(),
                   color: Colors.white,
                   fontSize: screenWidth * 0.04,
                 ),
@@ -73,7 +69,7 @@ class ScoreTableState extends BasePageState<ScoreTable> {
             ),
             DataColumn(
               label: TextMonserats(
-                scoreLabel,
+                scrScoreKey.tr(),
                 color: Colors.white,
                 fontSize: screenWidth * 0.04,
               ),

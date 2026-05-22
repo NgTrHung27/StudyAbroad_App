@@ -1,14 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/components/Style/backbutton.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/Style/simplebutton.dart';
-import 'package:kltn_mobile/components/functions/circle_avatarimg.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:kltn_mobile/screens/scholarships/applyschorlarship.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/simplebutton.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/circle_avatarimg.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/screens/scholarships/applyschorlarship.dart';
 
-import '../../blocs/theme_setting_cubit/theme_setting_cubit.dart';
+import '../../blocs/theme_setting_cubit/theme_setting_bloc.dart';
 
 class ScholarshipsDetail extends BasePage {
   final String name;
@@ -30,12 +31,9 @@ class ScholarshipsDetailState extends BasePageState<ScholarshipsDetail> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
     final boxColor = isDarkMode ? const Color(0xff3F3F46) : Colors.white;
-    final localizations = AppLocalizations.of(context);
-    final applyNow =
-        localizations != null ? localizations.apply_now : 'Default Text';
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(screenWidth * 0.04),
@@ -98,7 +96,7 @@ class ScholarshipsDetailState extends BasePageState<ScholarshipsDetail> {
                         ),
                       );
                     },
-                    child: TextMonserats(applyNow, color: Colors.white),
+                    child: TextMonserats(applyNowKey.tr(), color: Colors.white),
                   ),
                 ],
               ),

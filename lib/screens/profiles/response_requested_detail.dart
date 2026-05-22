@@ -1,9 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kltn_mobile/components/Style/backbutton.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/models/user_login.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 
 class ResponseRequestedDetail extends StatelessWidget {
   final String title;
@@ -22,9 +23,6 @@ class ResponseRequestedDetail extends StatelessWidget {
     final textBox = isDarkMode ? Colors.white : Colors.black;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final localizations = AppLocalizations.of(context);
-    final resq = localizations != null ? localizations.resq : 'Default Text';
-    final request = localizations != null ? localizations.resq_4 : 'Default Text';
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: screenHeight * 0.09,
@@ -36,7 +34,7 @@ class ResponseRequestedDetail extends StatelessWidget {
             Expanded(
               child: Center(
                 child: TextMonserats(
-                  resq,
+                  respondKey.tr(),
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
@@ -62,7 +60,7 @@ class ResponseRequestedDetail extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(screenWidth * 0.05),
                 child: TextMonserats(
-                  '$request:',
+                  '${respondReqKey.tr()}:',
                   fontSize: screenWidth * 0.05,
                   fontWeight: FontWeight.w600,
                   color: textBox,
@@ -86,7 +84,7 @@ class ResponseRequestedDetail extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(screenWidth * 0.05),
                 child: TextMonserats(
-                  '$resq:',
+                  '${respondDescKey.tr()}:',
                   fontSize: screenWidth * 0.05,
                   fontWeight: FontWeight.w600,
                   color: textBox,

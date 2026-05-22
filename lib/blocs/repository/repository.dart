@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import 'package:kltn_mobile/models/country.dart';
-import 'package:kltn_mobile/models/news.dart';
-import 'package:kltn_mobile/models/news_school.dart';
-import 'package:kltn_mobile/models/schools.dart';
-import 'package:kltn_mobile/models/user_changepass.dart';
-import 'package:kltn_mobile/models/user_forgot.dart';
-import 'package:kltn_mobile/models/user_login.dart';
-import 'package:kltn_mobile/models/user_register.dart';
-import 'package:kltn_mobile/screens/home/contact_us.dart';
-import 'package:kltn_mobile/models/user_login.dart' as user_login;
+import 'package:study_abroad_cemc_mobile/core/api/api_url.dart';
+import 'package:study_abroad_cemc_mobile/models/country.dart';
+import 'package:study_abroad_cemc_mobile/models/news.dart';
+import 'package:study_abroad_cemc_mobile/models/news_school.dart';
+import 'package:study_abroad_cemc_mobile/models/schools.dart';
+import 'package:study_abroad_cemc_mobile/models/user_changepass.dart';
+import 'package:study_abroad_cemc_mobile/models/user_forgot.dart';
+import 'package:study_abroad_cemc_mobile/models/user_login.dart';
+import 'package:study_abroad_cemc_mobile/models/user_register.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/contact_us.dart';
+import 'package:study_abroad_cemc_mobile/models/user_login.dart' as user_login;
 
 class APIRepository {
   http.Client get httpClient => http.Client();
@@ -60,8 +61,7 @@ class APIRepository {
         "certificateImg": certificateImg,
       });
       final response = await http.post(
-        Uri.parse(
-            'https://study-abroad-cemc-admin.vercel.app/api/auth/register'),
+        Uri.parse(ApiUrls.register),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -99,7 +99,7 @@ class APIRepository {
   ) async {
     try {
       final response = await httpClient.post(
-        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/auth/login'),
+        Uri.parse(ApiUrls.login),
         headers: {"Content-Type": "application/json"},
         body: utf8.encode(jsonEncode({"email": email, "password": password})),
       );
@@ -148,9 +148,7 @@ class APIRepository {
 
   Future<List<Country>> fetchCountry() async {
     try {
-      final response = await http.get(
-        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/country'),
-      );
+      final response = await http.get(Uri.parse(ApiUrls.countries));
       if (response.statusCode == 200) {
         List<dynamic> data =
             jsonDecode(utf8.decode(latin1.encode(response.body)));
@@ -170,18 +168,13 @@ class APIRepository {
 
   Future<List<Schools>> fetchSchools() async {
     try {
-      final response = await httpClient.get(
-        Uri.parse(
-            'https://study-abroad-cemc-admin.vercel.app/api/schools/full'),
-      );
+      final response = await httpClient.get(Uri.parse(ApiUrls.schoolsFull));
       if (response.statusCode == 200) {
         List<dynamic> data =
             jsonDecode(utf8.decode(latin1.encode(response.body)));
         List<Schools> schools = [];
         for (var item in data) {
-          // Tạo một đối tượng School từ JSON
           Schools school = Schools.fromJson(item);
-          // Thêm đối tượng School vào danh sách schools
           schools.add(school);
         }
         return schools;
@@ -194,8 +187,7 @@ class APIRepository {
   }
 
   Future<List<String>> fetchUniqueCountries() async {
-    final response = await httpClient.get(
-        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/schools'));
+    final response = await httpClient.get(Uri.parse(ApiUrls.schools));
     final schools = schoolsFromJson(response.body);
     final countries = schools.map((school) => school.country).toSet().toList();
     return countries;
@@ -204,8 +196,7 @@ class APIRepository {
   Future<UserForgotpass?> forgotPass(String email) async {
     try {
       final response = await httpClient.post(
-        Uri.parse(
-            'https://study-abroad-cemc-admin.vercel.app/api/auth/reset-password'),
+        Uri.parse(ApiUrls.resetPassword),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"email": email}),
       );
@@ -225,8 +216,7 @@ class APIRepository {
   Future<UserChangePass?> changePass(String email) async {
     try {
       final response = await httpClient.post(
-        Uri.parse(
-            'https://study-abroad-cemc-admin.vercel.app/api/auth/reset-password'),
+        Uri.parse(ApiUrls.resetPassword),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"email": email}),
       );
@@ -246,9 +236,7 @@ class APIRepository {
 
   Future<List<NewsList>> fetchNews() async {
     try {
-      final response = await httpClient.get(
-        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/news'),
-      );
+      final response = await httpClient.get(Uri.parse(ApiUrls.news));
       if (response.statusCode == 200) {
         List<dynamic> data =
             jsonDecode(utf8.decode(latin1.encode(response.body)));
@@ -272,9 +260,7 @@ class APIRepository {
 
   Future<List<NewsSchoolList>> fetchSchoolNews() async {
     try {
-      final response = await httpClient.get(
-        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/news'),
-      );
+      final response = await httpClient.get(Uri.parse(ApiUrls.news));
       if (response.statusCode == 200) {
         List<dynamic> data =
             jsonDecode(utf8.decode(latin1.encode(response.body)));
@@ -314,7 +300,7 @@ class APIRepository {
         "schoolId": schoolId,
       });
       final responseContactUs = await httpClient.post(
-        Uri.parse('https://study-abroad-cemc-admin.vercel.app/api/feedbacks'),
+        Uri.parse(ApiUrls.feedbacks),
         headers: <String, String>{"Content-Type": "application/json"},
         body: jsonDataContact,
       );

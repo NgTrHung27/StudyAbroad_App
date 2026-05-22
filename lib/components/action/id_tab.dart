@@ -2,9 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/constant/theme.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class IdTab extends StatefulWidget {
   final String userName;
@@ -33,7 +32,7 @@ class _IdTabState extends State<IdTab> {
         : AssetImage(widget.avatarImgPath) as ImageProvider<Object>;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDarkMode =
-        context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme;
+        context.watch<ThemeSettingBloc>().state.isDarkMode;
     return Container(
       height: 80,
       width: screenWidth * 0.9,

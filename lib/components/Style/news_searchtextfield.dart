@@ -1,16 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
-import 'package:kltn_mobile/screens/home/search_page.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/search_page.dart';
 
 class NewsSearchTextField extends StatelessWidget {
   const NewsSearchTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-    final textSearch = localizations != null ? localizations.home_search : 'Default Text';
     double orientationSize = MediaQuery.of(context).orientation == Orientation.portrait ? 0.055 : 0.15;
     final screenHeight = MediaQuery.of(context).size.height;
     return GestureDetector(
@@ -46,7 +45,7 @@ class NewsSearchTextField extends StatelessWidget {
                 borderSide: BorderSide(color: Colors.white, width: 0.0),
                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
               ),
-              hintText: textSearch,
+              hintText: homeSearchKey.tr(),
               hintStyle: GoogleFonts.getFont('Montserrat',
                   color: AppColor.redButton.withValues(alpha: 0.6), fontSize: 19.0, fontWeight: FontWeight.w500),
               prefixIcon: Icon(

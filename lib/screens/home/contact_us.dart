@@ -1,24 +1,23 @@
+import 'package:easy_localization/easy_localization.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
-import 'package:intl/intl.dart';
-import 'package:kltn_mobile/blocs/contact_us_bloc/contact_cubit.dart';
-import 'package:kltn_mobile/blocs/contact_us_bloc/contact_state.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/constant/theme.dart';
-import 'package:kltn_mobile/components/functions/alert_form.dart';
-import 'package:kltn_mobile/components/functions/button.dart';
-import 'package:kltn_mobile/components/functions/dropdown.dart';
-import 'package:kltn_mobile/components/functions/textfield_title.dart';
-import 'package:kltn_mobile/components/style/backbutton.dart';
-import 'package:kltn_mobile/models/enum.dart';
-import 'package:kltn_mobile/models/schools.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:kltn_mobile/screens/home/home_page.dart';
+import 'package:study_abroad_cemc_mobile/blocs/contact_us_bloc/contact_bloc.dart';
+import 'package:study_abroad_cemc_mobile/blocs/contact_us_bloc/contact_state.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/alert_form.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/button.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/dropdown.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/textfield_title.dart';
+import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/models/enum.dart';
+import 'package:study_abroad_cemc_mobile/models/schools.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactUs extends BasePage {
@@ -54,7 +53,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
   @override
   void initState() {
     super.initState();
-    context.read<ContactUsCubit>().getSchools();
+    context.read<ContactUsBloc>().getSchools();
 
     _loadIconState();
   }
@@ -66,7 +65,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
   }
 
   void toggleTheme() {
-    context.read<ThemeSettingCubit>().toggleTheme();
+    context.read<ThemeSettingBloc>().toggleTheme();
     setState(() {
       isChangeColor = !isChangeColor;
     });
@@ -101,7 +100,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
       return;
     }
 
-    context.read<ContactUsCubit>().sendForm(name, email, valueTitleForm!, phone, message, selectedSchool);
+    context.read<ContactUsBloc>().sendForm(name, email, valueTitleForm!, phone, message, selectedSchool);
   }
 
   //Declare intial state value for selectedSchool ,program, city, district, ward
@@ -180,23 +179,9 @@ class _ContactUsState extends BasePageState<ContactUs> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-    final contactPage = localizations != null ? localizations.contact_page : "Default Text";
-    final contactSub = localizations != null ? localizations.contact_text : "Default Text";
-    final contactTit = localizations != null ? localizations.contact_title : "Default Text";
-    final contactSchool = localizations != null ? localizations.contact_school : "Default Text";
-    final contactName = localizations != null ? localizations.contact_name : "Default Text";
-    final contactMail = localizations != null ? localizations.contact_mail : "Default Text";
-    final contactPhon = localizations != null ? localizations.contact_phone : "Default Text";
-    final contactMess = localizations != null ? localizations.contact_mess : "Default Text";
-    final fullname = localizations != null ? localizations.register_7_fullname : "Default Text";
-    final mail = localizations != null ? localizations.register_login_cpass__fg_mail : "Default Text";
-    final phoneText = localizations != null ? localizations.register_12_phone : "Default Text";
-    final help = localizations != null ? localizations.contact_helps : "Defalut Text";
-    final send = localizations != null ? localizations.contact_send : "Default Text";
-    final isDarkMode = context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme;
+    final isDarkMode = context.watch<ThemeSettingBloc>().state.isDarkMode;
     final screenWidth = MediaQuery.of(context).size.width;
-    return BlocConsumer<ContactUsCubit, ContactUsState>(
+    return BlocConsumer<ContactUsBloc, ContactUsState>(
       listener: (context, state) {
         if (state is ContactErrorTitleErrorState) {
           setState(() {
@@ -225,7 +210,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
           );
         } else if (state is ContactInitialState) {}
         return Scaffold(
-          backgroundColor: context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
+          backgroundColor: context.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
           body: Container(
             padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
             child: SingleChildScrollView(
@@ -241,7 +226,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
                       }),
                       const Spacer(flex: 1),
                       TextMonserats(
-                        contactPage,
+                        contactPageKey.tr(),
                         fontSize: 30,
                         fontWeight: FontWeight.w700,
                         color: isDarkMode ? Colors.white : AppColor.redButton,
@@ -251,7 +236,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
                   ),
                   const SizedBox(height: 6),
                   TextMonserats(
-                    contactSub,
+                    contactTextKey.tr(),
                     textAlign: TextAlign.center,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
@@ -261,11 +246,11 @@ class _ContactUsState extends BasePageState<ContactUs> {
                   SizedBox(
                     width: screenWidth * 0.85,
                     height: 60,
-                    child: DropdownCustom<TitleForm>(
+                    child:                     DropdownCustom<TitleForm>(
                       icon: Icons.title,
                       items: TitleForm.values,
                       selectedItem: valueTitleForm,
-                      hintText: contactTit,
+                      hintText: contactTitleKey.tr(),
                       onChanged: (TitleForm? newValueTitle) {
                         if (newValueTitle != null) {
                           setState(() {
@@ -288,7 +273,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
                   SizedBox(
                       width: screenWidth * 0.85,
                       height: 60,
-                      child: BlocBuilder<ContactUsCubit, ContactUsState>(
+                      child: BlocBuilder<ContactUsBloc, ContactUsState>(
                         builder: (context, state) {
                           if (state is ContactLoadedNamedSchoolState) {
                             lstschools = state.school;
@@ -306,15 +291,15 @@ class _ContactUsState extends BasePageState<ContactUs> {
                               });
                             },
                             itemLabel: (Schools school) => school.name,
-                            hintText: contactSchool,
+                            hintText: contactSchoolKey.tr(),
                             isExpanded: true,
                           );
                         },
                       )),
                   TextFieldTitle(
-                    title: fullname,
+                    title: registerFullnameKey.tr(),
                     controller: fullNameController,
-                    hintText: contactName,
+                    hintText: contactNameKey.tr(),
                     color: AppColor.scafflodBgColor,
                     onChanged: (value) {
                       fullName = value;
@@ -322,15 +307,14 @@ class _ContactUsState extends BasePageState<ContactUs> {
                   ),
                   const SizedBox(height: 10),
                   TextFieldTitle(
-                    title: mail,
+                    title: registerEmailKey.tr(),
                     controller: emailController,
-                    hintText: contactMail,
+                    hintText: contactMailKey.tr(),
                     errorText: errorEmailMessage,
                     color: AppColor.scafflodBgColor,
-                    //errorText: errorEmail,
                     onChanged: (value) {
                       email = value;
-                      context.read<ContactUsCubit>().checkEmail(value);
+                      context.read<ContactUsBloc>().checkEmail(value);
                       if (email.isEmpty) {
                         setState(() {
                           errorEmailMessage;
@@ -344,9 +328,9 @@ class _ContactUsState extends BasePageState<ContactUs> {
                   ),
                   const SizedBox(height: 10),
                   TextFieldTitle(
-                    title: phoneText,
+                    title: registerPhoneKey.tr(),
                     controller: phoneController,
-                    hintText: contactPhon,
+                    hintText: contactPhoneKey.tr(),
                     color: AppColor.scafflodBgColor,
                     onChanged: (value) {
                       phone = value;
@@ -354,9 +338,9 @@ class _ContactUsState extends BasePageState<ContactUs> {
                   ),
                   const SizedBox(height: 10),
                   TextFieldTitle(
-                    title: help,
+                    title: contactHelpsKey.tr(),
                     controller: messageController,
-                    hintText: contactMess,
+                    hintText: contactMessKey.tr(),
                     color: AppColor.scafflodBgColor,
                     onChanged: (value) {
                       message = value;
@@ -368,7 +352,7 @@ class _ContactUsState extends BasePageState<ContactUs> {
                       _showAlertDialog(context);
                       sendForm();
                     },
-                    text: send,
+                    text: contactSendKey.tr(),
                   )
                 ],
               ),

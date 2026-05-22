@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 
 class ScoreCommentBox extends StatelessWidget {
   final String comment;
@@ -12,8 +13,6 @@ class ScoreCommentBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final localizations = AppLocalizations.of(context);
-    final cmt = localizations != null ? localizations.scr_cmt : "Default Text";
     return Container(
       width: screenWidth,
       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.015),
@@ -34,7 +33,7 @@ class ScoreCommentBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextMonserats(
-            cmt,
+            scrCmtKey.tr(),
             color: AppColor.redButton,
             fontSize: screenWidth * 0.045,
             fontWeight: FontWeight.w600,

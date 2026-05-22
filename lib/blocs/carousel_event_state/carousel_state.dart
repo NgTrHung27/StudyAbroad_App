@@ -1,4 +1,5 @@
-part of 'carousel_bloc.dart';
+import 'package:equatable/equatable.dart';
+import '../../models/schools.dart';
 
 abstract class CarouselState extends Equatable {
   const CarouselState();

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:kltn_mobile/models/user_login.dart';
+import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart';
 import 'package:open_file/open_file.dart';

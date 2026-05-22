@@ -1,4 +1,4 @@
-import 'package:kltn_mobile/models/chat_session_role.dart';
+import 'package:study_abroad_cemc_mobile/models/chat_session_role.dart';
 
 class Message {
   final String? name;

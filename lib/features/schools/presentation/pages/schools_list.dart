@@ -1,0 +1,171 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_bloc.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_event.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_state.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/simplebutton.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/presentation/widgets/school_box.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/compare_schools.dart';
+
+class SchoolsListPage extends BasePage {
+  const SchoolsListPage({super.key, required this.country});
+  final String country;
+
+  @override
+  State<SchoolsListPage> createState() => _SchoolsListPageState();
+}
+
+class _SchoolsListPageState extends State<SchoolsListPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<SchoolBloc>().add(GetSchoolListByCountryEvent(widget.country));
+  }
+
+  Color getColorForCountry(String country) {
+    switch (country.toUpperCase()) {
+      case 'CANADA':
+        return AppColor.redButton;
+      case 'AUSTRALIA':
+        return const Color(0xff2D3D7A);
+      case 'KOREA':
+        return const Color(0xff2BB6CF);
+      default:
+        return Colors.grey; // Default color if country is not matched
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final exploreColor = isDarkMode ? Colors.white : AppColor.redButton;
+    String countryText;
+    switch (widget.country.toUpperCase()) {
+      case 'CANADA':
+        countryText = schCanadaKey.tr();
+        break;
+      case 'AUSTRALIA':
+        countryText = schAustraliaKey.tr();
+        break;
+      case 'KOREA':
+        countryText = schKoreaKey.tr();
+        break;
+      default:
+        countryText = '';
+    }
+
+    return Scaffold(
+      body: BlocBuilder<SchoolBloc, SchoolState>(
+        builder: (context, state) {
+          if (state is SchoolsLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is SchoolsLoaded) {
+            return SingleChildScrollView(
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: screenWidth,
+                        height: screenHeight * 0.15,
+                        color: getColorForCountry(widget.country),
+                        child: Padding(
+                          padding: EdgeInsets.only(top: screenHeight * 0.03),
+                          child: Center(
+                            child: TextMonserats(
+                              countryText,
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.07,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+                        child: Padding(
+                          padding: EdgeInsets.only(top: screenHeight * 0.025),
+                          child: TextMonserats(
+                            schRvAllSchKey.tr(),
+                            color: exploreColor,
+                            fontSize: screenWidth * 0.045,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+                        child: Padding(
+                          padding: EdgeInsets.only(top: screenHeight * 0.025),
+                          child: SimpleButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CompareSchoolsPage(
+                                    schoolNames: state.schoolList.map((school) => school.name).toList(),
+                                  ),
+                                ),
+                              );
+                            },
+                            backgroundColor: getColorForCountry(widget.country),
+                            child: TextMonserats(
+                              schDisMoreKey.tr(),
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.037,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.08,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(top: screenHeight * 0.025),
+                          child: TextMonserats(
+                            schExploreKey.tr(),
+                            color: exploreColor,
+                            fontSize: screenWidth * 0.045,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: state.schoolList.length,
+                          itemBuilder: (context, index) {
+                            final school = state.schoolList[index];
+                            return SchoolBox(school: school);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(top: screenHeight * 0.06, left: screenWidth * 0.03, child: const BackButtonCircle()),
+                ],
+              ),
+            );
+          } else if (state is SchoolsError) {
+            return Center(child: Text(errorConnectionKey.tr()));
+          }
+          return const Center(child: Text('Please wait...'));
+        },
+      ),
+    );
+  }
+}

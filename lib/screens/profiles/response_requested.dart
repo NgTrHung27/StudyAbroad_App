@@ -1,16 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/components/language/app_localizations.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/Style/backbutton.dart';
-import 'package:kltn_mobile/components/Style/montserrat.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/models/user_login.dart';
-import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
-import 'package:kltn_mobile/screens/profiles/response_requested_detail.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/models/user_login.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/screens/profiles/response_requested_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ResponseRequested extends BasePage {
@@ -54,10 +55,7 @@ class _RequestedState extends BasePageState<ResponseRequested> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-    final resq = localizations != null ? localizations.resq : 'Default Text';
-
-    final isDarkMode = context.select((ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final boxColor = isDarkMode ? AppColor.backgrTabDark : Colors.white;
     final textBox = isDarkMode ? Colors.white : Colors.black;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -80,7 +78,7 @@ class _RequestedState extends BasePageState<ResponseRequested> {
               Expanded(
                 child: Center(
                   child: TextMonserats(
-                    resq,
+                    respondKey.tr(),
                     fontSize: 30,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -91,7 +89,7 @@ class _RequestedState extends BasePageState<ResponseRequested> {
             ],
           ),
         ),
-        backgroundColor: context.select((ThemeSettingCubit cubit) => cubit.state.scaffoldBackgroundColor),
+        backgroundColor: context.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
         body: FutureBuilder<UserAuthLogin?>(
             future: getUserAuth(context),
             builder: (context, snapshot) {

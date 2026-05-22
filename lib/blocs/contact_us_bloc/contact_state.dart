@@ -1,5 +1,5 @@
-import 'package:kltn_mobile/models/schools.dart';
-import 'package:kltn_mobile/screens/home/contact_us.dart';
+import '../../models/schools.dart';
+import '../../screens/home/contact_us.dart';
 
 abstract class ContactUsState {}
 

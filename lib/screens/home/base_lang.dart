@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:kltn_mobile/blocs/auth_cubit_bloc/login_cubit.dart';
-import 'package:kltn_mobile/blocs/lang_cubit/language_bloc.dart';
-import 'package:kltn_mobile/models/news.dart';
-import 'package:kltn_mobile/models/user_login.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_bloc.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_event.dart';
+import 'package:study_abroad_cemc_mobile/models/news.dart';
+import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,7 +20,6 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
   @override
   void initState() {
     super.initState();
-    _loadLanguage();
   }
 
   @override
@@ -30,29 +29,10 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
   }
 
   Future<void> _loadUserAuth() async {
-    context.read<LoginCubit>().checkLoginStatus();
+    context.read<LoginBloc>().add(CheckLoginStatusEvent());
     final logindata = await SharedPreferences.getInstance();
     print('logindata  ${logindata.toString()}');
     userAuth =
         UserAuthLogin.fromJson(jsonDecode(logindata.getString('user') ?? '{}'));
-  }
-
-  Future<void> _loadLanguage() async {
-    final languageCode =
-        await context.read<LanguageBloc>().getCurrentLanguageCode();
-    switch (languageCode) {
-      case 'en':
-        // ignore: use_build_context_synchronously
-        context.read<LanguageBloc>().add(LanguageEvent.setEnglish);
-        break;
-      case 'ko':
-        // ignore: use_build_context_synchronously
-        context.read<LanguageBloc>().add(LanguageEvent.setKorean);
-        break;
-      case 'vi':
-        // ignore: use_build_context_synchronously
-        context.read<LanguageBloc>().add(LanguageEvent.setVietnamese);
-        break;
-    }
   }
 }

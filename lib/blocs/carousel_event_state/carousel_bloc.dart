@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:kltn_mobile/blocs/repository/repository.dart';
-import 'package:kltn_mobile/models/schools.dart';
-part 'carousel_event.dart';
-part 'carousel_state.dart';
+import 'package:study_abroad_cemc_mobile/blocs/repository/repository.dart';
+import '../../models/schools.dart';
+
+import 'carousel_event.dart';
+import 'carousel_state.dart';
 
 class CarouselBloc extends Bloc<CarouselEvent, CarouselState> {
   final APIRepository repository;

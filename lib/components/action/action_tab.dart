@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart'; // Import Cupertino library
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kltn_mobile/blocs/lang_cubit/language_bloc.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/constant/theme.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_event.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 
 class FunctionItem {
   final String name;
@@ -49,7 +49,7 @@ class _ActionTabState extends State<ActionTab> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isDarkMode = context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme;
+    final isDarkMode = context.watch<ThemeSettingBloc>().state.isDarkMode;
     final dropdownColor = isDarkMode ? AppColor.scafflodBgColorDark : Colors.white;
     final textcolor = isDarkMode ? Colors.white : Colors.black;
     return Container(
@@ -105,53 +105,51 @@ class _ActionTabState extends State<ActionTab> {
                             ),
                             if (function.isEnable)
                               CupertinoSwitch(
-                                value: context.watch<ThemeSettingCubit>().state == AppTheme.blackTheme,
+                                value: context.watch<ThemeSettingBloc>().state.isDarkMode,
                                 onChanged: (value) {
-                                  context.read<ThemeSettingCubit>().toggleTheme();
+                                  context.read<ThemeSettingBloc>().add(ToggleThemeEvent());
                                 },
                               ),
                             if (function.dropdownCallback != null)
-                              BlocBuilder<LanguageBloc, Locale>(builder: (context, state) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: textcolor, width: 1),
-                                    borderRadius: const BorderRadius.all(Radius.circular(30)),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: textcolor, width: 1),
+                                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                ),
+                                child: SizedBox(
+                                  height: 30,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                    child: DropdownButton<Locale>(
+                                        value: context.locale,
+                                        items: const [
+                                          DropdownMenuItem(value: Locale('en'), child: Text('English')),
+                                          DropdownMenuItem(value: Locale('ko'), child: Text('Korean')),
+                                          DropdownMenuItem(
+                                              value: Locale('vi'),
+                                              child: Padding(
+                                                padding: EdgeInsets.only(right: 5),
+                                                child: Text('Vietnamese'),
+                                              )),
+                                        ],
+                                        onChanged: (value) {
+                                          if (value != null) {
+                                            function.dropdownCallback!(value);
+                                          }
+                                        },
+                                        dropdownColor: dropdownColor,
+                                        style: GoogleFonts.montserrat(
+                                          color: textcolor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        underline: Container(),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(15),
+                                        )),
                                   ),
-                                  child: SizedBox(
-                                    height: 30,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                                      child: DropdownButton<Locale>(
-                                          value: context.watch<LanguageBloc>().state,
-                                          items: const [
-                                            DropdownMenuItem(value: Locale('en'), child: Text('English')),
-                                            DropdownMenuItem(value: Locale('ko'), child: Text('Korean')),
-                                            DropdownMenuItem(
-                                                value: Locale('vi'),
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(right: 5),
-                                                  child: Text('Vietnamese'),
-                                                )),
-                                          ],
-                                          onChanged: (value) {
-                                            if (value != null) {
-                                              function.dropdownCallback!(value);
-                                            }
-                                          },
-                                          dropdownColor: dropdownColor,
-                                          style: GoogleFonts.montserrat(
-                                            color: textcolor,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          underline: Container(),
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(15),
-                                          )),
-                                    ),
-                                  ),
-                                );
-                              }),
+                                ),
+                              ),
                           ],
                         ),
                         if (idx != widget.functions.length - 1) const SizedBox(height: 12),

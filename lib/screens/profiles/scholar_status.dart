@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kltn_mobile/blocs/theme_setting_cubit/theme_setting_cubit.dart';
-import 'package:kltn_mobile/components/action/actiontab_result.dart';
-import 'package:kltn_mobile/components/action/id_tab.dart';
-import 'package:kltn_mobile/components/action/stepper.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
-import 'package:kltn_mobile/components/style/backbutton.dart';
-import 'package:kltn_mobile/components/style/montserrat.dart';
-import 'package:kltn_mobile/screens/Authentication/auth_data_notify.dart';
-import 'package:kltn_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/action/actiontab_result.dart';
+import 'package:study_abroad_cemc_mobile/components/action/id_tab.dart';
+import 'package:study_abroad_cemc_mobile/components/action/stepper.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 
 class ScholarStuStatus extends BasePage {
   final String status;
@@ -27,7 +27,7 @@ class _ScholarStuStatusState extends BasePageState<ScholarStuStatus> {
 
     // Theme
     final isDarkMode = context.select(
-        (ThemeSettingCubit cubit) => cubit.state.brightness == Brightness.dark);
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColorRed = isDarkMode ? Colors.white : AppColor.redButton;
 
     return Scaffold(

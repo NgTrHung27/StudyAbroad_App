@@ -1,4 +1,4 @@
-import 'package:kltn_mobile/models/chat_message.dart';
+import 'package:study_abroad_cemc_mobile/models/chat_message.dart';
 
 class ChatSession {
   final String id;

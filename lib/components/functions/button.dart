@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kltn_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class MyButton extends StatelessWidget {
   final Function()? onTap;
