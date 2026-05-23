@@ -4,6 +4,7 @@ import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting
 import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/scholar_detail.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class ScholarSchoolBox extends StatefulWidget {
   final List<SchoolScholarshipEntity> scholar;
@@ -19,7 +20,7 @@ class ScholarSchoolBoxState extends State<ScholarSchoolBox> {
     final isDarkMode = context.select(
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
-    final boxColor = isDarkMode ? const Color(0xff3F3F46) : Colors.white;
+    final boxColor = isDarkMode ? AppColor.backgrTabDark : Colors.white;
     return ListView.builder(
       itemCount: widget.scholar.length,
       itemBuilder: (context, index) {

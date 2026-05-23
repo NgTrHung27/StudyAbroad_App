@@ -29,9 +29,8 @@ class ThemeSettingBloc extends Bloc<ThemeSettingEvent, ThemeSettingState> {
 
   Future<void> _onToggleTheme(
       ToggleThemeEvent event, Emitter<ThemeSettingState> emit) async {
-    final newThemeMode = state.themeMode == ThemeMode.dark
-        ? ThemeMode.light
-        : ThemeMode.dark;
+    final newThemeMode =
+        state.themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
     emit(ThemeSettingState(themeMode: newThemeMode));
     _saveTheme(newThemeMode == ThemeMode.dark);
   }

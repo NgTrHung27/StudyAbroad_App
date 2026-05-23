@@ -7,7 +7,7 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/components/functions/circle_avatarimg.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 
 class WelcomeAVT extends BasePage {
   const WelcomeAVT({super.key, required this.username});

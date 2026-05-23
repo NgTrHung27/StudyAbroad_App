@@ -8,18 +8,18 @@ import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/forgot_pass_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_event.dart';
-import 'package:study_abroad_cemc_mobile/blocs/carousel_event_state/carousel_bloc.dart';
-import 'package:study_abroad_cemc_mobile/blocs/carousel_event_state/carousel_event.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/bloc/legacy/carousel_bloc.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/bloc/legacy/carousel_event.dart';
 import 'package:study_abroad_cemc_mobile/blocs/contact_us_bloc/contact_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_bloc.dart';
-import 'package:study_abroad_cemc_mobile/blocs/profile_status_cubit_bloc/profile_status_bloc.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/bloc/legacy/profile_status_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/repository/repository.dart';
 import 'package:study_abroad_cemc_mobile/core/configs/injector/injector_conf.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_state.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_event.dart';
-import 'package:study_abroad_cemc_mobile/screens/scholarships/applyschorlarship.dart';
+import 'package:study_abroad_cemc_mobile/features/scholarships/presentation/pages/applyschorlarship.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/theme.dart';
 import 'package:study_abroad_cemc_mobile/components/notifications/noti_services.dart';
 import 'package:study_abroad_cemc_mobile/firebase_options.dart';
@@ -35,12 +35,12 @@ final navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
-  
+
   await EasyLocalization.ensureInitialized();
-  
+
   //FirebaseMess
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  
+
   // Kiểm tra nếu đang chạy trên Android
   bool isRunningOnAndroid = Platform.isAndroid;
 
@@ -69,18 +69,22 @@ Future<void> main() async {
       fallbackLocale: const Locale('en'),
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => ThemeSettingBloc()..add(LoadThemeEvent())),
+          BlocProvider(
+              create: (_) => ThemeSettingBloc()..add(LoadThemeEvent())),
           BlocProvider(create: (_) => AuthBloc()),
           BlocProvider(create: (_) => loginBloc),
           BlocProvider(create: (_) => ProfileStatusBloc()),
           BlocProvider(create: (_) => ForgotPassBloc(APIRepository())),
-          BlocProvider(create: (context) => CarouselBloc(APIRepository())..add(FetchCarousel())),
+          BlocProvider(
+              create: (context) =>
+                  CarouselBloc(APIRepository())..add(FetchCarousel())),
           BlocProvider(create: (_) => getIt<NewsBloc>()),
           BlocProvider(create: (_) => ApplyScholarBloc()),
           BlocProvider(create: (_) => getIt<SchoolBloc>()),
           BlocProvider(create: (_) => ContactUsBloc(APIRepository())),
           ChangeNotifierProvider(create: (_) => UserAuthProvider()),
-          ChangeNotifierProvider(create: (_) => AuthNotifier()..setLoggedIn(isLoggedIn)),
+          ChangeNotifierProvider(
+              create: (_) => AuthNotifier()..setLoggedIn(isLoggedIn)),
           ChangeNotifierProvider(create: (context) => ClientIdProvider()),
         ],
         child: MyApp(userAuth: userAuth),

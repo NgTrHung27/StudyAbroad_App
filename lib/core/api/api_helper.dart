@@ -191,12 +191,12 @@ class ApiHelper {
 
     try {
       final decoded = jsonDecode(body);
-      
+
       if (decoded is Map<String, dynamic>) {
         // Add status code to response for convenience
         return {...decoded, '_statusCode': response.statusCode};
       }
-      
+
       return {'data': decoded, '_statusCode': response.statusCode};
     } catch (e) {
       throw ParseException(originalError: e);
@@ -212,11 +212,11 @@ class ApiHelper {
 
     try {
       final decoded = jsonDecode(body);
-      
+
       if (decoded is List) {
         return decoded;
       }
-      
+
       throw const ParseException(message: 'Expected list response');
     } catch (e) {
       if (e is ApiException) rethrow;

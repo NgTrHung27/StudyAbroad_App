@@ -13,7 +13,8 @@ class LocalStorage {
   /// Get SharedPreferences instance
   static SharedPreferences get prefs {
     if (_prefs == null) {
-      throw StateError('LocalStorage not initialized. Call LocalStorage.init() first.');
+      throw StateError(
+          'LocalStorage not initialized. Call LocalStorage.init() first.');
     }
     return _prefs!;
   }

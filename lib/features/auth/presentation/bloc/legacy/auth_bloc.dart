@@ -87,8 +87,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       CheckPhoneNumberEvent event, Emitter<AuthState> emit) {
     if (event.phoneNumber.isEmpty) {
       emit(AuthErrorPhoneState('Vui lòng nhập số điện thoại'));
-    } else if (event.phoneNumber.length < 10 ||
-        event.phoneNumber.length > 11) {
+    } else if (event.phoneNumber.length < 10 || event.phoneNumber.length > 11) {
       emit(AuthErrorPhoneState('Số điện thoại không hợp lệ'));
     }
   }
@@ -127,8 +126,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onCheckSchoolName(
-      CheckSchoolNameEvent event, Emitter<AuthState> emit) {
+  void _onCheckSchoolName(CheckSchoolNameEvent event, Emitter<AuthState> emit) {
     if (event.schoolName.isEmpty) {
       emit(AuthErrorNamedSchoolState('Vui lòng chọn trường học'));
     }
@@ -141,8 +139,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onCheckDegreeType(
-      CheckDegreeTypeEvent event, Emitter<AuthState> emit) {
+  void _onCheckDegreeType(CheckDegreeTypeEvent event, Emitter<AuthState> emit) {
     if (event.degreeType.isEmpty) {
       emit(AuthErrorNamedSchoolState('Vui lòng chọn loại bằng cấp'));
     }

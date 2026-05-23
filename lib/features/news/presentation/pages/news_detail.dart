@@ -68,8 +68,7 @@ class NewsDetailPage extends StatelessWidget {
                                 fontSize: FontSize(16),
                                 color: textColor,
                                 fontFamily: GoogleFonts.montserrat().fontFamily,
-                                textDecorationColor: textColor
-                                ),
+                                textDecorationColor: textColor),
                             "h2": Style(
                                 fontSize: FontSize(22),
                                 color: textColor,

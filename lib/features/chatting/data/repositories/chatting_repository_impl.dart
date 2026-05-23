@@ -25,9 +25,9 @@ class ChattingRepositoryImpl implements ChattingRepository {
 
   @override
   Stream<Either<ChattingFailure, String>> streamGenerateContent(
-      String question, {
-      List<Uint8List>? images,
-      required String modelName,
+    String question, {
+    List<Uint8List>? images,
+    required String modelName,
   }) async* {
     try {
       await _ensureGeminiInitialized();
@@ -47,18 +47,21 @@ class ChattingRepositoryImpl implements ChattingRepository {
         yield Right(response);
       }
     } catch (e) {
-      yield Left(GeminiFailure(message: 'Error communicating with Gemini: ${e.toString()}'));
+      yield Left(GeminiFailure(
+          message: 'Error communicating with Gemini: ${e.toString()}'));
     }
   }
 
   @override
-  Future<Either<ChattingFailure, void>> connectLiveSupport(String clientId) async {
+  Future<Either<ChattingFailure, void>> connectLiveSupport(
+      String clientId) async {
     // TODO: Implement Ably logic
     return const Left(LiveSupportFailure(message: 'Not implemented yet'));
   }
 
   @override
-  Future<Either<ChattingFailure, void>> sendMessageLiveSupport(String message) async {
+  Future<Either<ChattingFailure, void>> sendMessageLiveSupport(
+      String message) async {
     // TODO: Implement Ably logic
     return const Left(LiveSupportFailure(message: 'Not implemented yet'));
   }

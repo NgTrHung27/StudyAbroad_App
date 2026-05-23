@@ -50,7 +50,8 @@ class _ActionTabState extends State<ActionTab> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDarkMode = context.watch<ThemeSettingBloc>().state.isDarkMode;
-    final dropdownColor = isDarkMode ? AppColor.scafflodBgColorDark : Colors.white;
+    final dropdownColor =
+        isDarkMode ? AppColor.scafflodBgColorDark : Colors.white;
     final textcolor = isDarkMode ? Colors.white : Colors.black;
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -93,7 +94,8 @@ class _ActionTabState extends State<ActionTab> {
                       children: [
                         Row(
                           children: [
-                            Icon(function.icon, color: widget.colorIcon, size: 25),
+                            Icon(function.icon,
+                                color: widget.colorIcon, size: 25),
                             const SizedBox(width: 15),
                             Expanded(
                               child: TextMonserats(
@@ -105,30 +107,43 @@ class _ActionTabState extends State<ActionTab> {
                             ),
                             if (function.isEnable)
                               CupertinoSwitch(
-                                value: context.watch<ThemeSettingBloc>().state.isDarkMode,
+                                value: context
+                                    .watch<ThemeSettingBloc>()
+                                    .state
+                                    .isDarkMode,
                                 onChanged: (value) {
-                                  context.read<ThemeSettingBloc>().add(ToggleThemeEvent());
+                                  context
+                                      .read<ThemeSettingBloc>()
+                                      .add(ToggleThemeEvent());
                                 },
                               ),
                             if (function.dropdownCallback != null)
                               Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: textcolor, width: 1),
-                                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                  border:
+                                      Border.all(color: textcolor, width: 1),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(30)),
                                 ),
                                 child: SizedBox(
                                   height: 30,
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
                                     child: DropdownButton<Locale>(
                                         value: context.locale,
                                         items: const [
-                                          DropdownMenuItem(value: Locale('en'), child: Text('English')),
-                                          DropdownMenuItem(value: Locale('ko'), child: Text('Korean')),
+                                          DropdownMenuItem(
+                                              value: Locale('en'),
+                                              child: Text('English')),
+                                          DropdownMenuItem(
+                                              value: Locale('ko'),
+                                              child: Text('Korean')),
                                           DropdownMenuItem(
                                               value: Locale('vi'),
                                               child: Padding(
-                                                padding: EdgeInsets.only(right: 5),
+                                                padding:
+                                                    EdgeInsets.only(right: 5),
                                                 child: Text('Vietnamese'),
                                               )),
                                         ],
@@ -152,7 +167,8 @@ class _ActionTabState extends State<ActionTab> {
                               ),
                           ],
                         ),
-                        if (idx != widget.functions.length - 1) const SizedBox(height: 12),
+                        if (idx != widget.functions.length - 1)
+                          const SizedBox(height: 12),
                       ],
                     ),
                   ),

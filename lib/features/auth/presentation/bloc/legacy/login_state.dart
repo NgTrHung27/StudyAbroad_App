@@ -3,6 +3,7 @@ import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 
 @immutable
 abstract class LoginState {}
+
 class LoginCheckSessionState extends LoginState {
   final bool isLoggedIn;
   final String? token;

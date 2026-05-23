@@ -5,7 +5,7 @@ import 'package:study_abroad_cemc_mobile/features/schools/domain/failures/school
 abstract class SchoolRepository {
   /// Fetch all schools
   Future<Either<SchoolFailure, List<SchoolEntity>>> getSchools();
-  
+
   /// Fetch unique countries from schools
   Future<Either<SchoolFailure, List<String>>> getUniqueCountries();
 }

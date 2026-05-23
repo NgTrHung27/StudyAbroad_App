@@ -4,7 +4,7 @@ import 'contact_state.dart';
 import '../repository/repository.dart';
 import '../../models/schools.dart';
 import '../../models/enum.dart';
-import '../../screens/home/contact_us.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/contact_us.dart';
 
 class ContactUsBloc extends Bloc<ContactUsEvent, ContactUsState> {
   final APIRepository authRepo;

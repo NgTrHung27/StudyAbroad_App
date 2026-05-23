@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:study_abroad_cemc_mobile/blocs/profile_status_cubit_bloc/profile_status_bloc.dart';
-import 'package:study_abroad_cemc_mobile/blocs/profile_status_cubit_bloc/profile_status_state.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/bloc/legacy/profile_status_bloc.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/bloc/legacy/profile_status_state.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 

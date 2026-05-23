@@ -9,7 +9,8 @@ import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/button.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/text_field.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class ChangePass extends BasePage {
   const ChangePass({super.key});
@@ -74,7 +75,9 @@ class _ForgetPassState extends BasePageState<ChangePass> {
             builder: (context, state) {
               return SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.05),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.05,
+                      vertical: screenHeight * 0.05),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -143,7 +146,9 @@ class _ForgetPassState extends BasePageState<ChangePass> {
                                     prefixIcon: Icons.email,
                                     onChanged: (value) {
                                       email = value;
-                                      context.read<ForgotPassBloc>().errorEmail(email);
+                                      context
+                                          .read<ForgotPassBloc>()
+                                          .errorEmail(email);
                                     },
                                   ),
                                   // Display errorMessage if it is not null
@@ -175,7 +180,7 @@ class _ForgetPassState extends BasePageState<ChangePass> {
                             children: [
                               const Divider(
                                 height: 1,
-                                color: Color(0xFFCBD5E1),
+                                color: AppColor.borderGrey,
                                 thickness: 1.0,
                                 indent: 20,
                                 endIndent: 20,

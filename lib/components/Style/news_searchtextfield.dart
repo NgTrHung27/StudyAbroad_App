@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/search_page.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/search_page.dart';
 
 class NewsSearchTextField extends StatelessWidget {
   const NewsSearchTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double orientationSize = MediaQuery.of(context).orientation == Orientation.portrait ? 0.055 : 0.15;
+    double orientationSize =
+        MediaQuery.of(context).orientation == Orientation.portrait
+            ? 0.055
+            : 0.15;
     final screenHeight = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: () {
@@ -47,7 +50,9 @@ class NewsSearchTextField extends StatelessWidget {
               ),
               hintText: homeSearchKey.tr(),
               hintStyle: GoogleFonts.getFont('Montserrat',
-                  color: AppColor.redButton.withValues(alpha: 0.6), fontSize: 19.0, fontWeight: FontWeight.w500),
+                  color: AppColor.redButton.withValues(alpha: 0.6),
+                  fontSize: 19.0,
+                  fontWeight: FontWeight.w500),
               prefixIcon: Icon(
                 Icons.search,
                 color: AppColor.redButton,

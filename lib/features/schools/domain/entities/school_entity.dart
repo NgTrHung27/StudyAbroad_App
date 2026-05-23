@@ -39,8 +39,21 @@ class SchoolEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id, logo, background, name, short, description, history, color, isPublished, country,
-        locations, programs, scholarships, createdAt, updatedAt
+        id,
+        logo,
+        background,
+        name,
+        short,
+        description,
+        history,
+        color,
+        isPublished,
+        country,
+        locations,
+        programs,
+        scholarships,
+        createdAt,
+        updatedAt
       ];
 }
 

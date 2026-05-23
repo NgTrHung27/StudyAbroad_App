@@ -1,5 +1,5 @@
 import '../../models/schools.dart';
-import '../../screens/home/contact_us.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/contact_us.dart';
 
 abstract class ContactUsState {}
 

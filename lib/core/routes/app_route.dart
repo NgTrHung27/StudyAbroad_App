@@ -4,29 +4,29 @@ import 'package:study_abroad_cemc_mobile/features/news/domain/entities/news_enti
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/login_page.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/register_page.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/forget_password.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/home_page.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/mainpage.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/home_page.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/mainpage.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/schools_list.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/schools_detail.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_page.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_detail.dart';
-import 'package:study_abroad_cemc_mobile/screens/notifications/notifications_page.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/profile.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/profile_detail.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/profile_status.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/tuition.dart';
-import 'package:study_abroad_cemc_mobile/screens/score/scorepage.dart';
+import 'package:study_abroad_cemc_mobile/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile_detail.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile_status.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/tuition.dart';
+import 'package:study_abroad_cemc_mobile/features/score/presentation/pages/scorepage.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/change_pass.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/logout.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/contact_us.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/search_page.dart';
-import 'package:study_abroad_cemc_mobile/screens/scholarships/scholarships_list.dart';
-import 'package:study_abroad_cemc_mobile/screens/scholarships/scholarships_detail.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/contact_us.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/search_page.dart';
+import 'package:study_abroad_cemc_mobile/features/scholarships/presentation/pages/scholarships_list.dart';
+import 'package:study_abroad_cemc_mobile/features/scholarships/presentation/pages/scholarships_detail.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/compare_schools.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/respond.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/response_requested_detail.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/response_requested.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/requested.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/respond.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/response_requested_detail.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/response_requested.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/requested.dart';
 
 class AppRoute {
   static const String login = '/login';
@@ -74,26 +74,31 @@ class AppRoute {
         if (args != null && args is Map && args.containsKey('index')) {
           initialIndex = args['index'] as int;
         }
-        return MaterialPageRoute(builder: (_) => MainPage(initialIndex: initialIndex));
+        return MaterialPageRoute(
+            builder: (_) => MainPage(initialIndex: initialIndex));
       case schools:
         final args = settings.arguments;
         String country = 'ALL';
         if (args != null && args is Map && args.containsKey('country')) {
           country = args['country'] as String;
         }
-        return MaterialPageRoute(builder: (_) => SchoolsListPage(country: country));
+        return MaterialPageRoute(
+            builder: (_) => SchoolsListPage(country: country));
       case schoolDetail:
         final school = settings.arguments;
         if (school is SchoolEntity) {
-          return MaterialPageRoute(builder: (_) => SchoolsDetail(school: school));
+          return MaterialPageRoute(
+              builder: (_) => SchoolsDetail(school: school));
         }
-        return MaterialPageRoute(builder: (_) => const SchoolsListPage(country: 'ALL'));
+        return MaterialPageRoute(
+            builder: (_) => const SchoolsListPage(country: 'ALL'));
       case news:
         return MaterialPageRoute(builder: (_) => const NewsPage());
       case newsDetail:
         final newsData = settings.arguments;
         if (newsData is NewsEntity) {
-          return MaterialPageRoute(builder: (_) => NewsDetailPage(news: newsData));
+          return MaterialPageRoute(
+              builder: (_) => NewsDetailPage(news: newsData));
         }
         return MaterialPageRoute(builder: (_) => const NewsPage());
       case notifications:
@@ -111,7 +116,9 @@ class AppRoute {
       case profilestatus:
         return MaterialPageRoute(builder: (_) => const ProfileStatus());
       case scholarDetail:
-        return MaterialPageRoute(builder: (_) => const ScholarshipsDetail(name: '', description: '', id: ''));
+        return MaterialPageRoute(
+            builder: (_) =>
+                const ScholarshipsDetail(name: '', description: '', id: ''));
       case tuition:
         return MaterialPageRoute(builder: (_) => const TuitionStatus());
       case score:
@@ -123,46 +130,55 @@ class AppRoute {
       case scholarshipDetail:
         final args = settings.arguments;
         if (args != null && args is Map) {
-          return MaterialPageRoute(builder: (_) => ScholarshipsDetail(
-            name: args['name'] ?? '',
-            description: args['description'] ?? '',
-            id: args['id'] ?? '',
-          ));
+          return MaterialPageRoute(
+              builder: (_) => ScholarshipsDetail(
+                    name: args['name'] ?? '',
+                    description: args['description'] ?? '',
+                    id: args['id'] ?? '',
+                  ));
         }
         return MaterialPageRoute(builder: (_) => const ScholarshipsList());
       case compareSchool:
         final args = settings.arguments;
         if (args != null && args is Map && args.containsKey('schoolNames')) {
-          return MaterialPageRoute(builder: (_) => CompareSchoolsPage(schoolNames: args['schoolNames']));
+          return MaterialPageRoute(
+              builder: (_) =>
+                  CompareSchoolsPage(schoolNames: args['schoolNames']));
         }
-        return MaterialPageRoute(builder: (_) => const CompareSchoolsPage(schoolNames: []));
+        return MaterialPageRoute(
+            builder: (_) => const CompareSchoolsPage(schoolNames: []));
       case respondrequest:
         final args = settings.arguments;
         if (args != null && args is Map) {
-          return MaterialPageRoute(builder: (_) => Respond(
-            title: args['title'] ?? '',
-            description: args['description'] ?? '',
-            id: args['id'] ?? '',
-            images: args['images'],
-          ));
+          return MaterialPageRoute(
+              builder: (_) => Respond(
+                    title: args['title'] ?? '',
+                    description: args['description'] ?? '',
+                    id: args['id'] ?? '',
+                    images: args['images'],
+                  ));
         }
-        return MaterialPageRoute(builder: (_) => Respond(
-          title: '',
-          description: '',
-          id: '',
-          images: null,
-        ));
+        return MaterialPageRoute(
+            builder: (_) => Respond(
+                  title: '',
+                  description: '',
+                  id: '',
+                  images: null,
+                ));
       case respondrequested:
         return MaterialPageRoute(builder: (_) => const ResponseRequested());
       case respondrequesteddetail:
         final args = settings.arguments;
         if (args != null && args is Map) {
-          return MaterialPageRoute(builder: (_) => ResponseRequestedDetail(
-            title: args['title'] ?? '',
-            replies: args['replies'] ?? [],
-          ));
+          return MaterialPageRoute(
+              builder: (_) => ResponseRequestedDetail(
+                    title: args['title'] ?? '',
+                    replies: args['replies'] ?? [],
+                  ));
         }
-        return MaterialPageRoute(builder: (_) => const ResponseRequestedDetail(title: '', replies: []));
+        return MaterialPageRoute(
+            builder: (_) =>
+                const ResponseRequestedDetail(title: '', replies: []));
       case requested:
         return MaterialPageRoute(builder: (_) => const ResponseRequest());
       default:

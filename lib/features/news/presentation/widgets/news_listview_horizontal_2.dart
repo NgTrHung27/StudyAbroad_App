@@ -54,7 +54,9 @@ class NewsListViewShortState extends State<NewsListViewShort> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => NewsDetailPage(news: newsList[index])),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              NewsDetailPage(news: newsList[index])),
                     );
                   },
                   child: Container(

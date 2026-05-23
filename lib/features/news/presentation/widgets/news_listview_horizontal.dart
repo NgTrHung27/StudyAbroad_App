@@ -52,7 +52,9 @@ class NewsListViewState extends State<NewsListView> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => NewsDetailPage(news: newsList[index])),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              NewsDetailPage(news: newsList[index])),
                     );
                   },
                   child: Container(

@@ -28,7 +28,8 @@ class ChangePassBloc extends Bloc<ChangePassEvent, ChangePassState> {
       ChangePassSubmitEvent event, Emitter<ChangePassState> emit) async {
     emit(ChangePassLoading());
     try {
-      UserChangePass? userChangePass = await _apiRepository.changePass(event.email);
+      UserChangePass? userChangePass =
+          await _apiRepository.changePass(event.email);
       if (userChangePass != null && userChangePass.error == null) {
         emit(ChangePassSuccess(userChangePass));
       } else {

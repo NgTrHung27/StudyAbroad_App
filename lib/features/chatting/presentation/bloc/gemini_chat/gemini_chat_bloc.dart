@@ -11,7 +11,8 @@ class GeminiChatBloc extends Bloc<GeminiChatEvent, GeminiChatState> {
   final ChatUser geminiUser = ChatUser(
     id: "1",
     firstName: "Gemini",
-    profileImage: "https://seeklogo.com/images/G/google-gemini-logo-A5787B2669-seeklogo.com.png",
+    profileImage:
+        "https://seeklogo.com/images/G/google-gemini-logo-A5787B2669-seeklogo.com.png",
   );
 
   GeminiChatBloc(this._repository) : super(GeminiChatState.initial()) {
@@ -19,7 +20,8 @@ class GeminiChatBloc extends Bloc<GeminiChatEvent, GeminiChatState> {
     on<ClearGeminiChat>((event, emit) => emit(GeminiChatState.initial()));
   }
 
-  Future<void> _onSendGeminiMessage(SendGeminiMessage event, Emitter<GeminiChatState> emit) async {
+  Future<void> _onSendGeminiMessage(
+      SendGeminiMessage event, Emitter<GeminiChatState> emit) async {
     // Add user message to UI
     final newMessages = [event.message, ...state.messages];
     emit(state.copyWith(messages: newMessages, error: null));
@@ -42,9 +44,10 @@ class GeminiChatBloc extends Bloc<GeminiChatEvent, GeminiChatState> {
           (failure) => state.copyWith(error: failure.message),
           (chunk) {
             final List<ChatMessage> updatedMessages = List.from(state.messages);
-            
+
             // Check if last message was from Gemini
-            if (updatedMessages.isNotEmpty && updatedMessages.first.user.id == geminiUser.id) {
+            if (updatedMessages.isNotEmpty &&
+                updatedMessages.first.user.id == geminiUser.id) {
               final lastMessage = updatedMessages.removeAt(0);
               lastMessage.text += chunk;
               updatedMessages.insert(0, lastMessage);

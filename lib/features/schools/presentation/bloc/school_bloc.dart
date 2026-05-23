@@ -21,7 +21,8 @@ class SchoolBloc extends Bloc<SchoolEvent, SchoolState> {
     emit(SchoolsLoading());
     final result = await _repository.getSchools();
     result.fold(
-      (failure) => emit(SchoolsError(message: failure.message, failure: failure)),
+      (failure) =>
+          emit(SchoolsError(message: failure.message, failure: failure)),
       (schools) => emit(SchoolsLoaded(schoolList: schools)),
     );
   }
@@ -33,11 +34,11 @@ class SchoolBloc extends Bloc<SchoolEvent, SchoolState> {
     emit(SchoolsLoading());
     final result = await _repository.getSchools();
     result.fold(
-      (failure) => emit(SchoolsError(message: failure.message, failure: failure)),
+      (failure) =>
+          emit(SchoolsError(message: failure.message, failure: failure)),
       (schools) {
-        final filteredList = schools
-            .where((school) => school.country == event.country)
-            .toList();
+        final filteredList =
+            schools.where((school) => school.country == event.country).toList();
         emit(SchoolsLoaded(schoolList: filteredList));
       },
     );
@@ -50,7 +51,8 @@ class SchoolBloc extends Bloc<SchoolEvent, SchoolState> {
     emit(SchoolsLoading());
     final result = await _repository.getUniqueCountries();
     result.fold(
-      (failure) => emit(SchoolsError(message: failure.message, failure: failure)),
+      (failure) =>
+          emit(SchoolsError(message: failure.message, failure: failure)),
       (countries) => emit(UniqueCountriesLoaded(countries)),
     );
   }

@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 TextSpan styledTextSpan(String text,
     {Color color = Colors.black,
     FontWeight fontWeight = FontWeight.w500,

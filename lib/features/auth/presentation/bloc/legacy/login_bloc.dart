@@ -12,7 +12,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   late SharedPreferences logindata;
   UserAuthLogin? userAuthLogin;
 
-  LoginBloc(this._apiRepository) : super(LoginCheckSessionState(isLoggedIn: false)) {
+  LoginBloc(this._apiRepository)
+      : super(LoginCheckSessionState(isLoggedIn: false)) {
     on<CheckLoginStatusEvent>(_onCheckLoginStatus);
     on<AutoLoginEvent>(_onAutoLogin);
     on<LoginRequestedEvent>(_onLoginRequested);
@@ -32,14 +33,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final email = logindata.getString('email');
       final password = logindata.getString('password');
       if (email != null && password != null) {
-        add(LoginRequestedEvent(email: email, password: password, isRememberChange: true));
+        add(LoginRequestedEvent(
+            email: email, password: password, isRememberChange: true));
       }
     }
     return null;
   }
 
-  Future<UserAuthLogin?> login(String email, String password, bool isRemember) async {
-    add(LoginRequestedEvent(email: email, password: password, isRememberChange: isRemember));
+  Future<UserAuthLogin?> login(
+      String email, String password, bool isRemember) async {
+    add(LoginRequestedEvent(
+        email: email, password: password, isRememberChange: isRemember));
     return userAuthLogin;
   }
 
@@ -48,13 +52,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     await checkLoginStatus();
   }
 
-  Future<void> _onAutoLogin(AutoLoginEvent event, Emitter<LoginState> emit) async {
+  Future<void> _onAutoLogin(
+      AutoLoginEvent event, Emitter<LoginState> emit) async {
     final email = logindata.getString('email');
     final password = logindata.getString('password');
     final isRemember = logindata.getBool('isRememberChange') ?? false;
 
     if (email != null && password != null) {
-      add(LoginRequestedEvent(email: email, password: password, isRememberChange: isRemember));
+      add(LoginRequestedEvent(
+          email: email, password: password, isRememberChange: isRemember));
     }
   }
 
@@ -76,8 +82,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           await logindata.setString('password', event.password);
           await logindata.setBool('isRememberChange', event.isRememberChange);
         }
-        await logindata.setString(
-            'user', jsonEncode(userAuthLogin.toJson()));
+        await logindata.setString('user', jsonEncode(userAuthLogin.toJson()));
 
         emit(LoginSuccess(userAuthLogin));
       } else {

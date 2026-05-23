@@ -4,6 +4,7 @@ import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/schools_detail.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class SchoolBox extends StatelessWidget {
   final SchoolEntity school;
@@ -51,7 +52,7 @@ class SchoolBox extends StatelessWidget {
     final isDarkMode = context.select(
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
-    final boxColor = isDarkMode ? const Color(0xff3F3F46) : Colors.white;
+    final boxColor = isDarkMode ? AppColor.backgrTabDark : Colors.white;
     return Padding(
       padding: EdgeInsets.only(bottom: screenHeight * 0.015),
       child: GestureDetector(
@@ -87,7 +88,9 @@ class SchoolBox extends StatelessWidget {
                           stops: parseGradient(school.color).stops,
                           colors: parseGradient(school.color)
                               .colors
-                              .map((color) => color.withValues(alpha: 0.35),)
+                              .map(
+                                (color) => color.withValues(alpha: 0.35),
+                              )
                               .toList(),
                         ),
                       ),

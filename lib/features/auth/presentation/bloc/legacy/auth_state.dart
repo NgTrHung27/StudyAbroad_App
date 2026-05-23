@@ -100,6 +100,7 @@ class AuthLoadedState extends AuthState {
   final List<String> countries;
   AuthLoadedState({required this.schools, required this.countries});
 }
+
 class AuthErrorNamedSchoolState extends AuthState {
   final String error;
   AuthErrorNamedSchoolState(this.error);

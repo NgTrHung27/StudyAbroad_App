@@ -9,7 +9,7 @@ import 'package:study_abroad_cemc_mobile/components/functions/circle_avatarimg.d
 import 'package:study_abroad_cemc_mobile/features/news/presentation/widgets/news_listview_vertical.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/widgets/news_listview_horizontal.dart';
 
@@ -24,18 +24,22 @@ class NewsPage extends BasePage {
 class _NewsPageState extends BasePageState<NewsPage> {
   @override
   Widget build(BuildContext context) {
-    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth =
+        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     final isLoggedIn = userAuth != null;
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     //theme
-    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
     return Scaffold(
-      backgroundColor: context.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
+      backgroundColor: context.select(
+          (ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
+        padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
         child: ListView(
           children: [
             Row(
@@ -47,7 +51,9 @@ class _NewsPageState extends BasePageState<NewsPage> {
                   },
                 ),
                 CirleAvatarImage(
-                    avatarImgUrl: userAuth?.student?.school.logo != null ? userAuth!.student?.school.logo : null,
+                    avatarImgUrl: userAuth?.student?.school.logo != null
+                        ? userAuth!.student?.school.logo
+                        : null,
                     avatarImgPath: 'assets/logo/logo_red.png',
                     width: 60,
                     height: 60),

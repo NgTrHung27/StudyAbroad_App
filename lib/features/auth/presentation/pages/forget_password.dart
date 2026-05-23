@@ -9,7 +9,8 @@ import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/button.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/text_field.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class ForgetPass extends BasePage {
   const ForgetPass({super.key});
@@ -74,132 +75,138 @@ class _ForgetPassState extends BasePageState<ForgetPass> {
             builder: (context, state) {
               return SingleChildScrollView(
                   child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.05),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      BackButtonCircle(onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                      //Logo
-                      SizedBox(width: screenWidth * 0.20),
-                      Image.asset(
-                        context.watch<ThemeSettingBloc>().state.isDarkMode
-                            ? "assets/logo/logo_white.png"
-                            : "assets/logo/logo_red.png",
-                        height: 80,
-                      ),
-                      SizedBox(width: screenWidth * 0.25),
-                      Container(width: 35)
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextMonserats(
-                        forgotTitleKey.tr(),
-                        textAlign: TextAlign.center,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 28,
-                      ),
-                      const SizedBox(height: 10),
-                      TextMonserats(
-                        forgotSubtitleKey.tr(),
-                        textAlign: TextAlign.center,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 70),
-                  Column(
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.05,
+                    vertical: screenHeight * 0.05),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          TextMonserats(
-                            forgotEmailKey.tr(),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
+                          BackButtonCircle(onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                          //Logo
+                          SizedBox(width: screenWidth * 0.20),
+                          Image.asset(
+                            context.watch<ThemeSettingBloc>().state.isDarkMode
+                                ? "assets/logo/logo_white.png"
+                                : "assets/logo/logo_red.png",
+                            height: 80,
                           ),
+                          SizedBox(width: screenWidth * 0.25),
+                          Container(width: 35)
                         ],
                       ),
-                      const SizedBox(height: 25),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              MyTextField(
-                                controller: usermailController,
-                                hintText: registerEmailKey.tr(),
-                                obscureText: false,
-                                prefixIcon: Icons.email,
-                                onChanged: (value) {
-                                  email = value;
-                                  context.read<ForgotPassBloc>().errorEmail(email);
-                                },
-                              ),
-                              // Display errorMessage if it is not null
-                              if (errorMessage != null)
-                                TextMonserats(
-                                  errorMessage!,
-                                  color: Colors.red,
-                                  textAlign: TextAlign.left,
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MyButton(
-                            text: forgotSendKey.tr(),
-                            onTap: () {
-                              userForgetPass(context);
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: screenHeight * 0.32),
+                      const SizedBox(height: 20),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Divider(
-                            height: 1,
-                            color: Color(0xFFCBD5E1),
-                            thickness: 1.0,
-                            indent: 20,
-                            endIndent: 20,
+                          TextMonserats(
+                            forgotTitleKey.tr(),
+                            textAlign: TextAlign.center,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 28,
                           ),
-                          SizedBox(height: screenHeight * 0.02),
+                          const SizedBox(height: 10),
+                          TextMonserats(
+                            forgotSubtitleKey.tr(),
+                            textAlign: TextAlign.center,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 70),
+                      Column(
+                        children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              GestureDetector(
+                              TextMonserats(
+                                forgotEmailKey.tr(),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 25),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  MyTextField(
+                                    controller: usermailController,
+                                    hintText: registerEmailKey.tr(),
+                                    obscureText: false,
+                                    prefixIcon: Icons.email,
+                                    onChanged: (value) {
+                                      email = value;
+                                      context
+                                          .read<ForgotPassBloc>()
+                                          .errorEmail(email);
+                                    },
+                                  ),
+                                  // Display errorMessage if it is not null
+                                  if (errorMessage != null)
+                                    TextMonserats(
+                                      errorMessage!,
+                                      color: Colors.red,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              MyButton(
+                                text: forgotSendKey.tr(),
                                 onTap: () {
-                                  // Navigate back to login screen
-                                  Navigator.pop(context);
+                                  userForgetPass(context);
                                 },
-                                child: TextMonserats(
-                                  forgotBackSignInKey.tr(),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 13,
-                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: screenHeight * 0.32),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Divider(
+                                height: 1,
+                                color: AppColor.borderGrey,
+                                thickness: 1.0,
+                                indent: 20,
+                                endIndent: 20,
+                              ),
+                              SizedBox(height: screenHeight * 0.02),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      // Navigate back to login screen
+                                      Navigator.pop(context);
+                                    },
+                                    child: TextMonserats(
+                                      forgotBackSignInKey.tr(),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ]),
+                    ]),
               ));
             },
           ),

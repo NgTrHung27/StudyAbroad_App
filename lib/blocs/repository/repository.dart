@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:study_abroad_cemc_mobile/core/api/api_url.dart';
+import 'package:study_abroad_cemc_mobile/core/cache/local_storage.dart';
 import 'package:study_abroad_cemc_mobile/models/country.dart';
 import 'package:study_abroad_cemc_mobile/models/news.dart';
 import 'package:study_abroad_cemc_mobile/models/news_school.dart';
@@ -10,10 +11,21 @@ import 'package:study_abroad_cemc_mobile/models/user_changepass.dart';
 import 'package:study_abroad_cemc_mobile/models/user_forgot.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/models/user_register.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/contact_us.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/contact_us.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart' as user_login;
 
 class APIRepository {
+  Future<Map<String, String>> _getHeaders({bool includeToken = true}) async {
+    final headers = {"Content-Type": "application/json"};
+    if (includeToken) {
+      final token = LocalStorage.getString(StorageKeys.token);
+      if (token != null && token.isNotEmpty) {
+        headers["Authorization"] = "Bearer $token";
+      }
+    }
+    return headers;
+  }
+
   http.Client get httpClient => http.Client();
   Future<UserAuthRegister?> register(
     String email,
@@ -100,33 +112,27 @@ class APIRepository {
     try {
       final response = await httpClient.post(
         Uri.parse(ApiUrls.login),
-        headers: {"Content-Type": "application/json"},
+        headers: await _getHeaders(includeToken: false),
         body: utf8.encode(jsonEncode({"email": email, "password": password})),
       );
 
       final data = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
-        log('data: $data');
-        return UserAuthLogin.fromJson(data);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        log('login data: $data');
+        // Extract tokens
+        final token = data['data']['token'];
+        final refreshToken = data['data']['refreshToken'];
+
+        // Save tokens
+        await LocalStorage.setString(StorageKeys.token, token);
+        if (refreshToken != null) {
+          await LocalStorage.setString(StorageKeys.refreshToken, refreshToken);
+        }
+
+        // Call Me API to get actual user profile
+        return await getMe(password);
       } else if (response.statusCode == 401) {
-        // Tạo một đối tượng UserAuthLogin với thông báo lỗi
-        return UserAuthLogin(
-          id: '',
-          email: email,
-          password: password,
-          emailVerified: DateTime.now(),
-          name: '',
-          dob: DateTime.now(),
-          phoneNumber: '',
-          student: user_login.Student
-              .empty(), // Giả định là bạn có class Student mặc định
-          isLocked: false,
-          token: '',
-          error: data['error'], // Lưu lỗi vào trường error
-        );
-      } else {
-        // Tương tự, trả về đối tượng UserAuthLogin với lỗi
         return UserAuthLogin(
           id: '',
           email: email,
@@ -138,10 +144,58 @@ class APIRepository {
           student: user_login.Student.empty(),
           isLocked: false,
           token: '',
-          error: data['error'],
+          error: data['error'] ?? data['message'],
+        );
+      } else {
+        return UserAuthLogin(
+          id: '',
+          email: email,
+          password: password,
+          emailVerified: DateTime.now(),
+          name: '',
+          dob: DateTime.now(),
+          phoneNumber: '',
+          student: user_login.Student.empty(),
+          isLocked: false,
+          token: '',
+          error: data['error'] ?? data['message'],
         );
       }
     } catch (e) {
+      return null;
+    }
+  }
+
+  Future<UserAuthLogin?> getMe(String originalPassword) async {
+    try {
+      final token = LocalStorage.getString(StorageKeys.token);
+      if (token == null || token.isEmpty) return null;
+
+      final response = await httpClient.get(
+        Uri.parse(ApiUrls.currentProfile),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+
+      final data = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        // Build UserAuthLogin from the 'data' field since backend returns { statusCode: 200, data: { ... } }
+        final userData = data['data'];
+        final user = UserAuthLogin.fromJson(userData);
+        // Put token and password back so app doesn't break
+        user.token = token;
+        user.password = originalPassword;
+
+        // Update user cache globally
+        await LocalStorage.setJson(StorageKeys.user, user.toJson());
+
+        return user;
+      }
+      return null;
+    } catch (e) {
+      log('GetMe Error: $e');
       return null;
     }
   }
@@ -197,7 +251,7 @@ class APIRepository {
     try {
       final response = await httpClient.post(
         Uri.parse(ApiUrls.resetPassword),
-        headers: {"Content-Type": "application/json"},
+        headers: await _getHeaders(),
         body: jsonEncode({"email": email}),
       );
 
@@ -217,7 +271,7 @@ class APIRepository {
     try {
       final response = await httpClient.post(
         Uri.parse(ApiUrls.resetPassword),
-        headers: {"Content-Type": "application/json"},
+        headers: await _getHeaders(),
         body: jsonEncode({"email": email}),
       );
 
@@ -301,7 +355,7 @@ class APIRepository {
       });
       final responseContactUs = await httpClient.post(
         Uri.parse(ApiUrls.feedbacks),
-        headers: <String, String>{"Content-Type": "application/json"},
+        headers: await _getHeaders(),
         body: jsonDataContact,
       );
 

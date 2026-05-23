@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class ActiontabResult extends StatefulWidget {
   final String result;
@@ -17,9 +18,9 @@ class _ActiontabResultState extends State<ActiontabResult> {
 
     // Define color for each result
     if (widget.result == 'APPROVED') {
-      backgroundColor = const Color(0xff65AF37);
+      backgroundColor = AppColor.greenLight;
     } else if (widget.result == 'DENIED') {
-      backgroundColor = const Color(0xffB61919);
+      backgroundColor = AppColor.redCancel;
     } else if (widget.result == 'PENDING') {
       backgroundColor = Colors.grey;
     }

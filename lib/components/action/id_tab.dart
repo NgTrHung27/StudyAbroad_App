@@ -31,8 +31,7 @@ class _IdTabState extends State<IdTab> {
             as ImageProvider<Object>
         : AssetImage(widget.avatarImgPath) as ImageProvider<Object>;
     final screenWidth = MediaQuery.of(context).size.width;
-    final isDarkMode =
-        context.watch<ThemeSettingBloc>().state.isDarkMode;
+    final isDarkMode = context.watch<ThemeSettingBloc>().state.isDarkMode;
     return Container(
       height: 80,
       width: screenWidth * 0.9,

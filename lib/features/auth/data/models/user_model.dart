@@ -20,7 +20,8 @@ class UserModel extends UserEntity {
       id: json['id'] as String? ?? '',
       email: json['email'] as String? ?? '',
       name: json['name'] as String?,
-      dob: json['dob'] != null ? DateTime.tryParse(json['dob'] as String) : null,
+      dob:
+          json['dob'] != null ? DateTime.tryParse(json['dob'] as String) : null,
       phoneNumber: json['phoneNumber'] as String?,
       image: json['image'] as String?,
       isLocked: json['isLocked'] as bool? ?? false,

@@ -16,14 +16,17 @@ class NewsRepositoryImpl implements NewsRepository {
   Future<Either<NewsFailure, List<NewsEntity>>> getGeneralNews() async {
     try {
       final response = await _client.get(Uri.parse(ApiUrls.news));
-      
+
       if (response.statusCode == 200) {
-        List<dynamic> data = jsonDecode(utf8.decode(latin1.encode(response.body)));
-        List<NewsModel> allNews = data.map((json) => NewsModel.fromJson(json)).toList();
-        
+        List<dynamic> data =
+            jsonDecode(utf8.decode(latin1.encode(response.body)));
+        List<NewsModel> allNews =
+            data.map((json) => NewsModel.fromJson(json)).toList();
+
         // Filter out news that have a specific school attached (general news)
-        List<NewsModel> generalNews = allNews.where((news) => news.school?.name == null).toList();
-        
+        List<NewsModel> generalNews =
+            allNews.where((news) => news.school?.name == null).toList();
+
         return Right(generalNews);
       } else {
         return const Left(NewsServerFailure('Failed to load news'));
@@ -34,17 +37,21 @@ class NewsRepositoryImpl implements NewsRepository {
   }
 
   @override
-  Future<Either<NewsFailure, List<NewsEntity>>> getSchoolNews(String schoolName) async {
+  Future<Either<NewsFailure, List<NewsEntity>>> getSchoolNews(
+      String schoolName) async {
     try {
       final response = await _client.get(Uri.parse(ApiUrls.news));
-      
+
       if (response.statusCode == 200) {
-        List<dynamic> data = jsonDecode(utf8.decode(latin1.encode(response.body)));
-        List<NewsModel> allNews = data.map((json) => NewsModel.fromJson(json)).toList();
-        
+        List<dynamic> data =
+            jsonDecode(utf8.decode(latin1.encode(response.body)));
+        List<NewsModel> allNews =
+            data.map((json) => NewsModel.fromJson(json)).toList();
+
         // Filter news for the specific school
-        List<NewsModel> schoolNews = allNews.where((news) => news.school?.name == schoolName).toList();
-        
+        List<NewsModel> schoolNews =
+            allNews.where((news) => news.school?.name == schoolName).toList();
+
         return Right(schoolNews);
       } else {
         return const Left(NewsServerFailure('Failed to load school news'));

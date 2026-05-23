@@ -40,14 +40,14 @@ class SchoolModel extends SchoolEntity {
               json["programs"].map((x) => SchoolProgramModel.fromJson(x)))
           : null,
       scholarships: json["scholarships"] != null
-          ? List<SchoolScholarshipModel>.from(
-              json["scholarships"].map((x) => SchoolScholarshipModel.fromJson(x)))
+          ? List<SchoolScholarshipModel>.from(json["scholarships"]
+              .map((x) => SchoolScholarshipModel.fromJson(x)))
           : null,
-      createdAt: json["createdAt"] != null 
-          ? DateTime.parse(json["createdAt"]) 
+      createdAt: json["createdAt"] != null
+          ? DateTime.parse(json["createdAt"])
           : DateTime.now(),
-      updatedAt: json["updatedAt"] != null 
-          ? DateTime.parse(json["updatedAt"]) 
+      updatedAt: json["updatedAt"] != null
+          ? DateTime.parse(json["updatedAt"])
           : DateTime.now(),
     );
   }
@@ -63,9 +63,13 @@ class SchoolModel extends SchoolEntity {
         "color": color,
         "isPublished": isPublished,
         "country": country,
-        "locations": locations?.map((x) => (x as SchoolLocationModel).toJson()).toList(),
-        "programs": programs?.map((x) => (x as SchoolProgramModel).toJson()).toList(),
-        "scholarships": scholarships?.map((x) => (x as SchoolScholarshipModel).toJson()).toList(),
+        "locations":
+            locations?.map((x) => (x as SchoolLocationModel).toJson()).toList(),
+        "programs":
+            programs?.map((x) => (x as SchoolProgramModel).toJson()).toList(),
+        "scholarships": scholarships
+            ?.map((x) => (x as SchoolScholarshipModel).toJson())
+            .toList(),
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
       };

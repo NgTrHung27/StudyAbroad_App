@@ -36,7 +36,8 @@ class ForgotPassBloc extends Bloc<ForgotPassEvent, ForgotPassState> {
       ForgotPassSubmitEvent event, Emitter<ForgotPassState> emit) async {
     emit(ForgotPassLoading());
     try {
-      UserForgotpass? userForgotpass = await _apiRepository.forgotPass(event.email);
+      UserForgotpass? userForgotpass =
+          await _apiRepository.forgotPass(event.email);
       if (userForgotpass != null && userForgotpass.error == null) {
         emit(ForgotPassSuccess(userForgotpass));
       } else {

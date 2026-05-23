@@ -16,7 +16,7 @@ import 'package:study_abroad_cemc_mobile/models/chat_message.dart';
 import 'package:study_abroad_cemc_mobile/models/chat_session.dart';
 import 'package:study_abroad_cemc_mobile/models/chat_session_role.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/client_id.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -91,7 +91,8 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
   }
 
   void _sortMessages() {
-    _currentChatSession.messages?.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    _currentChatSession.messages
+        ?.sort((a, b) => b.createdAt.compareTo(a.createdAt));
   }
 
   Future<void> _loadChatSession() async {
@@ -101,7 +102,8 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
       );
 
       if (chatSessionResponse.statusCode == 200) {
-        final chatSessionData = json.decode(utf8.decode(chatSessionResponse.bodyBytes));
+        final chatSessionData =
+            json.decode(utf8.decode(chatSessionResponse.bodyBytes));
         final newChatSession = ChatSession.fromJson(chatSessionData);
 
         setState(() {
@@ -141,7 +143,8 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
       var newMsgFromAbly = message.data;
 
       // Kiểm tra nếu tin nhắn này là của chính người dùng
-      if (newMsgFromAbly is String && newMsgFromAbly == _messageController.text) {
+      if (newMsgFromAbly is String &&
+          newMsgFromAbly == _messageController.text) {
         // Tin nhắn này đã được gửi bởi người dùng, không cần thêm vào danh sách nữa
         return;
       }
@@ -240,9 +243,10 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
   @override
   Widget build(BuildContext context) {
     //Theme
-    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final redCorlor = AppColor.redButton;
-    final containerUserBox = isDarkMode ? const Color(0xffD9D9D9) : Colors.white;
+    final containerUserBox = isDarkMode ? AppColor.greyChatBox : Colors.white;
 
     return Scaffold(
         appBar: AppBar(
@@ -266,7 +270,8 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
               children: [
                 Expanded(
                   child: Material(
-                    color: context.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
+                    color: context.select((ThemeSettingBloc bloc) =>
+                        bloc.state.scaffoldBackgroundColor),
                     child: DashChat(
                       inputOptions: InputOptions(
                         alwaysShowSend: true,
@@ -294,7 +299,7 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
                             fontWeight: FontWeight.w400,
                           ),
                           enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFFCBD5E1)),
+                            borderSide: BorderSide(color: AppColor.borderGrey),
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20),
@@ -333,7 +338,9 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
                       },
                       messages: _currentChatSession.messages
                               ?.map((message) => ChatMessage(
-                                    user: message.role == ChatSessionRole.ADMIN ? system : currentUser,
+                                    user: message.role == ChatSessionRole.ADMIN
+                                        ? system
+                                        : currentUser,
                                     createdAt: message.createdAt,
                                     text: message.message,
                                   ))
@@ -351,12 +358,14 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
                         showOtherUsersAvatar: true,
                         showTime: true,
                         showOtherUsersName: true,
-                        avatarBuilder: (user, onPressAvatar, onLongPressAvatar) {
+                        avatarBuilder:
+                            (user, onPressAvatar, onLongPressAvatar) {
                           return GestureDetector(
                             onTap: () => onPressAvatar?.call(user),
                             onLongPress: () => onLongPressAvatar?.call(user),
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(user.profileImage ?? ''),
+                              backgroundImage:
+                                  NetworkImage(user.profileImage ?? ''),
                               backgroundColor: Colors.white,
                               radius: 20,
                             ),
@@ -378,13 +387,15 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
-                          margin: const EdgeInsets.only(bottom: 100), // Khoảng cách từ đáy màn hình
+                          margin: const EdgeInsets.only(
+                              bottom: 100), // Khoảng cách từ đáy màn hình
                           decoration: const BoxDecoration(
                             color: Colors.grey,
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                           child: ClipRRect(
-                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
                             child: Container(
                               height: 62,
                               width: 420,

@@ -10,16 +10,19 @@ import 'package:study_abroad_cemc_mobile/features/schools/domain/repositories/sc
 class SchoolRepositoryImpl implements SchoolRepository {
   final http.Client _client;
 
-  SchoolRepositoryImpl({http.Client? client}) : _client = client ?? http.Client();
+  SchoolRepositoryImpl({http.Client? client})
+      : _client = client ?? http.Client();
 
   @override
   Future<Either<SchoolFailure, List<SchoolEntity>>> getSchools() async {
     try {
       final response = await _client.get(Uri.parse(ApiUrls.schoolsFull));
-      
+
       if (response.statusCode == 200) {
-        List<dynamic> data = jsonDecode(utf8.decode(latin1.encode(response.body)));
-        List<SchoolModel> schools = data.map((json) => SchoolModel.fromJson(json)).toList();
+        List<dynamic> data =
+            jsonDecode(utf8.decode(latin1.encode(response.body)));
+        List<SchoolModel> schools =
+            data.map((json) => SchoolModel.fromJson(json)).toList();
         return Right(schools);
       } else {
         return const Left(SchoolServerFailure('Failed to load schools'));
@@ -33,14 +36,18 @@ class SchoolRepositoryImpl implements SchoolRepository {
   Future<Either<SchoolFailure, List<String>>> getUniqueCountries() async {
     try {
       final response = await _client.get(Uri.parse(ApiUrls.schools));
-      
+
       if (response.statusCode == 200) {
-        List<dynamic> data = jsonDecode(utf8.decode(latin1.encode(response.body)));
-        List<SchoolModel> schools = data.map((json) => SchoolModel.fromJson(json)).toList();
-        List<String> countries = schools.map((school) => school.country).toSet().toList();
+        List<dynamic> data =
+            jsonDecode(utf8.decode(latin1.encode(response.body)));
+        List<SchoolModel> schools =
+            data.map((json) => SchoolModel.fromJson(json)).toList();
+        List<String> countries =
+            schools.map((school) => school.country).toSet().toList();
         return Right(countries);
       } else {
-        return const Left(SchoolServerFailure('Failed to load unique countries'));
+        return const Left(
+            SchoolServerFailure('Failed to load unique countries'));
       }
     } catch (e) {
       return const Left(SchoolNetworkFailure());

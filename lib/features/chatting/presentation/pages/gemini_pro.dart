@@ -11,7 +11,7 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/bloc/gemini_chat/gemini_chat_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/bloc/gemini_chat/gemini_chat_event.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/bloc/gemini_chat/gemini_chat_state.dart';
@@ -63,22 +63,25 @@ class _GeminiAIState extends BasePageState<GeminiAIPro> {
 
   @override
   Widget build(BuildContext context) {
-    final userAuth = this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth =
+        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
     String newUserName = userAuth?.name ?? 'N/A';
     String newAvtUser = userAuth?.student?.school.logo ??
         'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg';
-    
+
     if (newUserName != userName) {
       setState(() {
         userName = newUserName;
-        currentUser = ChatUser(id: "0", firstName: userName, profileImage: newAvtUser);
+        currentUser =
+            ChatUser(id: "0", firstName: userName, profileImage: newAvtUser);
       });
     }
 
-    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final redCorlor = AppColor.redButton;
     final textColorWhite = isDarkMode ? Colors.white : Colors.black;
-    final containerUserBox = isDarkMode ? const Color(0xffD9D9D9) : Colors.white;
+    final containerUserBox = isDarkMode ? AppColor.greyChatBox : Colors.white;
 
     return Scaffold(
       appBar: AppBar(
@@ -107,13 +110,27 @@ class _GeminiAIState extends BasePageState<GeminiAIPro> {
           }
         },
         builder: (context, state) {
-          return _buildUI(redCorlor, subtitle, aiChattingInputKey.tr(), containerUserBox, textColorWhite, errorConnectionKey.tr(), state.messages);
+          return _buildUI(
+              redCorlor,
+              subtitle,
+              aiChattingInputKey.tr(),
+              containerUserBox,
+              textColorWhite,
+              errorConnectionKey.tr(),
+              state.messages);
         },
       ),
     );
   }
 
-  Widget _buildUI(Color redCorlor, String subtitle, String hintText, Color containerUserBox, Color textColorWhite, String errorConn, List<ChatMessage> messages) {
+  Widget _buildUI(
+      Color redCorlor,
+      String subtitle,
+      String hintText,
+      Color containerUserBox,
+      Color textColorWhite,
+      String errorConn,
+      List<ChatMessage> messages) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Stack(children: [
@@ -122,7 +139,8 @@ class _GeminiAIState extends BasePageState<GeminiAIPro> {
             alwaysShowSend: true,
             sendButtonBuilder: (send) {
               return IconButton(
-                icon: ImageIcon(const AssetImage('assets/send.png'), color: redCorlor),
+                icon: ImageIcon(const AssetImage('assets/send.png'),
+                    color: redCorlor),
                 onPressed: send,
               );
             },
@@ -148,7 +166,7 @@ class _GeminiAIState extends BasePageState<GeminiAIPro> {
                   fontWeight: FontWeight.w400,
                 ),
                 enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFCBD5E1)),
+                    borderSide: BorderSide(color: AppColor.borderGrey),
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20),
                       bottomRight: Radius.circular(20),
@@ -181,7 +199,9 @@ class _GeminiAIState extends BasePageState<GeminiAIPro> {
             setState(() {
               _hasSentFirstMessage = true;
             });
-            context.read<GeminiChatBloc>().add(SendGeminiMessage(message, modelName: 'gemini-1.5-pro'));
+            context
+                .read<GeminiChatBloc>()
+                .add(SendGeminiMessage(message, modelName: 'gemini-1.5-pro'));
           },
           messages: messages,
           messageListOptions: MessageListOptions(
@@ -241,7 +261,9 @@ class _GeminiAIState extends BasePageState<GeminiAIPro> {
       setState(() {
         _hasSentFirstMessage = true;
       });
-      context.read<GeminiChatBloc>().add(SendGeminiMessage(chatMessage, modelName: 'gemini-1.5-pro'));
+      context
+          .read<GeminiChatBloc>()
+          .add(SendGeminiMessage(chatMessage, modelName: 'gemini-1.5-pro'));
     }
   }
 }

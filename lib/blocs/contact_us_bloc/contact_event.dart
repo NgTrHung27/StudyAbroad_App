@@ -44,5 +44,6 @@ class ContactSendFormEvent extends ContactUsEvent {
   });
 
   @override
-  List<Object?> get props => [fullName, email, valueTitle, phone, message, selectedSchool];
+  List<Object?> get props =>
+      [fullName, email, valueTitle, phone, message, selectedSchool];
 }

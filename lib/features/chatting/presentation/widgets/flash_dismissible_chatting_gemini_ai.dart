@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/gemini_flash.dart';
+
 class FlashDismissibleBottomSheetView extends StatelessWidget {
   final Widget childView;
 

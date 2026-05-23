@@ -30,7 +30,8 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
     final bgColor = isDarkMode ? AppColor.backgrTabDark : Colors.white;
     return BlocBuilder<NewsBloc, NewsState>(
@@ -58,7 +59,8 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NewsSchoolDetailPage(newsSchool: newsSchoolList[index]),
+                      builder: (context) => NewsSchoolDetailPage(
+                          newsSchool: newsSchoolList[index]),
                     ),
                   );
                 },
@@ -81,7 +83,8 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
                           child: Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage(newsSchoolList[index].cover),
+                                image:
+                                    NetworkImage(newsSchoolList[index].cover),
                                 fit: BoxFit.cover,
                               ),
                             ),

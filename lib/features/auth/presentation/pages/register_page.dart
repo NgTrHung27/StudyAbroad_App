@@ -25,7 +25,7 @@ import 'package:study_abroad_cemc_mobile/models/country.dart';
 import 'package:study_abroad_cemc_mobile/models/enum.dart';
 import 'package:study_abroad_cemc_mobile/models/schools.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/login_page.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 
 class RegisterPage extends BasePage {
   const RegisterPage({super.key});
@@ -56,9 +56,20 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
       errorCertificateTypeMessage,
       errorMessage;
   //Declare
-  String email = '', name = '', password = '', confirmpassword = '', phone = '', idCardNumber = '', dob = '';
+  String email = '',
+      name = '',
+      password = '',
+      confirmpassword = '',
+      phone = '',
+      idCardNumber = '',
+      dob = '';
   Schools? selectedSchoolObject;
-  String? selectedSchool, selectedCountry, selectedProgram, selectedCity, selectedDistrict, selectedWard;
+  String? selectedSchool,
+      selectedCountry,
+      selectedProgram,
+      selectedCity,
+      selectedDistrict,
+      selectedWard;
   String address = '';
   Gender? valueGender;
   DegreeType? valueDegree;
@@ -252,7 +263,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFFB4232A),
+              primary: AppColor.redPrimary,
             ),
           ),
           child: child!,
@@ -438,7 +449,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
               errorText: errorConfrimPasswordMessage,
               onChanged: (value) {
                 confirmpassword = value;
-                context.read<AuthBloc>().add(CheckConfirmPasswordEvent(password, confirmpassword));
+                context
+                    .read<AuthBloc>()
+                    .add(CheckConfirmPasswordEvent(password, confirmpassword));
                 if (confirmpassword.isEmpty) {
                   setState(() {});
                 } else {
@@ -457,7 +470,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
               errorText: errorIDCardNumberMessage,
               onChanged: (value) {
                 idCardNumber = value;
-                context.read<AuthBloc>().add(CheckIdCardNumberEvent(idCardNumber));
+                context
+                    .read<AuthBloc>()
+                    .add(CheckIdCardNumberEvent(idCardNumber));
                 if (idCardNumber.isEmpty) {
                   setState(() {});
                 } else {
@@ -539,7 +554,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                           errorPhoneMessage = null;
                         });
                       }
-                      context.read<AuthBloc>().add(CheckPhoneNumberEvent(phone));
+                      context
+                          .read<AuthBloc>()
+                          .add(CheckPhoneNumberEvent(phone));
                     },
                   ),
                 )
@@ -561,8 +578,10 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                 return DropdownCustom<Country>(
                   icon: Icons.location_city,
                   items: lstCountry,
-                  selectedItem:
-                      selectedCity == null ? null : lstCountry.firstWhereOrNull((element) => element.name == selectedCity),
+                  selectedItem: selectedCity == null
+                      ? null
+                      : lstCountry.firstWhereOrNull(
+                          (element) => element.name == selectedCity),
                   onChanged: (Country? newValueCountry) {
                     if (newValueCountry != null) {
                       cityChange(newValueCountry);
@@ -587,10 +606,19 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     icon: Icons.map,
                     items: selectedCity == null
                         ? []
-                        : lstCountry.firstWhereOrNull((element) => element.name == selectedCity)?.districts ?? [],
+                        : lstCountry
+                                .firstWhereOrNull(
+                                    (element) => element.name == selectedCity)
+                                ?.districts ??
+                            [],
                     selectedItem: selectedDistrict == null
                         ? null
-                        : lstCountry.firstWhereOrNull((element) => element.name == selectedCity)?.districts.firstWhereOrNull((element) => element.name == selectedDistrict),
+                        : lstCountry
+                            .firstWhereOrNull(
+                                (element) => element.name == selectedCity)
+                            ?.districts
+                            .firstWhereOrNull(
+                                (element) => element.name == selectedDistrict),
                     onChanged: (District? newValueDistrict) {
                       setState(() {
                         districtChange(newValueDistrict);
@@ -609,19 +637,25 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                   if (state is AuthLoadedCityState) {
                     lstCountry = state.country;
                   }
-                  final districts = selectedCity == null 
-                      ? <District>[] 
-                      : lstCountry.firstWhereOrNull((element) => element.name == selectedCity)?.districts ?? [];
+                  final districts = selectedCity == null
+                      ? <District>[]
+                      : lstCountry
+                              .firstWhereOrNull(
+                                  (element) => element.name == selectedCity)
+                              ?.districts ??
+                          [];
                   final selectedDistrictObj = selectedDistrict == null
                       ? null
-                      : districts.firstWhereOrNull((element) => element.name == selectedDistrict);
+                      : districts.firstWhereOrNull(
+                          (element) => element.name == selectedDistrict);
                   final wards = selectedDistrictObj?.wards ?? [];
                   return DropdownCustom<Ward>(
                     icon: Icons.location_on,
                     items: wards,
                     selectedItem: selectedWard == null
                         ? null
-                        : wards.firstWhereOrNull((element) => element.name == selectedWard),
+                        : wards.firstWhereOrNull(
+                            (element) => element.name == selectedWard),
                     onChanged: (Ward? newValueWard) {
                       setState(() {
                         wardChange(newValueWard);
@@ -699,7 +733,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                       items: lstschools,
                       selectedItem: selectedSchool == null
                           ? null
-                          : lstschools.firstWhereOrNull((element) => element.name == selectedSchool),
+                          : lstschools.firstWhereOrNull(
+                              (element) => element.name == selectedSchool),
                       onChanged: (Schools? newValueSchool) {
                         setState(() {
                           schoolChange(newValueSchool);
@@ -725,10 +760,13 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                       }
                       return DropdownCustom<SchoolProgram>(
                         icon: Icons.history_edu,
-                        items: selectedSchool == null ? [] : selectedSchoolObject?.programs ?? [],
+                        items: selectedSchool == null
+                            ? []
+                            : selectedSchoolObject?.programs ?? [],
                         selectedItem: selectedProgram == null
                             ? null
-                            : selectedSchoolObject?.programs?.firstWhereOrNull((element) => element.name == selectedProgram),
+                            : selectedSchoolObject?.programs?.firstWhereOrNull(
+                                (element) => element.name == selectedProgram),
                         onChanged: (SchoolProgram? newValueProgram) {
                           setState(() {
                             programChange(newValueProgram);
@@ -752,7 +790,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                         degreeValueChanged(newValueDegree);
                       });
                     },
-                    itemLabel: (DegreeType degreeType) => degreeType.toString().split('.').last,
+                    itemLabel: (DegreeType degreeType) =>
+                        degreeType.toString().split('.').last,
                     hintText: registerDegreeKey.tr(),
                     isExpanded: true,
                   ),
@@ -769,7 +808,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                 });
               },
               selectedItem: selectedCertificateType,
-              itemLabel: (CertificateType certificateType) => certificateType.toString().split('.').last,
+              itemLabel: (CertificateType certificateType) =>
+                  certificateType.toString().split('.').last,
               hintText: registerCertiKey.tr(),
               isExpanded: false,
             ),
@@ -836,7 +876,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     errorGradeMessage = null;
                   });
                 }
-                context.read<AuthBloc>().add(CheckGradeScoreEvent(double.tryParse(value) ?? 0));
+                context
+                    .read<AuthBloc>()
+                    .add(CheckGradeScoreEvent(double.tryParse(value) ?? 0));
               },
             ),
           ],
@@ -849,7 +891,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
     return BlocConsumer<AuthBloc, AuthState>(
@@ -940,7 +983,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
             isLoading = false;
           });
         } else if (state is AuthSuccessState) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const LoginPage()));
           isLoading = false;
         }
       },
@@ -959,9 +1003,12 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
         }
         return Stack(children: [
           Scaffold(
-            backgroundColor: context.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
+            backgroundColor: context.select(
+                (ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
             body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03, vertical: screenHeight * 0.06),
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.03,
+                  vertical: screenHeight * 0.06),
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -990,7 +1037,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     Expanded(
                       child: Theme(
                         data: Theme.of(context).copyWith(
-                            canvasColor: context.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
+                            canvasColor: context.select(
+                                (ThemeSettingBloc bloc) =>
+                                    bloc.state.scaffoldBackgroundColor),
                             colorScheme: Theme.of(context).colorScheme.copyWith(
                                 onSurface: Colors.transparent,
                                 primary: AppColor.redButton,
@@ -1010,7 +1059,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     ),
                     const Divider(
                       height: 1,
-                      color: Color(0xFFCBD5E1),
+                      color: AppColor.borderGrey,
                       thickness: 1.0,
                       indent: 20,
                       endIndent: 20,
@@ -1022,13 +1071,14 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                         text: TextSpan(
                           style: DefaultTextStyle.of(context).style,
                           children: <TextSpan>[
-                            styledTextSpan(registerHaveAccountKey.tr(), color: textColor),
+                            styledTextSpan(registerHaveAccountKey.tr(),
+                                color: textColor),
                             styledTextSpan(
                               logoutSignUpKey.tr(),
                               color: AppColor.redButton,
                               fontWeight: FontWeight.w700,
                               decoration: TextDecoration.underline,
-                              decorationColor: const Color(0xff7D1F1F),
+                              decorationColor: AppColor.redButton,
                               decorationStyle: TextDecorationStyle.solid,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {

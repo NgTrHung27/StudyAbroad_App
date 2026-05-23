@@ -23,13 +23,15 @@ class NewsModel extends NewsEntity {
       cover: json["cover"] ?? '',
       isPublished: json["isPublished"] ?? false,
       schoolId: json["schoolId"],
-      createdAt: json["createdAt"] != null 
-          ? DateTime.parse(json["createdAt"]) 
+      createdAt: json["createdAt"] != null
+          ? DateTime.parse(json["createdAt"])
           : DateTime.now(),
-      updatedAt: json["updatedAt"] != null 
-          ? DateTime.parse(json["updatedAt"]) 
+      updatedAt: json["updatedAt"] != null
+          ? DateTime.parse(json["updatedAt"])
           : DateTime.now(),
-      school: json["school"] != null ? NewsSchoolModel.fromJson(json["school"]) : null,
+      school: json["school"] != null
+          ? NewsSchoolModel.fromJson(json["school"])
+          : null,
     );
   }
 

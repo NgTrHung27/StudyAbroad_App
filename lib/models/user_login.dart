@@ -73,7 +73,8 @@ class UserAuthLogin {
         name: json["name"],
         dob: json["dob"] != null ? DateTime.parse(json["dob"]) : DateTime.now(),
         phoneNumber: json["phoneNumber"] ?? '',
-        student: json["student"] != null ? Student.fromJson(json["student"]) : null,
+        student:
+            json["student"] != null ? Student.fromJson(json["student"]) : null,
         isLocked: json["isLocked"] ?? false,
         token: json["token"] ?? '',
         error: json["error"],

@@ -12,6 +12,7 @@ import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/scho
 import 'package:study_abroad_cemc_mobile/features/news/data/repositories/news_repository_impl.dart';
 import 'package:study_abroad_cemc_mobile/features/news/domain/repositories/news_repository.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_bloc.dart';
+
 final getIt = GetIt.instance;
 
 /// Configure all dependencies for the app
@@ -25,19 +26,24 @@ Future<void> configureDependencies() async {
 
   // Repositories
   getIt.registerLazySingleton<APIRepository>(() => APIRepository());
-  
+
   // Auth Repository (Clean Architecture)
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
 
   // BLoCs (Factory - new instance each time)
   // Clean Architecture Auth BLoC
-  getIt.registerFactory<AuthBloc>(() => AuthBloc(repository: getIt<AuthRepository>()));
+  getIt.registerFactory<AuthBloc>(
+      () => AuthBloc(repository: getIt<AuthRepository>()));
 
   // Schools Feature
-  getIt.registerLazySingleton<SchoolRepository>(() => SchoolRepositoryImpl(client: getIt<http.Client>()));
-  getIt.registerFactory<SchoolBloc>(() => SchoolBloc(repository: getIt<SchoolRepository>()));
+  getIt.registerLazySingleton<SchoolRepository>(
+      () => SchoolRepositoryImpl(client: getIt<http.Client>()));
+  getIt.registerFactory<SchoolBloc>(
+      () => SchoolBloc(repository: getIt<SchoolRepository>()));
 
   // News Feature
-  getIt.registerLazySingleton<NewsRepository>(() => NewsRepositoryImpl(client: getIt<http.Client>()));
-  getIt.registerFactory<NewsBloc>(() => NewsBloc(repository: getIt<NewsRepository>()));
+  getIt.registerLazySingleton<NewsRepository>(
+      () => NewsRepositoryImpl(client: getIt<http.Client>()));
+  getIt.registerFactory<NewsBloc>(
+      () => NewsBloc(repository: getIt<NewsRepository>()));
 }

@@ -26,12 +26,16 @@ void showCustomDialog({
           return AlertDialog(
             // ignore: unnecessary_null_comparison
             title: TextMonserats(title ?? notiTitle,
-                color: AppColor.redButton, fontWeight: FontWeight.w700, fontSize: 20, textAlign: TextAlign.center),
+                color: AppColor.redButton,
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
+                textAlign: TextAlign.center),
             content: TextMonserats(
               notiContent,
               textAlign: TextAlign.center,
             ),
-            backgroundColor: newContext.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
+            backgroundColor: newContext.select(
+                (ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),

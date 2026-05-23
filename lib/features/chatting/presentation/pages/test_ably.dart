@@ -7,7 +7,7 @@ import 'package:study_abroad_cemc_mobile/core/api/api_url.dart';
 import 'package:study_abroad_cemc_mobile/models/chat_message.dart';
 import 'package:study_abroad_cemc_mobile/models/chat_session.dart';
 import 'package:study_abroad_cemc_mobile/models/chat_session_role.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:http/http.dart' as http;
 
 class AblyChat extends BasePage {
@@ -84,10 +84,8 @@ class _AblyChatState extends BasePageState<AblyChat> {
       subscribeToChatChannel();
       realtimeInstance.connection
           .on(ably.ConnectionEvent.connected)
-          .listen((ably.ConnectionStateChange stateChange) async {
-      });
-      chatChannel.subscribe().listen((ably.Message message) {
-      });
+          .listen((ably.ConnectionStateChange stateChange) async {});
+      chatChannel.subscribe().listen((ably.Message message) {});
     } catch (error) {
       print('Error creating Ably Realtime Instance: $error');
       rethrow;

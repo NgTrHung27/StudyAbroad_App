@@ -6,24 +6,24 @@ import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/logout
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/register_page.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/ably_websocket.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/gemini_flash.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/contact_us.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/home_page.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/mainpage.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/splash.dart';
-import 'package:study_abroad_cemc_mobile/screens/intro/intro.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/contact_us.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/home_page.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/mainpage.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/splash.dart';
+import 'package:study_abroad_cemc_mobile/features/intro/presentation/pages/intro.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_page.dart';
-import 'package:study_abroad_cemc_mobile/screens/notifications/notifications_page.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/help_feedback.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/profile.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/profile_detail.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/profile_status.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/requested.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/response_requested.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/scholar_detail.dart';
-import 'package:study_abroad_cemc_mobile/screens/profiles/tuition.dart';
-import 'package:study_abroad_cemc_mobile/screens/scholarships/scholarships_list.dart';
+import 'package:study_abroad_cemc_mobile/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/help_feedback.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile_detail.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile_status.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/requested.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/response_requested.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/scholar_detail.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/tuition.dart';
+import 'package:study_abroad_cemc_mobile/features/scholarships/presentation/pages/scholarships_list.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/schools_list.dart';
-import 'package:study_abroad_cemc_mobile/screens/score/scorepage.dart';
+import 'package:study_abroad_cemc_mobile/features/score/presentation/pages/scorepage.dart';
 
 class AppRoute {
   static Route onGenerateRoute(RouteSettings routeSettings) {

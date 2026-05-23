@@ -32,13 +32,34 @@ class AuthRepositoryImpl implements AuthRepository {
 
       final data = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
-        final user = UserModel.fromJson(data);
-        
-        // Save to local storage
-        await _saveUserToCache(user, email, password);
-        
-        return Right(user);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final token = data['data']['token'];
+        final refreshToken = data['data']['refreshToken'];
+
+        // Save tokens
+        await LocalStorage.setString(StorageKeys.token, token);
+        if (refreshToken != null) {
+          await LocalStorage.setString(StorageKeys.refreshToken, refreshToken);
+        }
+
+        // Fetch User Profile
+        final meResponse = await _client.get(
+          Uri.parse(ApiUrls.currentProfile),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (meResponse.statusCode == 200) {
+          final meData = jsonDecode(utf8.decode(meResponse.bodyBytes));
+          final user = UserModel.fromJson(meData['data']);
+
+          await _saveUserToCache(user, email, password);
+          return Right(user);
+        } else {
+          return Left(ServerErrorFailure(meResponse.statusCode));
+        }
       } else if (response.statusCode == 401) {
         return Left(InvalidCredentialsFailure());
       } else {
@@ -126,7 +147,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await LocalStorage.remove(StorageKeys.user);
       await LocalStorage.remove(StorageKeys.userEmail);
       await LocalStorage.remove(StorageKeys.userPassword);
-      
+
       return const Right(null);
     } catch (e) {
       return Left(const UnknownErrorFailure());
@@ -242,7 +263,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<AuthFailure, void>> deleteAccount() async {
     try {
       final token = LocalStorage.getString(StorageKeys.token);
-      
+
       final response = await _client.delete(
         Uri.parse(ApiUrls.deleteAccount),
         headers: {
