@@ -39,9 +39,7 @@ class _LogoutPageState extends State<LogoutPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          BackButtonCircle(onPressed: () {
-                            Navigator.pop(context);
-                          }),
+                          const SizedBox(width: 40),
                           SizedBox(height: screenHeight * 0.15),
                           const Spacer(),
                           Image.asset(ImageAssets.logoRed, height: 80),
@@ -62,7 +60,8 @@ class _LogoutPageState extends State<LogoutPage> {
                             height: 45,
                             child: SimpleButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/register');
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/register', (route) => false);
                               },
                               child: TextMonserats(logoutSignUpKey.tr(),
                                   color: Colors.white),
@@ -76,7 +75,8 @@ class _LogoutPageState extends State<LogoutPage> {
                               backgroundColor: Colors.transparent,
                               borderColor: Colors.white,
                               onPressed: () {
-                                Navigator.pushNamed(context, '/login');
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/login', (route) => false);
                               },
                               child: TextMonserats(logoutSignInKey.tr(),
                                   color: Colors.white,
@@ -91,7 +91,8 @@ class _LogoutPageState extends State<LogoutPage> {
                               backgroundColor: Colors.transparent,
                               borderColor: Colors.white,
                               onPressed: () {
-                                Navigator.pushNamed(context, '/mainpage');
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/mainpage', (route) => false);
                               },
                               child: TextMonserats(logoutHomeKey.tr(),
                                   color: Colors.white,

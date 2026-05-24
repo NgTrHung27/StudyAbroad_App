@@ -17,14 +17,14 @@ import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_d
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<Profile> createState() => _UserProfileState();
+  State<ProfilePage> createState() => _UserProfileState();
 }
 
-class _UserProfileState extends State<Profile> {
+class _UserProfileState extends State<ProfilePage> {
   bool isChangeColor = false;
 
   @override
@@ -262,7 +262,11 @@ class _UserProfileState extends State<Profile> {
                     SimpleButton(
                       onPressed: () {
                         userLogout(context);
-                        Navigator.pushNamed(context, '/logout');
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/logout',
+                          (route) => false,
+                        );
                       },
                       child: TextMonserats(logoutText,
                           color: Colors.white,

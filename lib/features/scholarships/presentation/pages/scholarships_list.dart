@@ -11,13 +11,13 @@ import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart
 import 'package:study_abroad_cemc_mobile/models/schools.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
 
-class ScholarshipsList extends StatefulWidget {
-  const ScholarshipsList({super.key});
+class ScholarshipsListPage extends StatefulWidget {
+  const ScholarshipsListPage({super.key});
   @override
-  ScholarshipsListState createState() => ScholarshipsListState();
+  ScholarshipsListPageState createState() => ScholarshipsListPageState();
 }
 
-class ScholarshipsListState extends State<ScholarshipsList> {
+class ScholarshipsListPageState extends State<ScholarshipsListPage> {
   Future<List<SchoolScholarship>> fetchScholarships() async {
     final userAuth = context.read<UserAuthProvider>().userAuthLogin;
     if (userAuth != null) {
@@ -71,79 +71,74 @@ class ScholarshipsListState extends State<ScholarshipsList> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  AppColor.red,
-                  AppColor.backgrTabLight
-                ],
+                colors: [AppColor.red, AppColor.backgrTabLight],
               ),
             ),
           ),
-          SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-              child: Column(
-                children: [
-                  SizedBox(height: screenHeight * 0.02),
-                  Row(
-                    children: [
-                      BackButtonCircle(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      const Spacer(),
-                      TextMonserats(
-                        schScholarshipKey.tr(),
-                        fontSize: screenWidth * 0.06,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                      const Spacer(),
-                      Container(width: 35),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColor.backgrTabLight,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: FutureBuilder<List<SchoolScholarship>>(
-                        future: fetchScholarships(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          } else if (snapshot.hasError) {
-                            return Center(
-                              child: TextMonserats(
-                                snapshot.error.toString(),
-                                color: Colors.red,
-                              ),
-                            );
-                          } else if (!snapshot.hasData ||
-                              snapshot.data!.isEmpty) {
-                            return Center(
-                              child: TextMonserats(
-                                scholarNullKey.tr(),
-                                fontSize: screenWidth * 0.04,
-                                color: Colors.grey,
-                              ),
-                            );
-                          } else {
-                            return ScholarshipsBox(
-                              scholarships: snapshot.data!,
-                            );
-                          }
-                        },
-                      ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+            child: Column(
+              children: [
+                SizedBox(height: screenHeight * 0.02),
+                Row(
+                  children: [
+                    BackButtonCircle(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    const Spacer(),
+                    TextMonserats(
+                      schScholarshipKey.tr(),
+                      fontSize: screenWidth * 0.06,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                    const Spacer(),
+                    Container(width: 35),
+                  ],
+                ),
+                SizedBox(height: screenHeight * 0.02),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColor.backgrTabLight,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: FutureBuilder<List<SchoolScholarship>>(
+                      future: fetchScholarships(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: TextMonserats(
+                              snapshot.error.toString(),
+                              color: Colors.red,
+                            ),
+                          );
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return Center(
+                            child: TextMonserats(
+                              scholarNullKey.tr(),
+                              fontSize: screenWidth * 0.04,
+                              color: Colors.grey,
+                            ),
+                          );
+                        } else {
+                          return ScholarshipsBox(
+                            scholarships: snapshot.data!,
+                          );
+                        }
+                      },
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

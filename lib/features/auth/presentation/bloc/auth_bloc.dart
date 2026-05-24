@@ -6,6 +6,8 @@ import 'package:study_abroad_cemc_mobile/features/schools/domain/usecases/get_un
 import 'package:study_abroad_cemc_mobile/features/auth/domain/failures/auth_failures.dart';
 import 'package:study_abroad_cemc_mobile/models/enum.dart';
 import 'package:study_abroad_cemc_mobile/models/user_register.dart';
+import 'package:study_abroad_cemc_mobile/models/country.dart';
+import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
 
 part 'auth_event.dart';
@@ -43,6 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<CheckGradeTypeEvent>(_onCheckGradeType);
     on<CheckGradeScoreEvent>(_onCheckGradeScore);
     on<GetSchoolsAndCountriesEvent>(_onGetSchoolsAndCountries);
+    on<GetCityEvent>(_onGetCity);
     on<RegisterEvent>(_onRegister);
   }
 
@@ -208,6 +211,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthLoadedState(schools: schools, countries: countries));
       },
     );
+  }
+
+  Future<void> _onGetCity(GetCityEvent event, Emitter<AuthState> emit) async {
+    try {
+      final response = await http.get(Uri.parse('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json'));
+      if (response.statusCode == 200) {
+        final List<Country> countries = countryFromJson(response.body);
+        emit(AuthLoadedCityState(const [], country: countries));
+      } else {
+        emit(const AuthErrorCityState('Failed to load city data'));
+      }
+    } catch (e) {
+      emit(AuthErrorCityState(e.toString()));
+    }
   }
 
   Future<void> _onRegister(RegisterEvent event, Emitter<AuthState> emit) async {

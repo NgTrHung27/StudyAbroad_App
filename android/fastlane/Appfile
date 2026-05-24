@@ -1,0 +1,2 @@
+json_key_file("play-store-credentials.json") # Path to the json secret file - Follow the playstore guide to get it
+package_name("com.hungdev.kltn_mobile") # e.g. com.krausefx.app

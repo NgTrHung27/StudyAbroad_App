@@ -21,15 +21,15 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class AblyWebsocket extends StatefulWidget {
-  const AblyWebsocket({super.key});
+class AblyChatPage extends StatefulWidget {
+  const AblyChatPage({super.key});
 
   @override
-  State<AblyWebsocket> createState() => _AblyChatState();
+  State<AblyChatPage> createState() => _AblyChatState();
 }
 
 //Final
-class _AblyChatState extends State<AblyWebsocket> {
+class _AblyChatState extends State<AblyChatPage> {
   bool _isLoading = false;
 
   late String _clientId;
@@ -41,7 +41,7 @@ class _AblyChatState extends State<AblyWebsocket> {
   //Ably API Key and Channel
   // Replace with your API key
   late ably.Realtime realtimeInstance;
-  late ably.RealtimeChannel chatChannel;
+  ably.RealtimeChannel? chatChannel;
   //Text Controller
   final TextEditingController _messageController = TextEditingController();
   // ignore: prefer_typing_uninitialized_variables
@@ -87,6 +87,7 @@ class _AblyChatState extends State<AblyWebsocket> {
     });
 
     Future.delayed(const Duration(seconds: 3), () {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
       });
@@ -116,6 +117,7 @@ class _AblyChatState extends State<AblyWebsocket> {
             json.decode(utf8.decode(chatSessionResponse.bodyBytes));
         final newChatSession = ChatSession.fromJson(chatSessionData);
 
+        if (!mounted) return;
         setState(() {
           _currentChatSession = newChatSession;
           _sortMessages();
@@ -141,7 +143,7 @@ class _AblyChatState extends State<AblyWebsocket> {
       realtimeInstance.connection
           .on(ably.ConnectionEvent.connected)
           .listen((ably.ConnectionStateChange stateChange) async {});
-      chatChannel.subscribe().listen((ably.Message message) {});
+      chatChannel?.subscribe().listen((ably.Message message) {});
     } catch (error) {
       print('Error creating Ably Realtime Instance: $error');
       rethrow;
@@ -149,7 +151,7 @@ class _AblyChatState extends State<AblyWebsocket> {
   }
 
   void subscribeToChatChannel() {
-    chatChannel.subscribe().listen((ably.Message message) async {
+    chatChannel?.subscribe().listen((ably.Message message) async {
       var newMsgFromAbly = message.data;
 
       // Kiểm tra nếu tin nhắn này là của chính người dùng
@@ -175,6 +177,7 @@ class _AblyChatState extends State<AblyWebsocket> {
         return;
       }
 
+      if (!mounted) return;
       setState(() {
         _currentChatSession.messages?.add(newChatMsg);
         _sortMessages();
@@ -183,12 +186,14 @@ class _AblyChatState extends State<AblyWebsocket> {
   }
 
   void publishMyMessage(ChatSession newChatSession) async {
+    if (!mounted) return;
     setState(() {
       _isLoading = true;
     });
 
     var myMessage = _messageController.text;
     if (myMessage.isEmpty) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
       });
@@ -203,6 +208,7 @@ class _AblyChatState extends State<AblyWebsocket> {
       createdAt: DateTime.now().toLocal(),
     );
 
+    if (!mounted) return;
     setState(() {
       _currentChatSession.messages?.add(newMessage);
       _currentChatSession = newChatSession;
@@ -213,19 +219,25 @@ class _AblyChatState extends State<AblyWebsocket> {
 
     try {
       // Gửi tin nhắn lên Ably và server song song
-      await Future.wait([
-        chatChannel.publish(name: 'support:$_clientId', data: myMessage),
+      // Gửi tin nhắn lên server
+      List<Future> tasks = [
         _sendMessageToServer(myMessage),
-      ]);
+      ];
+      if (chatChannel != null) {
+        tasks.add(chatChannel!.publish(name: 'support:$_clientId', data: myMessage));
+      }
+      await Future.wait(tasks);
 
       // Làm mới danh sách tin nhắn từ server sau khi gửi thành công
       await _loadChatSession();
     } catch (error) {
       print('Error sending message: $error');
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

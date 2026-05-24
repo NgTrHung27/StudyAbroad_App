@@ -1,32 +1,13 @@
 {
   "project_info": {
-    "project_number": "936640374389",
-    "project_id": "kltn-56ae4",
-    "storage_bucket": "kltn-56ae4.appspot.com"
+    "project_number": "812956802168",
+    "project_id": "cemc-co",
+    "storage_bucket": "cemc-co.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:936640374389:android:cac73916fd871c1d2cfa3c",
-        "android_client_info": {
-          "package_name": "com.example.push_notification_demo"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA9lmnOR0anpmgF0cGK4VuW19EvxyJia18"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:936640374389:android:35025d73c1f3f8c12cfa3c",
+        "mobilesdk_app_id": "1:812956802168:android:00678e2f371c8b521f618d",
         "android_client_info": {
           "package_name": "com.hungdev.kltn_mobile"
         }
@@ -34,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA9lmnOR0anpmgF0cGK4VuW19EvxyJia18"
+          "current_key": "AIzaSyB5-nI1CjKyGn6f4_WVHKvBTSfEOhIiFYU"
         }
       ],
       "services": {

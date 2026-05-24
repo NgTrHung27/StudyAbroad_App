@@ -37,29 +37,37 @@ class _NewsPageState extends State<NewsPage> {
     return Scaffold(
       backgroundColor: context.select(
           (ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
-        child: ListView(
+      body: SafeArea(
+        child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                BackButtonCircle(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                CirleAvatarImage(
-                    avatarImgUrl: userAuth?.student?.school.logo != null
-                        ? userAuth!.student?.school.logo
-                        : null,
-                    avatarImgPath: ImageAssets.logoRed,
-                    width: 60,
-                    height: 60),
-              ],
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BackButtonCircle(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  CirleAvatarImage(
+                      avatarImgUrl: userAuth?.student?.school.logo != null
+                          ? userAuth!.student?.school.logo
+                          : null,
+                      avatarImgPath: ImageAssets.logoRed,
+                      width: 60,
+                      height: 60),
+                ],
+              ),
             ),
-            SizedBox(height: screenHeight * 0.02),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.04),
+                child: ListView(
+                  children: [
+                    SizedBox(height: screenHeight * 0.02),
             const NewsSearchTextField(),
             SizedBox(height: screenHeight * 0.02),
             TextMonserats(
@@ -94,6 +102,10 @@ class _NewsPageState extends State<NewsPage> {
               VerticalNewsListView(
                 schoolName: userAuth.student?.school.name ?? '',
               ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

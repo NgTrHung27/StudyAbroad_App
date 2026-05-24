@@ -11,14 +11,14 @@ import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
 import 'package:shimmer/shimmer.dart';
 
-class TuitionStatus extends StatefulWidget {
-  const TuitionStatus({super.key});
+class TuitionStatusPage extends StatefulWidget {
+  const TuitionStatusPage({super.key});
 
   @override
-  TuitionStatusState createState() => TuitionStatusState();
+  TuitionStatusPageState createState() => TuitionStatusPageState();
 }
 
-class TuitionStatusState extends State<TuitionStatus> {
+class TuitionStatusPageState extends State<TuitionStatusPage> {
   @override
   void initState() {
     super.initState();

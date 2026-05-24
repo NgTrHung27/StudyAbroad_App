@@ -6,6 +6,7 @@ import 'package:study_abroad_cemc_mobile/features/schools/domain/usecases/get_sc
 import 'package:study_abroad_cemc_mobile/features/schools/domain/failures/schools_failures.dart';
 import 'package:study_abroad_cemc_mobile/models/enum.dart';
 import 'package:study_abroad_cemc_mobile/models/schools.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
 import 'package:equatable/equatable.dart';
 
 part 'contact_event.dart';
@@ -92,8 +93,7 @@ class ContactUsBloc extends Bloc<ContactUsEvent, ContactUsState> {
           emit(ContactErrorNamedSchoolState(failure.message ?? 'Error loading schools'));
         }
       },
-      (schools) => emit(ContactLoadedNamedSchoolState(
-          schools.cast<Schools>())),
+      (schools) => emit(ContactLoadedNamedSchoolState(schools)),
     );
   }
 

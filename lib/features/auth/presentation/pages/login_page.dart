@@ -102,32 +102,42 @@ class _LoginPageState extends State<LoginPage> {
               }
             },
             builder: (context, state) {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.05,
-                      vertical: screenHeight * 0.05),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          BackButtonCircle(onPressed: () {
-                            Navigator.pushNamed(context, '/logout');
-                          }),
-                          SizedBox(width: screenWidth * 0.20),
-                          Image.asset(
-                            context.watch<ThemeSettingBloc>().state.isDarkMode
-                                ? ImageAssets.logoWhite
-                                : ImageAssets.logoRed,
-                            height: 80,
-                          ),
-                          SizedBox(width: screenWidth * 0.25),
-                          Container(width: 35)
-                        ],
-                      ),
-                      SizedBox(height: screenHeight * 0.04),
+              return Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: screenWidth * 0.05,
+                      right: screenWidth * 0.05,
+                      top: screenHeight * 0.05,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        BackButtonCircle(onPressed: () {
+                          Navigator.pushNamed(context, '/logout');
+                        }),
+                        SizedBox(width: screenWidth * 0.20),
+                        Image.asset(
+                          context.watch<ThemeSettingBloc>().state.isDarkMode
+                              ? ImageAssets.logoWhite
+                              : ImageAssets.logoRed,
+                          height: 80,
+                        ),
+                        SizedBox(width: screenWidth * 0.25),
+                        Container(width: 35)
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.05,
+                            vertical: screenHeight * 0.02),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: screenHeight * 0.02),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: TextMonserats(loginWelcomeKey.tr(),
@@ -255,11 +265,14 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
-              );
+              ),
+            ),
+          ],
+        );
             },
           ),
         ),

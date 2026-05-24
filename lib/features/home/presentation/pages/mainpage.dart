@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
-import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/ably_websocket.dart';
+import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/ably_chat_page.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/widgets/flash_dismissible_chatting_gemini_ai.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/widgets/floating_chatting_position.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
 import 'package:study_abroad_cemc_mobile/features/notifications/presentation/pages/notifications_page.dart';
-import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile_page.dart';
 import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -30,9 +30,9 @@ class MainPageState extends State<MainPage>
 
   final List<Widget> _bodyView = [
     const HomePage(),
-    const AblyWebsocket(),
+    const AblyChatPage(),
     const NotificationsPage(),
-    const Profile()
+    const ProfilePage()
   ];
 
   void onTabTapped(int index) {

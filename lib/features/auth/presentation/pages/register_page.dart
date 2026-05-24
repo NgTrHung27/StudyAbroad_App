@@ -21,7 +21,7 @@ import 'package:study_abroad_cemc_mobile/components/style/simplebutton.dart';
 import 'package:study_abroad_cemc_mobile/components/style/textspan.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/models/enum.dart';
-import 'package:study_abroad_cemc_mobile/models/schools.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -32,7 +32,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   //Declare API School
-  List<Schools> lstschools = [];
+  List<SchoolEntity> lstschools = [];
   List<Country> lstCountry = [];
   List<String> lstCountrySchool = [];
   String? errorEmailMessage,
@@ -60,7 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
       phone = '',
       idCardNumber = '',
       dob = '';
-  Schools? selectedSchoolObject;
+  SchoolEntity? selectedSchoolObject;
   String? selectedSchool,
       selectedCountry,
       selectedProgram,
@@ -152,7 +152,7 @@ class _RegisterPageState extends State<RegisterPage> {
         certificateImg: certificateImg));
   }
 
-  void schoolChange(Schools? school) {
+  void schoolChange(SchoolEntity? school) {
     setState(() {
       if (school != null) {
         selectedSchoolObject = school;
@@ -161,10 +161,10 @@ class _RegisterPageState extends State<RegisterPage> {
     });
   }
 
-  void programChange(SchoolProgram? program) {
+  void programChange(String? programName) {
     setState(() {
-      if (program != null) {
-        selectedProgram = program.name;
+      if (programName != null) {
+        selectedProgram = programName;
       }
     });
   }
@@ -716,22 +716,22 @@ class _RegisterPageState extends State<RegisterPage> {
                 Expanded(child: BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     if (state is AuthLoadedState) {
-                      lstschools = state.schools.cast<Schools>();
+                      lstschools = state.schools.cast<SchoolEntity>();
                     }
-                    return DropdownCustom<Schools>(
+                    return DropdownCustom<SchoolEntity>(
                       icon: Icons.school,
                       items: lstschools,
                       selectedItem: selectedSchool == null
                           ? null
                           : lstschools.firstWhereOrNull(
                               (element) => element.name == selectedSchool),
-                      onChanged: (Schools? newValueSchool) {
+                      onChanged: (SchoolEntity? newValueSchool) {
                         setState(() {
                           schoolChange(newValueSchool);
                           selectedProgram = null;
                         });
                       },
-                      itemLabel: (Schools school) => school.name,
+                      itemLabel: (SchoolEntity school) => school.name,
                       hintText: registerSchoolKey.tr(),
                       isExpanded: true,
                     );
@@ -746,9 +746,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthLoadedState) {
-                        lstschools = state.schools.cast<Schools>();
+                        lstschools = state.schools.cast<SchoolEntity>();
                       }
-                      return DropdownCustom<SchoolProgram>(
+                      return DropdownCustom<SchoolProgramEntity>(
                         icon: Icons.history_edu,
                         items: selectedSchool == null
                             ? []
@@ -757,12 +757,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             ? null
                             : selectedSchoolObject?.programs?.firstWhereOrNull(
                                 (element) => element.name == selectedProgram),
-                        onChanged: (SchoolProgram? newValueProgram) {
+                        onChanged: (SchoolProgramEntity? newValueProgram) {
                           setState(() {
-                            programChange(newValueProgram);
+                            programChange(newValueProgram?.name);
                           });
                         },
-                        itemLabel: (SchoolProgram program) => program.name,
+                        itemLabel: (SchoolProgramEntity program) => program.name,
                         hintText: registerMajorKey.tr(),
                         isExpanded: true,
                       );

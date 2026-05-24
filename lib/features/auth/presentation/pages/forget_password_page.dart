@@ -11,13 +11,13 @@ import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class ForgetPass extends StatefulWidget {
-  const ForgetPass({super.key});
+class ForgetPassPage extends StatefulWidget {
+  const ForgetPassPage({super.key});
   @override
-  State<ForgetPass> createState() => _ForgetPassState();
+  State<ForgetPassPage> createState() => _ForgetPassPageState();
 }
 
-class _ForgetPassState extends State<ForgetPass> {
+class _ForgetPassPageState extends State<ForgetPassPage> {
   String email = '';
   String? errorMessage;
   final usermailController = TextEditingController();
@@ -72,32 +72,42 @@ class _ForgetPassState extends State<ForgetPass> {
               }
             },
             builder: (context, state) {
-              return SingleChildScrollView(
-                  child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.05,
-                    vertical: screenHeight * 0.05),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          BackButtonCircle(onPressed: () {
-                            Navigator.pop(context);
-                          }),
-                          //Logo
-                          SizedBox(width: screenWidth * 0.20),
-                          Image.asset(
-                            context.watch<ThemeSettingBloc>().state.isDarkMode
-                                ? ImageAssets.logoWhite
-                                : ImageAssets.logoRed,
-                            height: 80,
-                          ),
-                          SizedBox(width: screenWidth * 0.25),
-                          Container(width: 35)
-                        ],
-                      ),
+              return Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: screenWidth * 0.05,
+                      right: screenWidth * 0.05,
+                      top: screenHeight * 0.05,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        BackButtonCircle(onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                        //Logo
+                        SizedBox(width: screenWidth * 0.20),
+                        Image.asset(
+                          context.watch<ThemeSettingBloc>().state.isDarkMode
+                              ? ImageAssets.logoWhite
+                              : ImageAssets.logoRed,
+                          height: 80,
+                        ),
+                        SizedBox(width: screenWidth * 0.25),
+                        Container(width: 35)
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                        child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.05,
+                          vertical: screenHeight * 0.02),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                       const SizedBox(height: 20),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -205,8 +215,13 @@ class _ForgetPassState extends State<ForgetPass> {
                           ),
                         ],
                       ),
-                    ]),
-              ));
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
             },
           ),
         ),

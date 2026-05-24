@@ -3,7 +3,7 @@ import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school
 import 'package:study_abroad_cemc_mobile/features/news/domain/entities/news_entity.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/login_page.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/register_page.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/forget_password.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/forget_password_page.dart';
 import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/mainpage.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/schools_list.dart';
@@ -11,21 +11,21 @@ import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/sch
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_page.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_detail.dart';
 import 'package:study_abroad_cemc_mobile/features/notifications/presentation/pages/notifications_page.dart';
-import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile_page.dart';
 import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile_detail.dart';
 import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile_status.dart';
 import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/tuition.dart';
 import 'package:study_abroad_cemc_mobile/features/score/presentation/pages/scorepage.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/change_pass.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/logout.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/contact_us.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/logout_page.dart';
+import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/contact_us_page.dart';
 import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/search_page.dart';
 import 'package:study_abroad_cemc_mobile/features/scholarships/presentation/pages/scholarships_list.dart';
 import 'package:study_abroad_cemc_mobile/features/scholarships/presentation/pages/scholarships_detail.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/compare_schools.dart';
 import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/respond.dart';
 import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/response_requested_detail.dart';
-import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/response_requested.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/response_requested_page.dart';
 import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/requested.dart';
 
 class AppRoute {
@@ -65,7 +65,7 @@ class AppRoute {
       case register:
         return MaterialPageRoute(builder: (_) => const RegisterPage());
       case forgotPassword:
-        return MaterialPageRoute(builder: (_) => const ForgetPass());
+        return MaterialPageRoute(builder: (_) => const ForgetPassPage());
       case home:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case mainpage:
@@ -104,7 +104,7 @@ class AppRoute {
       case notifications:
         return MaterialPageRoute(builder: (_) => const NotificationsPage());
       case profile:
-        return MaterialPageRoute(builder: (_) => const Profile());
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
       case profiledetail:
         return MaterialPageRoute(builder: (_) => const ProfileDetail());
       case changepass:
@@ -112,7 +112,7 @@ class AppRoute {
       case logout:
         return MaterialPageRoute(builder: (_) => const LogoutPage());
       case helpfeedback:
-        return MaterialPageRoute(builder: (_) => const ContactUs());
+        return MaterialPageRoute(builder: (_) => const ContactUsPage());
       case profilestatus:
         return MaterialPageRoute(builder: (_) => const ProfileStatus());
       case scholarDetail:
@@ -120,13 +120,13 @@ class AppRoute {
             builder: (_) =>
                 const ScholarshipsDetail(name: '', description: '', id: ''));
       case tuition:
-        return MaterialPageRoute(builder: (_) => const TuitionStatus());
+        return MaterialPageRoute(builder: (_) => const TuitionStatusPage());
       case score:
         return MaterialPageRoute(builder: (_) => const ScorePage());
       case search:
         return MaterialPageRoute(builder: (_) => const SearchPage());
       case scholarships:
-        return MaterialPageRoute(builder: (_) => const ScholarshipsList());
+        return MaterialPageRoute(builder: (_) => const ScholarshipsListPage());
       case scholarshipDetail:
         final args = settings.arguments;
         if (args != null && args is Map) {
@@ -137,7 +137,7 @@ class AppRoute {
                     id: args['id'] ?? '',
                   ));
         }
-        return MaterialPageRoute(builder: (_) => const ScholarshipsList());
+        return MaterialPageRoute(builder: (_) => const ScholarshipsListPage());
       case compareSchool:
         final args = settings.arguments;
         if (args != null && args is Map && args.containsKey('schoolNames')) {
@@ -166,7 +166,7 @@ class AppRoute {
                   images: null,
                 ));
       case respondrequested:
-        return MaterialPageRoute(builder: (_) => const ResponseRequested());
+        return MaterialPageRoute(builder: (_) => const ResponseRequestedPage());
       case respondrequesteddetail:
         final args = settings.arguments;
         if (args != null && args is Map) {
@@ -180,7 +180,7 @@ class AppRoute {
             builder: (_) =>
                 const ResponseRequestedDetail(title: '', replies: []));
       case requested:
-        return MaterialPageRoute(builder: (_) => const ResponseRequest());
+        return MaterialPageRoute(builder: (_) => const ResponseRequestPage());
       default:
         return MaterialPageRoute(builder: (_) => const MainPage());
     }

@@ -13,13 +13,13 @@ import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_d
 import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/response_requested_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ResponseRequested extends StatefulWidget {
-  const ResponseRequested({super.key});
+class ResponseRequestedPage extends StatefulWidget {
+  const ResponseRequestedPage({super.key});
   @override
-  State<ResponseRequested> createState() => _RequestedState();
+  State<ResponseRequestedPage> createState() => _RequestedState();
 }
 
-class _RequestedState extends State<ResponseRequested> {
+class _RequestedState extends State<ResponseRequestedPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -55,14 +55,14 @@ class _RequestedState extends State<ResponseRequested> {
   @override
   Widget build(BuildContext context) {
     final userAuth = context.watch<UserAuthProvider>().userAuthLogin;
-final isDarkMode = context.select(
+    final isDarkMode = context.select(
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final boxColor = isDarkMode ? AppColor.backgrTabDark : Colors.white;
     final textBox = isDarkMode ? Colors.white : Colors.black;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-return Scaffold(
+    return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColor.redButton,

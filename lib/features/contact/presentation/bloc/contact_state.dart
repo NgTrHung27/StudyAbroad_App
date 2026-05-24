@@ -20,7 +20,7 @@ class ContactErrorTitleErrorState extends ContactUsState {
 }
 
 class ContactLoadedNamedSchoolState extends ContactUsState {
-  final List<Schools> school;
+  final List<SchoolEntity> school;
   const ContactLoadedNamedSchoolState(this.school);
 
   @override
