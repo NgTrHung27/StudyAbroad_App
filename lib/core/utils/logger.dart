@@ -23,7 +23,7 @@ class AppLogger {
   static void _log(String level, String message, Object? data) {
     final timestamp = DateTime.now().toIso8601String();
     final logMessage = '[$_tag][$level][$timestamp] $message';
-    
+
     if (data != null) {
       developer.log('$logMessage\nData: $data');
     } else {

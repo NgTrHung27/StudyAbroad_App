@@ -1,9 +1,12 @@
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_state.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/schools_list.dart';
+
+typedef SchoolBloc = SchoolsBloc;
 
 class CountrySchoolList extends StatefulWidget {
   final List<dynamic> schools; // Add this line
@@ -51,7 +54,7 @@ class _CountrySchoolListState extends State<CountrySchoolList> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   image: const DecorationImage(
-                    image: AssetImage('assets/countries/Korea.png'),
+                    image: AssetImage(ImageAssets.countryKorea),
                     fit: BoxFit.cover,
                   ),
                 ),

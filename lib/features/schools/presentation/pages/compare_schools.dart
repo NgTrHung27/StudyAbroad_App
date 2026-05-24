@@ -15,7 +15,8 @@ class CompareSchoolsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
     return Scaffold(
       body: SingleChildScrollView(
@@ -26,36 +27,44 @@ class CompareSchoolsPage extends StatelessWidget {
               padding: EdgeInsets.all(screenHeight * 0.025),
               child: Stack(
                 children: [
-                  const Align(alignment: Alignment.topLeft, child: BackButtonCircle()),
+                  const Align(
+                      alignment: Alignment.topLeft, child: BackButtonCircle()),
                   Center(
-                    child: TextMonserats(schDescKey.tr(), fontSize: screenHeight * 0.03, color: textColor),
+                    child: TextMonserats(schDescKey.tr(),
+                        fontSize: screenHeight * 0.03, color: textColor),
                   ),
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ComparisonChart(titleComparison: cpSchool2Key.tr(), schoolNames: schoolNames),
+              child: ComparisonChart(
+                  titleComparison: cpSchool2Key.tr(), schoolNames: schoolNames),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ComparisonChart(titleComparison: cpSchool3Key.tr(), schoolNames: schoolNames),
+              child: ComparisonChart(
+                  titleComparison: cpSchool3Key.tr(), schoolNames: schoolNames),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ComparisonChart(titleComparison: cpSchool4Key.tr(), schoolNames: schoolNames),
+              child: ComparisonChart(
+                  titleComparison: cpSchool4Key.tr(), schoolNames: schoolNames),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ComparisonChart(titleComparison: cpSchool5Key.tr(), schoolNames: schoolNames),
+              child: ComparisonChart(
+                  titleComparison: cpSchool5Key.tr(), schoolNames: schoolNames),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ComparisonChart(titleComparison: cpSchool6Key.tr(), schoolNames: schoolNames),
+              child: ComparisonChart(
+                  titleComparison: cpSchool6Key.tr(), schoolNames: schoolNames),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ComparisonChart(titleComparison: cpSchool7Key.tr(), schoolNames: schoolNames),
+              child: ComparisonChart(
+                  titleComparison: cpSchool7Key.tr(), schoolNames: schoolNames),
             ),
           ],
         ),

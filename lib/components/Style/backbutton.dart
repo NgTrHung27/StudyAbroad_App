@@ -8,6 +8,7 @@ class BackButtonCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(top: 30, left: 10),
       padding: const EdgeInsets.only(left: 10),
       alignment: Alignment.center,
       width: 50,

@@ -1,31 +1,31 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/forgot_pass_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/forgot_pass_state.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/change_pass_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/button.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/text_field.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class ChangePass extends BasePage {
+class ChangePass extends StatefulWidget {
   const ChangePass({super.key});
   @override
-  State<ChangePass> createState() => _ForgetPassState();
+  State<ChangePass> createState() => _ChangePassState();
 }
 
-class _ForgetPassState extends BasePageState<ChangePass> {
+class _ChangePassState extends State<ChangePass> {
   String email = '';
   String? errorMessage;
   final usermailController = TextEditingController();
 
-  void userForgetPass(BuildContext context) async {
+  void userChangePass(BuildContext context) async {
     try {
       email = usermailController.text.trim();
-      await context.read<ForgotPassBloc>().accept(email);
+      await context.read<ChangePassBloc>().accept(email);
     } catch (e) {
       setState(() {
         errorMessage = e.toString();
@@ -43,59 +43,71 @@ class _ForgetPassState extends BasePageState<ChangePass> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(context.watch<ThemeSettingBloc>().state.isDarkMode
-                ? 'assets/backgrounds/bckgr_fgpass_dark.jpg'
-                : 'assets/backgrounds/bckgr_fgpass.jpg'),
+                ? ImageAssets.bgForgotPassDark
+                : ImageAssets.bgForgotPass),
             fit: BoxFit.cover,
           ),
         ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: BlocConsumer<ForgotPassBloc, ForgotPassState>(
+          body: BlocConsumer<ChangePassBloc, ChangePassState>(
             listener: (context, state) {
-              if (state is ForgotPassLoading) {
+              if (state is ChangePassLoading) {
                 const Center(child: CircularProgressIndicator());
               }
-              if (state is ForgotPassFailure) {
+              if (state is ChangePassFailure) {
                 setState(() {
-                  errorMessage = state.error;
+                  errorMessage = state.message;
                 });
-              } else if (state is ForgotPassSuccess) {
-                errorMessage = 'Verification email has been sent!';
-              } else if (state is ForgotPassEmailError) {
+              } else if (state is ChangePassSuccess) {
+                errorMessage = 'Password changed successfully!';
+              } else if (state is ChangePassEmailError) {
                 setState(() {
-                  errorMessage = state.error;
+                  errorMessage = state.message;
                 });
-              } else if (state is ForgotPassInitial) {
+              } else if (state is ChangePassInitial) {
                 setState(() {
                   errorMessage = null;
                 });
               }
             },
             builder: (context, state) {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.05),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          BackButtonCircle(onPressed: () {
-                            Navigator.pop(context);
-                          }),
-                          //Logo
-                          SizedBox(width: screenWidth * 0.20),
-                          Image.asset(
-                            context.watch<ThemeSettingBloc>().state.isDarkMode
-                                ? "assets/logo/logo_white.png"
-                                : "assets/logo/logo_red.png",
-                            height: 80,
-                          ),
-                          SizedBox(width: screenWidth * 0.25),
-                          Container(width: 35)
-                        ],
-                      ),
+              return Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: screenWidth * 0.05,
+                      right: screenWidth * 0.05,
+                      top: screenHeight * 0.05,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        BackButtonCircle(onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                        //Logo
+                        SizedBox(width: screenWidth * 0.20),
+                        Image.asset(
+                          context.watch<ThemeSettingBloc>().state.isDarkMode
+                              ? ImageAssets.logoWhite
+                              : ImageAssets.logoRed,
+                          height: 80,
+                        ),
+                        SizedBox(width: screenWidth * 0.25),
+                        Container(width: 35)
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.05,
+                            vertical: screenHeight * 0.02),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                       SizedBox(height: screenHeight * 0.02),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -143,7 +155,9 @@ class _ForgetPassState extends BasePageState<ChangePass> {
                                     prefixIcon: Icons.email,
                                     onChanged: (value) {
                                       email = value;
-                                      context.read<ForgotPassBloc>().errorEmail(email);
+                                      context
+                                          .read<ChangePassBloc>()
+                                          .errorEmail(email);
                                     },
                                   ),
                                   // Display errorMessage if it is not null
@@ -164,7 +178,7 @@ class _ForgetPassState extends BasePageState<ChangePass> {
                               MyButton(
                                 text: forgotSendKey.tr(),
                                 onTap: () {
-                                  userForgetPass(context);
+                                  userChangePass(context);
                                 },
                               ),
                             ],
@@ -175,7 +189,7 @@ class _ForgetPassState extends BasePageState<ChangePass> {
                             children: [
                               const Divider(
                                 height: 1,
-                                color: Color(0xFFCBD5E1),
+                                color: AppColor.borderGrey,
                                 thickness: 1.0,
                                 indent: 20,
                                 endIndent: 20,
@@ -203,7 +217,10 @@ class _ForgetPassState extends BasePageState<ChangePass> {
                     ],
                   ),
                 ),
-              );
+              ),
+            ),
+          ],
+        );
             },
           ),
         ),

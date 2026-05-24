@@ -1,17 +1,53 @@
-// ignore_for_file: prefer_const_declarations, prefer_const_constructors, use_full_hex_values_for_flutter_colors
-
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static final Color red = Colors.red;
-  static final Color greyColor = AppColor.greyColor;
-  static final Color scafflodBgColor = const Color(0xffF2F2F2);
-  static final Color scafflodBgColorDark = const Color(0xff1E2334);
-  static final Color redButton = Color(0xff7D1F1F);
-  static final Color redLight = Color(0xffAF3737);
-  static final Color backgrTab = Color(0xffFFFFFF);
-  static final Color backgrTabDark = Color(0xff3F3F46);
-  static final Color backgrTabLight = Color(0xffFFFFFF);
-  static final Color borderTextField = Color(0xff959595);
-  static final Color borderTextFieldFocused = Color(0xff0000000);
+  static const Color red = Colors.red;
+  static const Color greyColor = Colors.grey;
+  static const Color backgrTabLight = Colors.white;
+  static const Color backgrTab = Colors.white;
+  static const Color black = Color(0xFF000000);
+  static const Color blueDark = Color(0xFF005CB2);
+  static const Color grey900 = Color(0xFF121212);
+  static const Color grey800 = Color(0xFF1E1E1E);
+  static const Color bluePrimary = Color(0xFF1E88E5);
+  static const Color blueLight = Color(0xFF2196F3);
+  static const Color greenSuccess = Color(0xFF4CAF50);
+  static const Color grey600 = Color(0xFF616161);
+  static const Color blueAccent = Color(0xFF6AB7FF);
+  static const Color grey500 = Color(0xFF757575);
+  static const Color grey400 = Color(0xFF9E9E9E);
+  static const Color redDark = Color(0xFFAB000D);
+  static const Color grey300 = Color(0xFFB0B0B0);
+  static const Color redPrimary = Color(0xFFB4232A);
+  static const Color borderGrey = Color(0xFFCBD5E1);
+  static const Color grey200 = Color(0xFFE0E0E0);
+  static const Color redError = Color(0xFFE53935);
+  static const Color grey100 = Color(0xFFEEEEEE);
+  static const Color redAccent = Color(0xFFF44336);
+  static const Color grey50 = Color(0xFFF5F5F5);
+  static const Color whiteBackground = Color(0xFFFAFAFA);
+  static const Color redLight = Color(0xFFFF6F60);
+  static const Color yellowWarning = Color(0xFFFFC107);
+  static const Color navyBlue = Color(0xff131166);
+  static const Color scafflodBgColorDark = Color(0xff1E2334);
+  static const Color blue700 = Color(0xff297BC5);
+  static const Color cyanLight = Color(0xff2BB6CF);
+  static const Color indigoDark = Color(0xff2D3D7A);
+  static const Color greenTeal = Color(0xff3A9571);
+  static const Color backgrTabDark = Color(0xff3F3F46);
+  static const Color blueAccentLight = Color(0xff608AFF);
+  static const Color greenLight = Color(0xff65AF37);
+  static const Color redButton = Color(0xff7D1F1F);
+  static const Color cyanAccent = Color(0xff80E8FF);
+  static const Color tealLight = Color(0xff86E0D0);
+  static const Color borderTextField = Color(0xff959595);
+  static const Color redWarning = Color(0xff9C2424);
+  static const Color redCancel = Color(0xffB61919);
+  static const Color redDanger = Color(0xffC41010);
+  static const Color redAlert = Color(0xffC81D1D);
+  static const Color greyChatBox = Color(0xffD9D9D9);
+  static const Color scafflodBgColor = Color(0xffF2F2F2);
+  static const Color orangeWarning = Color(0xffF58218);
+  static const Color orangeAccent = Color(0xffFF9736);
+  static const Color pinkLight = Color(0xffFFE9E4);
 }

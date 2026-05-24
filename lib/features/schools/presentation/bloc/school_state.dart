@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
-import 'package:study_abroad_cemc_mobile/features/schools/domain/failures/school_failures.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/domain/failures/schools_failures.dart';
 
 abstract class SchoolState extends Equatable {
   const SchoolState();
@@ -22,18 +22,18 @@ class SchoolsLoaded extends SchoolState {
   List<Object?> get props => [schoolList];
 }
 
-class UniqueCountriesLoaded extends SchoolState {
-  final List<String> countries;
+class SchoolDetailLoaded extends SchoolState {
+  final SchoolEntity school;
 
-  const UniqueCountriesLoaded(this.countries);
+  const SchoolDetailLoaded({required this.school});
 
   @override
-  List<Object?> get props => [countries];
+  List<Object?> get props => [school];
 }
 
 class SchoolsError extends SchoolState {
   final String message;
-  final SchoolFailure? failure;
+  final SchoolsFailure? failure;
 
   const SchoolsError({required this.message, this.failure});
 

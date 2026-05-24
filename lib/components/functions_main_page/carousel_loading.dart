@@ -70,8 +70,8 @@ class CarouselLoadingCustom extends StatelessWidget {
               Container(
                 height: 8,
                 width: 8,
-                decoration:
-                    const BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.grey),
               ),
               const SizedBox(
                 width: 3,

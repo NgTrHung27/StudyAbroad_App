@@ -48,3 +48,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Env variables
+env.json
+
+# Fastlane and Play Store secrets
+play-store-credentials.json
+play-store-credentials.txt
+keystore_base64.txt
+upload-keystore.jks
+android/key.properties

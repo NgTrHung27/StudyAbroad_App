@@ -88,8 +88,8 @@ class ComparisonChart extends StatelessWidget {
                                           decoration: const BoxDecoration(
                                             gradient: LinearGradient(
                                               colors: [
-                                                Color(0xffF58218),
-                                                Color(0xff9C2424),
+                                                AppColor.orangeWarning,
+                                                AppColor.redWarning,
                                               ],
                                               begin: Alignment.topCenter,
                                               end: Alignment.bottomCenter,

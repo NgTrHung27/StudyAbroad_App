@@ -34,7 +34,8 @@ class DropdownCustom<T> extends StatelessWidget {
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
     final iconColor = isDarkMode ? Colors.white : Colors.black;
-    final backgroundDropdown = isDarkMode ? AppColor.scafflodBgColorDark : Colors.white;
+    final backgroundDropdown =
+        isDarkMode ? AppColor.scafflodBgColorDark : Colors.white;
     return SizedBox(
       height: 43,
       child: DropdownButtonFormField<T>(
@@ -88,11 +89,13 @@ class DropdownCustom<T> extends StatelessWidget {
           filled: true,
           fillColor: backgroundDropdown,
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xFFCBD5E1), width: 1.0),
+            borderSide:
+                const BorderSide(color: AppColor.borderGrey, width: 1.0),
             borderRadius: BorderRadius.circular(10.0),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xFFCBD5E1), width: 1.0),
+            borderSide:
+                const BorderSide(color: AppColor.borderGrey, width: 1.0),
             borderRadius: BorderRadius.circular(10.0),
           ),
           contentPadding: const EdgeInsets.only(top: 10, left: 10, right: 11),

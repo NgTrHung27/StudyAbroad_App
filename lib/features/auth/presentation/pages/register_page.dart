@@ -7,11 +7,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/auth_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/auth_event.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/auth_state.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/models/country.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/convert_imagetostring.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/dropdown.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/radio.dart';
@@ -21,21 +20,19 @@ import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/style/simplebutton.dart';
 import 'package:study_abroad_cemc_mobile/components/style/textspan.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/models/country.dart';
 import 'package:study_abroad_cemc_mobile/models/enum.dart';
-import 'package:study_abroad_cemc_mobile/models/schools.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/login_page.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 
-class RegisterPage extends BasePage {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends BasePageState<RegisterPage> {
+class _RegisterPageState extends State<RegisterPage> {
   //Declare API School
-  List<Schools> lstschools = [];
+  List<SchoolEntity> lstschools = [];
   List<Country> lstCountry = [];
   List<String> lstCountrySchool = [];
   String? errorEmailMessage,
@@ -56,9 +53,20 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
       errorCertificateTypeMessage,
       errorMessage;
   //Declare
-  String email = '', name = '', password = '', confirmpassword = '', phone = '', idCardNumber = '', dob = '';
-  Schools? selectedSchoolObject;
-  String? selectedSchool, selectedCountry, selectedProgram, selectedCity, selectedDistrict, selectedWard;
+  String email = '',
+      name = '',
+      password = '',
+      confirmpassword = '',
+      phone = '',
+      idCardNumber = '',
+      dob = '';
+  SchoolEntity? selectedSchoolObject;
+  String? selectedSchool,
+      selectedCountry,
+      selectedProgram,
+      selectedCity,
+      selectedDistrict,
+      selectedWard;
   String address = '';
   Gender? valueGender;
   DegreeType? valueDegree;
@@ -144,7 +152,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
         certificateImg: certificateImg));
   }
 
-  void schoolChange(Schools? school) {
+  void schoolChange(SchoolEntity? school) {
     setState(() {
       if (school != null) {
         selectedSchoolObject = school;
@@ -153,10 +161,10 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
     });
   }
 
-  void programChange(SchoolProgram? program) {
+  void programChange(String? programName) {
     setState(() {
-      if (program != null) {
-        selectedProgram = program.name;
+      if (programName != null) {
+        selectedProgram = programName;
       }
     });
   }
@@ -252,7 +260,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFFB4232A),
+              primary: AppColor.redPrimary,
             ),
           ),
           child: child!,
@@ -438,7 +446,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
               errorText: errorConfrimPasswordMessage,
               onChanged: (value) {
                 confirmpassword = value;
-                context.read<AuthBloc>().add(CheckConfirmPasswordEvent(password, confirmpassword));
+                context
+                    .read<AuthBloc>()
+                    .add(CheckConfirmPasswordEvent(password, confirmpassword));
                 if (confirmpassword.isEmpty) {
                   setState(() {});
                 } else {
@@ -457,7 +467,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
               errorText: errorIDCardNumberMessage,
               onChanged: (value) {
                 idCardNumber = value;
-                context.read<AuthBloc>().add(CheckIdCardNumberEvent(idCardNumber));
+                context
+                    .read<AuthBloc>()
+                    .add(CheckIdCardNumberEvent(idCardNumber));
                 if (idCardNumber.isEmpty) {
                   setState(() {});
                 } else {
@@ -539,7 +551,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                           errorPhoneMessage = null;
                         });
                       }
-                      context.read<AuthBloc>().add(CheckPhoneNumberEvent(phone));
+                      context
+                          .read<AuthBloc>()
+                          .add(CheckPhoneNumberEvent(phone));
                     },
                   ),
                 )
@@ -553,44 +567,48 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
               ],
             ),
             const SizedBox(height: 12),
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                if (state is AuthLoadedCityState) {
-                  lstCountry = state.country;
+            DropdownCustom<Country>(
+              icon: Icons.location_city,
+              items: lstCountry,
+              selectedItem: selectedCity == null
+                  ? null
+                  : lstCountry.firstWhereOrNull(
+                      (element) => element.name == selectedCity),
+              onChanged: (Country? newValueCountry) {
+                if (newValueCountry != null) {
+                  cityChange(newValueCountry);
+                  selectedDistrict = null;
+                  selectedWard = null;
                 }
-                return DropdownCustom<Country>(
-                  icon: Icons.location_city,
-                  items: lstCountry,
-                  selectedItem:
-                      selectedCity == null ? null : lstCountry.firstWhereOrNull((element) => element.name == selectedCity),
-                  onChanged: (Country? newValueCountry) {
-                    if (newValueCountry != null) {
-                      cityChange(newValueCountry);
-                      selectedDistrict = null;
-                      selectedWard = null;
-                    }
-                  },
-                  itemLabel: (Country country) => country.name,
-                  hintText: registerCityKey.tr(),
-                  isExpanded: false,
-                );
               },
+              itemLabel: (Country country) => country.name,
+              hintText: registerCityKey.tr(),
+              isExpanded: false,
             ),
             const SizedBox(height: 15),
             Row(children: [
               Expanded(child: BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   if (state is AuthLoadedCityState) {
-                    lstCountry = state.country;
+                    lstCountry = state.country.cast<Country>();
                   }
                   return DropdownCustom<District>(
                     icon: Icons.map,
                     items: selectedCity == null
                         ? []
-                        : lstCountry.firstWhereOrNull((element) => element.name == selectedCity)?.districts ?? [],
+                        : lstCountry
+                                .firstWhereOrNull(
+                                    (element) => element.name == selectedCity)
+                                ?.districts ??
+                            [],
                     selectedItem: selectedDistrict == null
                         ? null
-                        : lstCountry.firstWhereOrNull((element) => element.name == selectedCity)?.districts.firstWhereOrNull((element) => element.name == selectedDistrict),
+                        : lstCountry
+                            .firstWhereOrNull(
+                                (element) => element.name == selectedCity)
+                            ?.districts
+                            .firstWhereOrNull(
+                                (element) => element.name == selectedDistrict),
                     onChanged: (District? newValueDistrict) {
                       setState(() {
                         districtChange(newValueDistrict);
@@ -607,21 +625,27 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
               Expanded(child: BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   if (state is AuthLoadedCityState) {
-                    lstCountry = state.country;
+                    lstCountry = state.country.cast<Country>();
                   }
-                  final districts = selectedCity == null 
-                      ? <District>[] 
-                      : lstCountry.firstWhereOrNull((element) => element.name == selectedCity)?.districts ?? [];
+                  final districts = selectedCity == null
+                      ? <District>[]
+                      : lstCountry
+                              .firstWhereOrNull(
+                                  (element) => element.name == selectedCity)
+                              ?.districts ??
+                          [];
                   final selectedDistrictObj = selectedDistrict == null
                       ? null
-                      : districts.firstWhereOrNull((element) => element.name == selectedDistrict);
+                      : districts.firstWhereOrNull(
+                          (element) => element.name == selectedDistrict);
                   final wards = selectedDistrictObj?.wards ?? [];
                   return DropdownCustom<Ward>(
                     icon: Icons.location_on,
                     items: wards,
                     selectedItem: selectedWard == null
                         ? null
-                        : wards.firstWhereOrNull((element) => element.name == selectedWard),
+                        : wards.firstWhereOrNull(
+                            (element) => element.name == selectedWard),
                     onChanged: (Ward? newValueWard) {
                       setState(() {
                         wardChange(newValueWard);
@@ -692,21 +716,22 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                 Expanded(child: BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     if (state is AuthLoadedState) {
-                      lstschools = state.schools;
+                      lstschools = state.schools.cast<SchoolEntity>();
                     }
-                    return DropdownCustom<Schools>(
+                    return DropdownCustom<SchoolEntity>(
                       icon: Icons.school,
                       items: lstschools,
                       selectedItem: selectedSchool == null
                           ? null
-                          : lstschools.firstWhereOrNull((element) => element.name == selectedSchool),
-                      onChanged: (Schools? newValueSchool) {
+                          : lstschools.firstWhereOrNull(
+                              (element) => element.name == selectedSchool),
+                      onChanged: (SchoolEntity? newValueSchool) {
                         setState(() {
                           schoolChange(newValueSchool);
                           selectedProgram = null;
                         });
                       },
-                      itemLabel: (Schools school) => school.name,
+                      itemLabel: (SchoolEntity school) => school.name,
                       hintText: registerSchoolKey.tr(),
                       isExpanded: true,
                     );
@@ -721,20 +746,23 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                   child: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthLoadedState) {
-                        lstschools = state.schools;
+                        lstschools = state.schools.cast<SchoolEntity>();
                       }
-                      return DropdownCustom<SchoolProgram>(
+                      return DropdownCustom<SchoolProgramEntity>(
                         icon: Icons.history_edu,
-                        items: selectedSchool == null ? [] : selectedSchoolObject?.programs ?? [],
+                        items: selectedSchool == null
+                            ? []
+                            : selectedSchoolObject?.programs ?? [],
                         selectedItem: selectedProgram == null
                             ? null
-                            : selectedSchoolObject?.programs?.firstWhereOrNull((element) => element.name == selectedProgram),
-                        onChanged: (SchoolProgram? newValueProgram) {
+                            : selectedSchoolObject?.programs?.firstWhereOrNull(
+                                (element) => element.name == selectedProgram),
+                        onChanged: (SchoolProgramEntity? newValueProgram) {
                           setState(() {
-                            programChange(newValueProgram);
+                            programChange(newValueProgram?.name);
                           });
                         },
-                        itemLabel: (SchoolProgram program) => program.name,
+                        itemLabel: (SchoolProgramEntity program) => program.name,
                         hintText: registerMajorKey.tr(),
                         isExpanded: true,
                       );
@@ -752,7 +780,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                         degreeValueChanged(newValueDegree);
                       });
                     },
-                    itemLabel: (DegreeType degreeType) => degreeType.toString().split('.').last,
+                    itemLabel: (DegreeType degreeType) =>
+                        degreeType.toString().split('.').last,
                     hintText: registerDegreeKey.tr(),
                     isExpanded: true,
                   ),
@@ -769,7 +798,8 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                 });
               },
               selectedItem: selectedCertificateType,
-              itemLabel: (CertificateType certificateType) => certificateType.toString().split('.').last,
+              itemLabel: (CertificateType certificateType) =>
+                  certificateType.toString().split('.').last,
               hintText: registerCertiKey.tr(),
               isExpanded: false,
             ),
@@ -836,7 +866,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     errorGradeMessage = null;
                   });
                 }
-                context.read<AuthBloc>().add(CheckGradeScoreEvent(double.tryParse(value) ?? 0));
+                context
+                    .read<AuthBloc>()
+                    .add(CheckGradeScoreEvent(double.tryParse(value) ?? 0));
               },
             ),
           ],
@@ -849,98 +881,100 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthErrorEmailState) {
           setState(() {
-            errorEmailMessage = state.error;
+            errorEmailMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorNameState) {
           setState(() {
-            errorNameMessage = state.error;
+            errorNameMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorPasswordState) {
           setState(() {
-            errorPasswordMessage = state.error;
+            errorPasswordMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorConfrimPasswordState) {
           setState(() {
-            errorConfrimPasswordMessage = state.error;
+            errorConfrimPasswordMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorIDCardNumberState) {
           setState(() {
-            errorIDCardNumberMessage = state.error;
+            errorIDCardNumberMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorDOBState) {
           setState(() {
-            errorDateMessage = state.error;
+            errorDateMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorPhoneState) {
           setState(() {
-            errorPhoneMessage = state.error;
+            errorPhoneMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorCityState) {
           setState(() {
-            errorCityMessage = state.error;
+            errorCityMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorDistrictState) {
           setState(() {
-            errorDistrictMessage = state.error;
+            errorDistrictMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorWardState) {
           setState(() {
-            errorWardMessage = state.error;
+            errorWardMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorAddressState) {
           setState(() {
-            errorAddressMessage = state.error;
+            errorAddressMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorGenderErrorState) {
           setState(() {
-            errorGenderMessage = state.error;
+            errorGenderMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorDegreeTypeState) {
           setState(() {
-            errorDegreeMessage = state.error;
+            errorDegreeMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorGradeTypeState) {
           setState(() {
-            errorGradeTypeMessage = state.error;
+            errorGradeTypeMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorGradeScore) {
           setState(() {
-            errorGradeMessage = state.error;
+            errorGradeMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorCertificateTypeState) {
           setState(() {
-            errorCertificateTypeMessage = state.error;
+            errorCertificateTypeMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorState) {
           setState(() {
-            errorMessage = state.error;
+            errorMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthSuccessState) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const LoginPage()));
           isLoading = false;
         }
       },
@@ -948,7 +982,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
         if (state is AuthErrorState) {
           Future.microtask(() {
             setState(() {
-              errorMessage = state.error;
+              errorMessage = state.message;
             });
           });
           isLoading = false;
@@ -959,9 +993,12 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
         }
         return Stack(children: [
           Scaffold(
-            backgroundColor: context.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
+            backgroundColor: context.select(
+                (ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
             body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03, vertical: screenHeight * 0.06),
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.03,
+                  vertical: screenHeight * 0.06),
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -990,7 +1027,9 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     Expanded(
                       child: Theme(
                         data: Theme.of(context).copyWith(
-                            canvasColor: context.select((ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
+                            canvasColor: context.select(
+                                (ThemeSettingBloc bloc) =>
+                                    bloc.state.scaffoldBackgroundColor),
                             colorScheme: Theme.of(context).colorScheme.copyWith(
                                 onSurface: Colors.transparent,
                                 primary: AppColor.redButton,
@@ -1010,7 +1049,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                     ),
                     const Divider(
                       height: 1,
-                      color: Color(0xFFCBD5E1),
+                      color: AppColor.borderGrey,
                       thickness: 1.0,
                       indent: 20,
                       endIndent: 20,
@@ -1022,13 +1061,14 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                         text: TextSpan(
                           style: DefaultTextStyle.of(context).style,
                           children: <TextSpan>[
-                            styledTextSpan(registerHaveAccountKey.tr(), color: textColor),
+                            styledTextSpan(registerHaveAccountKey.tr(),
+                                color: textColor),
                             styledTextSpan(
                               logoutSignUpKey.tr(),
                               color: AppColor.redButton,
                               fontWeight: FontWeight.w700,
                               decoration: TextDecoration.underline,
-                              decorationColor: const Color(0xff7D1F1F),
+                              decorationColor: AppColor.redButton,
                               decorationStyle: TextDecorationStyle.solid,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {

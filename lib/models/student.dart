@@ -10,7 +10,9 @@ class Student {
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
       school: json['school'] != null ? School.fromJson(json['school']) : null,
-      program: json['program'] != null ? ProgramWrapper.fromJson(json['program']) : null,
+      program: json['program'] != null
+          ? ProgramWrapper.fromJson(json['program'])
+          : null,
     );
   }
 
@@ -47,7 +49,8 @@ class ProgramWrapper {
 
   factory ProgramWrapper.fromJson(Map<String, dynamic> json) {
     return ProgramWrapper(
-      program: json['program'] != null ? Program.fromJson(json['program']) : null,
+      program:
+          json['program'] != null ? Program.fromJson(json['program']) : null,
     );
   }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:study_abroad_cemc_mobile/blocs/profile_status_cubit_bloc/profile_status_bloc.dart';
-import 'package:study_abroad_cemc_mobile/blocs/profile_status_cubit_bloc/profile_status_state.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/bloc/legacy/profile_status_bloc.dart';
+import 'package:study_abroad_cemc_mobile/features/profiles/presentation/bloc/legacy/profile_status_state.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
@@ -74,15 +74,16 @@ class ActionTabStepper extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              if (index > 0)
-                                Expanded(
-                                  child: Container(
-                                    height: 2,
-                                    color: isCompleted
-                                        ? AppColor.backgrTabLight
-                                        : Colors.grey[300],
-                                  ),
+                              Expanded(
+                                child: Container(
+                                  height: 2,
+                                  color: index > 0
+                                      ? (currentStep > index - 1
+                                          ? textColorRed 
+                                          : Colors.grey[300])
+                                      : Colors.transparent,
                                 ),
+                              ),
                               Container(
                                 width: 30,
                                 height: 30,
@@ -106,15 +107,16 @@ class ActionTabStepper extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              if (index < stepTexts.length - 1)
-                                Expanded(
-                                  child: Container(
-                                    height: 2,
-                                    color: isCompleted
-                                        ? textColorRed
-                                        : Colors.grey[300],
-                                  ),
+                              Expanded(
+                                child: Container(
+                                  height: 2,
+                                  color: index < stepTexts.length - 1
+                                      ? (currentStep > index
+                                          ? textColorRed
+                                          : Colors.grey[300])
+                                      : Colors.transparent,
                                 ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 8),

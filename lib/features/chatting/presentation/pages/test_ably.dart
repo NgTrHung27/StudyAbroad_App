@@ -7,17 +7,16 @@ import 'package:study_abroad_cemc_mobile/core/api/api_url.dart';
 import 'package:study_abroad_cemc_mobile/models/chat_message.dart';
 import 'package:study_abroad_cemc_mobile/models/chat_session.dart';
 import 'package:study_abroad_cemc_mobile/models/chat_session_role.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 import 'package:http/http.dart' as http;
 
-class AblyChat extends BasePage {
+class AblyChat extends StatefulWidget {
   const AblyChat({super.key});
 
   @override
   State<AblyChat> createState() => _AblyChatState();
 }
 
-class _AblyChatState extends BasePageState<AblyChat> {
+class _AblyChatState extends State<AblyChat> {
   final String _clientId = '1d9dca79-eef1-46ce-9c49-lannaytutao';
   final String _userId = '';
   //Ably API Key and Channel
@@ -84,10 +83,8 @@ class _AblyChatState extends BasePageState<AblyChat> {
       subscribeToChatChannel();
       realtimeInstance.connection
           .on(ably.ConnectionEvent.connected)
-          .listen((ably.ConnectionStateChange stateChange) async {
-      });
-      chatChannel.subscribe().listen((ably.Message message) {
-      });
+          .listen((ably.ConnectionStateChange stateChange) async {});
+      chatChannel.subscribe().listen((ably.Message message) {});
     } catch (error) {
       print('Error creating Ably Realtime Instance: $error');
       rethrow;

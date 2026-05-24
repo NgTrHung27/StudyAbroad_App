@@ -1,4 +1,5 @@
 library;
+
 const String appTitleKey = 'app_title';
 
 // === Home ===

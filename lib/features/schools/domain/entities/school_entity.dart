@@ -11,11 +11,9 @@ class SchoolEntity extends Equatable {
   final String color;
   final bool isPublished;
   final String country;
-
   final List<SchoolLocationEntity>? locations;
   final List<SchoolProgramEntity>? programs;
   final List<SchoolScholarshipEntity>? scholarships;
-
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -38,10 +36,7 @@ class SchoolEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        id, logo, background, name, short, description, history, color, isPublished, country,
-        locations, programs, scholarships, createdAt, updatedAt
-      ];
+  List<Object?> get props => [id, name, country, isPublished];
 }
 
 class SchoolLocationEntity extends Equatable {
@@ -62,7 +57,7 @@ class SchoolLocationEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, cover, name, description, address, isMain];
+  List<Object?> get props => [id, name, address];
 }
 
 class SchoolProgramEntity extends Equatable {
@@ -81,7 +76,7 @@ class SchoolProgramEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, name, description, cover, isPublished];
+  List<Object?> get props => [id, name];
 }
 
 class SchoolScholarshipEntity extends Equatable {
@@ -100,5 +95,5 @@ class SchoolScholarshipEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, name, description, cover, isPublished];
+  List<Object?> get props => [id, name];
 }

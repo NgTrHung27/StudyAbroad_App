@@ -31,7 +31,8 @@ class UserEntity extends Equatable {
   String get displayName => name ?? email.split('@').first;
 
   @override
-  List<Object?> get props => [id, email, name, dob, phoneNumber, isLocked, token, student];
+  List<Object?> get props =>
+      [id, email, name, dob, phoneNumber, isLocked, token, student];
 }
 
 /// Student entity
@@ -57,7 +58,8 @@ class StudentEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, studentCode, schoolName, country, programName, degreeType];
+  List<Object?> get props =>
+      [id, studentCode, schoolName, country, programName, degreeType];
 }
 
 /// School entity for student

@@ -20,6 +20,11 @@ class GetSchoolListByCountryEvent extends SchoolEvent {
   List<Object?> get props => [country];
 }
 
-class GetUniqueCountriesEvent extends SchoolEvent {
-  const GetUniqueCountriesEvent();
+class GetSchoolByIdEvent extends SchoolEvent {
+  final String schoolId;
+
+  const GetSchoolByIdEvent(this.schoolId);
+
+  @override
+  List<Object?> get props => [schoolId];
 }

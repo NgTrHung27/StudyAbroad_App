@@ -10,9 +10,8 @@ import 'package:study_abroad_cemc_mobile/features/news/presentation/widgets/news
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/widgets/scholar_school_box.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 
-class SchoolsDetail extends BasePage {
+class SchoolsDetail extends StatefulWidget {
   final SchoolEntity school;
   const SchoolsDetail({super.key, required this.school});
 
@@ -20,15 +19,17 @@ class SchoolsDetail extends BasePage {
   SchoolsDetailState createState() => SchoolsDetailState();
 }
 
-class SchoolsDetailState extends BasePageState<SchoolsDetail> {
+class SchoolsDetailState extends State<SchoolsDetail> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final schoolnameColor = isDarkMode ? Colors.white : AppColor.redButton;
     final textColor = isDarkMode ? Colors.white : Colors.black;
-    final scaffoldBackgroundColor = isDarkMode ? const Color(0xff1E2334) : Colors.white;
+    final scaffoldBackgroundColor =
+        isDarkMode ? AppColor.scafflodBgColorDark : Colors.white;
     return Scaffold(
       body: Stack(children: [
         ListView(
@@ -39,7 +40,8 @@ class SchoolsDetailState extends BasePageState<SchoolsDetail> {
               child: Image.network(widget.school.background, fit: BoxFit.cover),
             ),
             Container(
-              transform: Matrix4.translationValues(0.0, -screenWidth * 0.5, 0.0),
+              transform:
+                  Matrix4.translationValues(0.0, -screenWidth * 0.5, 0.0),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 color: scaffoldBackgroundColor,
@@ -54,7 +56,10 @@ class SchoolsDetailState extends BasePageState<SchoolsDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextMonserats(widget.school.name,
-                        fontWeight: FontWeight.w700, color: schoolnameColor, fontSize: screenWidth * 0.07, height: 1.3),
+                        fontWeight: FontWeight.w700,
+                        color: schoolnameColor,
+                        fontSize: screenWidth * 0.07,
+                        height: 1.3),
                     DefaultTabController(
                       length: 3,
                       child: Column(
@@ -62,7 +67,8 @@ class SchoolsDetailState extends BasePageState<SchoolsDetail> {
                         children: <Widget>[
                           TabBar(
                             isScrollable: true,
-                            labelPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                            labelPadding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.03),
                             tabAlignment: TabAlignment.start,
                             indicatorSize: TabBarIndicatorSize.label,
                             indicator: UnderlineTabIndicator(
@@ -116,8 +122,11 @@ class SchoolsDetailState extends BasePageState<SchoolsDetail> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(top: screenHeight * 0.02, bottom: screenHeight * 0.02),
-                                      child: TextMonserats('${schMajorBodyKey.tr()} ${widget.school.name}',
+                                      padding: EdgeInsets.only(
+                                          top: screenHeight * 0.02,
+                                          bottom: screenHeight * 0.02),
+                                      child: TextMonserats(
+                                          '${schMajorBodyKey.tr()} ${widget.school.name}',
                                           fontWeight: FontWeight.w700,
                                           color: schoolnameColor,
                                           fontSize: screenWidth * 0.05,
@@ -125,7 +134,9 @@ class SchoolsDetailState extends BasePageState<SchoolsDetail> {
                                     ),
                                     Expanded(
                                       child: Center(
-                                        child: MajorBox(programs: widget.school.programs ?? []),
+                                        child: MajorBox(
+                                            programs:
+                                                widget.school.programs ?? []),
                                       ),
                                     ),
                                   ],
@@ -134,8 +145,11 @@ class SchoolsDetailState extends BasePageState<SchoolsDetail> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(top: screenHeight * 0.02, bottom: screenHeight * 0.02),
-                                      child: TextMonserats('Scholarhips of ${widget.school.name}',
+                                      padding: EdgeInsets.only(
+                                          top: screenHeight * 0.02,
+                                          bottom: screenHeight * 0.02),
+                                      child: TextMonserats(
+                                          'Scholarhips of ${widget.school.name}',
                                           fontWeight: FontWeight.w700,
                                           color: schoolnameColor,
                                           fontSize: screenWidth * 0.05,
@@ -143,7 +157,10 @@ class SchoolsDetailState extends BasePageState<SchoolsDetail> {
                                     ),
                                     Expanded(
                                       child: Center(
-                                        child: ScholarSchoolBox(scholar: widget.school.scholarships ?? []),
+                                        child: ScholarSchoolBox(
+                                            scholar:
+                                                widget.school.scholarships ??
+                                                    []),
                                       ),
                                     ),
                                   ],
@@ -170,7 +187,10 @@ class SchoolsDetailState extends BasePageState<SchoolsDetail> {
             ),
           ],
         ),
-        Positioned(top: screenHeight * 0.05, left: screenWidth * 0.01, child: const BackButtonCircle()),
+        Positioned(
+            top: screenHeight * 0.05,
+            left: screenWidth * 0.01,
+            child: const BackButtonCircle()),
       ]),
     );
   }

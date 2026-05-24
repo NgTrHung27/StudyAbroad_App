@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_event.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_state.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/domain/failures/schools_failures.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/Style/simplebutton.dart';
@@ -11,10 +12,11 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/widgets/school_box.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/screens/home/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/compare_schools.dart';
 
-class SchoolsListPage extends BasePage {
+typedef SchoolBloc = SchoolsBloc;
+
+class SchoolsListPage extends StatefulWidget {
   const SchoolsListPage({super.key, required this.country});
   final String country;
 
@@ -34,9 +36,9 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
       case 'CANADA':
         return AppColor.redButton;
       case 'AUSTRALIA':
-        return const Color(0xff2D3D7A);
+        return AppColor.indigoDark;
       case 'KOREA':
-        return const Color(0xff2BB6CF);
+        return AppColor.cyanLight;
       default:
         return Colors.grey; // Default color if country is not matched
     }
@@ -46,7 +48,8 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final exploreColor = isDarkMode ? Colors.white : AppColor.redButton;
     String countryText;
     switch (widget.country.toUpperCase()) {
@@ -92,7 +95,8 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.08),
                         child: Padding(
                           padding: EdgeInsets.only(top: screenHeight * 0.025),
                           child: TextMonserats(
@@ -104,7 +108,8 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.08),
                         child: Padding(
                           padding: EdgeInsets.only(top: screenHeight * 0.025),
                           child: SimpleButton(
@@ -113,7 +118,9 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CompareSchoolsPage(
-                                    schoolNames: state.schoolList.map((school) => school.name).toList(),
+                                    schoolNames: state.schoolList
+                                        .map((school) => school.name)
+                                        .toList(),
                                   ),
                                 ),
                               );
@@ -143,7 +150,8 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.08),
                         child: ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -156,12 +164,33 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                       ),
                     ],
                   ),
-                  Positioned(top: screenHeight * 0.06, left: screenWidth * 0.03, child: const BackButtonCircle()),
+                  Positioned(
+                      top: screenHeight * 0.06,
+                      left: screenWidth * 0.03,
+                      child: const BackButtonCircle()),
                 ],
               ),
             );
           } else if (state is SchoolsError) {
-            return Center(child: Text(errorConnectionKey.tr()));
+            final isNetworkError = state.failure is SchoolsNetworkFailure;
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    isNetworkError ? Icons.wifi_off : Icons.error_outline,
+                    size: 48,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    state.message,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            );
           }
           return const Center(child: Text('Please wait...'));
         },

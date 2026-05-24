@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
-import 'package:study_abroad_cemc_mobile/models/schools.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class CarouselSliderDataFound extends StatefulWidget {
-  final List<Schools> carouselList;
+  final List<SchoolEntity> carouselList;
   const CarouselSliderDataFound(this.carouselList, {super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _CarouselSliderDataFoundState createState() => _CarouselSliderDataFoundState();
+  _CarouselSliderDataFoundState createState() =>
+      _CarouselSliderDataFoundState();
 }
 
 class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
@@ -30,8 +32,10 @@ class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
                   children: [
                     CachedNetworkImage(
                       imageUrl: e.background,
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                      progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) => Center(
                         child: CircularProgressIndicator(
                           value: downloadProgress.progress,
                         ),
@@ -56,7 +60,10 @@ class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
                           ),
                         ),
                         padding: const EdgeInsets.all(10),
-                        child: TextMonserats(e.name, fontSize: 20, color: Colors.white, fontWeight: FontWeight.w700),
+                        child: TextMonserats(e.name,
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700),
                       ),
                     )
                   ],
@@ -69,14 +76,17 @@ class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = context.select((ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
-    final circleBG = isDarkMode ? const Color(0xff616161) : Colors.white;
-    final circleHL = isDarkMode ? Colors.white : const Color(0xff959595);
+    final isDarkMode = context.select(
+        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
+    final circleBG = isDarkMode ? AppColor.grey600 : Colors.white;
+    final circleHL = isDarkMode ? Colors.white : AppColor.borderTextField;
 
     final screenWidth = MediaQuery.of(context).size.width;
-    double orientationSizeHor = MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 0.7;
+    double orientationSizeHor =
+        MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 0.7;
     final screenHeight = MediaQuery.of(context).size.height;
-    double orientationSizeVer = MediaQuery.of(context).orientation == Orientation.portrait ? 0.25 : 0.5;
+    double orientationSizeVer =
+        MediaQuery.of(context).orientation == Orientation.portrait ? 0.25 : 0.5;
     return Column(
       children: [
         SizedBox(

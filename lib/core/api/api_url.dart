@@ -15,6 +15,7 @@ class ApiUrls {
   static const String newPassword = '$apiBaseUrl/auth/new-password';
   static const String deleteAccount = '$apiBaseUrl/auth/delete';
   static const String authSchools = '$apiBaseUrl/auth/schools';
+  static const String currentProfile = '$apiBaseUrl/auth/me';
 
   // Schools APIs
   static const String schools = '$apiBaseUrl/schools';
@@ -25,12 +26,14 @@ class ApiUrls {
       '$apiBaseUrl/schools/$schoolId/scholarships/$scholarshipId';
 
   // Account APIs
-  static String accountById(String accountId) => '$apiBaseUrl/accounts/$accountId';
+  static String accountById(String accountId) =>
+      '$apiBaseUrl/accounts/$accountId';
   static String studentRequirements(String accountId, String requirementId) =>
       '$apiBaseUrl/accounts/students/$accountId/requirements/$requirementId';
 
   // Profile APIs
-  static String profileById(String profileId) => '$apiBaseUrl/profile/$profileId';
+  static String profileById(String profileId) =>
+      '$apiBaseUrl/profile/$profileId';
   static const String profileBio = '$apiBaseUrl/profile/Bio';
 
   // News APIs
@@ -41,12 +44,14 @@ class ApiUrls {
   static const String feedbacks = '$apiBaseUrl/feedbacks';
 
   // Notification APIs
-  static String notifications(String accountId) => '$apiBaseUrl/notifications/$accountId';
+  static String notifications(String accountId) =>
+      '$apiBaseUrl/notifications/$accountId';
   static const String notificationToken = '$adminApiUrl/notifications';
 
   // Chat Support APIs
   static const String chatSession = '$adminApiUrl/chat-session';
-  static String chatSessionByClientAndAccount(String clientId, String accountId) =>
+  static String chatSessionByClientAndAccount(
+          String clientId, String accountId) =>
       '$adminApiUrl/chat-session/$clientId/$accountId';
 
   // Message APIs

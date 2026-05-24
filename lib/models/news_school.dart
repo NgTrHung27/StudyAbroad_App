@@ -4,8 +4,8 @@
 
 import 'dart:convert';
 
-List<NewsSchoolList> newsListFromJson(String str) =>
-    List<NewsSchoolList>.from(json.decode(str).map((x) => NewsSchoolList.fromJson(x)));
+List<NewsSchoolList> newsListFromJson(String str) => List<NewsSchoolList>.from(
+    json.decode(str).map((x) => NewsSchoolList.fromJson(x)));
 
 String newsListToJson(List<NewsSchoolList> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));

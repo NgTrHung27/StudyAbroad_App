@@ -11,7 +11,8 @@ class GeminiChatBloc extends Bloc<GeminiChatEvent, GeminiChatState> {
   final ChatUser geminiUser = ChatUser(
     id: "1",
     firstName: "Gemini",
-    profileImage: "https://seeklogo.com/images/G/google-gemini-logo-A5787B2669-seeklogo.com.png",
+    profileImage:
+        "https://seeklogo.com/images/G/google-gemini-logo-A5787B2669-seeklogo.com.png",
   );
 
   GeminiChatBloc(this._repository) : super(GeminiChatState.initial()) {
@@ -19,10 +20,11 @@ class GeminiChatBloc extends Bloc<GeminiChatEvent, GeminiChatState> {
     on<ClearGeminiChat>((event, emit) => emit(GeminiChatState.initial()));
   }
 
-  Future<void> _onSendGeminiMessage(SendGeminiMessage event, Emitter<GeminiChatState> emit) async {
+  Future<void> _onSendGeminiMessage(
+      SendGeminiMessage event, Emitter<GeminiChatState> emit) async {
     // Add user message to UI
     final newMessages = [event.message, ...state.messages];
-    emit(state.copyWith(messages: newMessages, error: null));
+    emit(state.copyWith(messages: newMessages, error: null, isLoading: true));
 
     // Prepare images if any
     List<Uint8List>? images;
@@ -30,21 +32,34 @@ class GeminiChatBloc extends Bloc<GeminiChatEvent, GeminiChatState> {
       images = [File(event.message.medias!.first.url).readAsBytesSync()];
     }
 
+    // Prepare history
+    // state.messages contains previous messages, newest first.
+    // GenerativeModel needs oldest first.
+    List<Map<String, dynamic>> history = [];
+    for (var msg in state.messages.reversed) {
+      history.add({
+        'role': msg.user.id == geminiUser.id ? 'model' : 'user',
+        'text': msg.text,
+      });
+    }
+
     try {
       final stream = _repository.streamGenerateContent(
         event.message.text,
         images: images,
         modelName: event.modelName,
+        history: history,
       );
 
       await emit.forEach(stream, onData: (result) {
         return result.fold(
-          (failure) => state.copyWith(error: failure.message),
+          (failure) => state.copyWith(error: failure.message, isLoading: false),
           (chunk) {
             final List<ChatMessage> updatedMessages = List.from(state.messages);
-            
+
             // Check if last message was from Gemini
-            if (updatedMessages.isNotEmpty && updatedMessages.first.user.id == geminiUser.id) {
+            if (updatedMessages.isNotEmpty &&
+                updatedMessages.first.user.id == geminiUser.id) {
               final lastMessage = updatedMessages.removeAt(0);
               lastMessage.text += chunk;
               updatedMessages.insert(0, lastMessage);
@@ -58,12 +73,12 @@ class GeminiChatBloc extends Bloc<GeminiChatEvent, GeminiChatState> {
               updatedMessages.insert(0, message);
             }
 
-            return state.copyWith(messages: updatedMessages);
+            return state.copyWith(messages: updatedMessages, isLoading: false);
           },
         );
       });
     } catch (e) {
-      emit(state.copyWith(error: 'An error occurred: $e'));
+      emit(state.copyWith(error: 'An error occurred: $e', isLoading: false));
     }
   }
 }

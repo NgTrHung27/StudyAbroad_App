@@ -25,7 +25,8 @@ class _IdTabLogoutState extends State<IdTabLogout> {
   @override
   Widget build(BuildContext context) {
     final ImageProvider<Object> imageWidget = widget.avatarImgUrl != null
-        ? CachedNetworkImageProvider(widget.avatarImgUrl!) as ImageProvider<Object>
+        ? CachedNetworkImageProvider(widget.avatarImgUrl!)
+            as ImageProvider<Object>
         : AssetImage(widget.avatarImgPath) as ImageProvider<Object>;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDarkMode = context.watch<ThemeSettingBloc>().state.isDarkMode;
@@ -39,7 +40,8 @@ class _IdTabLogoutState extends State<IdTabLogout> {
         decoration: BoxDecoration(
           color: isDarkMode ? AppColor.scafflodBgColorDark : AppColor.redButton,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isDarkMode ? Colors.white : Colors.transparent, width: 1),
+          border: Border.all(
+              color: isDarkMode ? Colors.white : Colors.transparent, width: 1),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.1),

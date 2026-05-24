@@ -23,13 +23,15 @@ class NewsModel extends NewsEntity {
       cover: json["cover"] ?? '',
       isPublished: json["isPublished"] ?? false,
       schoolId: json["schoolId"],
-      createdAt: json["createdAt"] != null 
-          ? DateTime.parse(json["createdAt"]) 
+      createdAt: json["createdAt"] != null
+          ? DateTime.parse(json["createdAt"])
           : DateTime.now(),
-      updatedAt: json["updatedAt"] != null 
-          ? DateTime.parse(json["updatedAt"]) 
+      updatedAt: json["updatedAt"] != null
+          ? DateTime.parse(json["updatedAt"])
           : DateTime.now(),
-      school: json["school"] != null ? NewsSchoolModel.fromJson(json["school"]) : null,
+      school: json["school"] != null
+          ? NewsSchoolModel.fromJson(json["school"])
+          : null,
     );
   }
 
@@ -43,20 +45,15 @@ class NewsModel extends NewsEntity {
         "schoolId": schoolId,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
-        "school": school != null ? (school as NewsSchoolModel).toJson() : null,
       };
 }
 
 class NewsSchoolModel extends NewsSchoolEntity {
-  const NewsSchoolModel({required super.name});
+  const NewsSchoolModel({super.name});
 
   factory NewsSchoolModel.fromJson(Map<String, dynamic> json) {
     return NewsSchoolModel(
-      name: json["name"] ?? '',
+      name: json["name"],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "name": name,
-      };
 }
