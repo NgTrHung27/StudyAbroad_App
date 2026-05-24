@@ -26,7 +26,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.x' # Điền version bạn đang sử dụng
+          flutter-version: 'any' # Sử dụng bản stable mới nhất phù hợp với SDK của bạn
           channel: 'stable'
           cache: true
 
