@@ -3,7 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
-import 'package:study_abroad_cemc_mobile/components/Style/news_searchtextfield.dart';
+import 'package:study_abroad_cemc_mobile/components/style/news_searchtextfield.dart';
 import 'package:study_abroad_cemc_mobile/components/functions_main_page/hello_avt.dart';
 import 'package:study_abroad_cemc_mobile/features/notifications/presentation/widgets/noti_list.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';

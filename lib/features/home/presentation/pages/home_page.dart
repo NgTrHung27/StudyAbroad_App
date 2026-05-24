@@ -11,7 +11,7 @@ import 'package:study_abroad_cemc_mobile/features/home/presentation/bloc/legacy/
 import 'package:study_abroad_cemc_mobile/features/home/presentation/bloc/legacy/carousel_state.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_event.dart';
-import 'package:study_abroad_cemc_mobile/components/Style/news_searchtextfield.dart';
+import 'package:study_abroad_cemc_mobile/components/style/news_searchtextfield.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/widgets/news_listview_horizontal_2.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
