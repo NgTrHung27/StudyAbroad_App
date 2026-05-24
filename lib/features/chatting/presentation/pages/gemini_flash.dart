@@ -11,19 +11,19 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/bloc/gemini_chat/gemini_chat_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/bloc/gemini_chat/gemini_chat_event.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/bloc/gemini_chat/gemini_chat_state.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class GeminiAIFlash extends BasePage {
+class GeminiAIFlash extends StatefulWidget {
   const GeminiAIFlash({super.key});
 
   @override
   State<GeminiAIFlash> createState() => _GeminiAIState();
 }
 
-class _GeminiAIState extends BasePageState<GeminiAIFlash> {
+class _GeminiAIState extends State<GeminiAIFlash> {
   bool _hasSentFirstMessage = false;
   String subtitle = "Good";
   bool isInputDisabled = false;
@@ -50,7 +50,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
     var connectivityResults = await (Connectivity().checkConnectivity());
     if (connectivityResults.contains(ConnectivityResult.none)) {
       setState(() {
-        subtitle = errorConnectionKey.tr();
+        subtitle = 'No internet connection. Please check your network.';
         isInputDisabled = true;
       });
     } else {
@@ -64,7 +64,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
   @override
   Widget build(BuildContext context) {
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
     String newUserName = userAuth?.name ?? 'N/A';
     String newAvtUser = userAuth?.student?.school.logo ??
         'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg';
@@ -88,10 +88,10 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
           centerTitle: true,
           backgroundColor: AppColor.redButton,
           title: TextMonserats(
-            '${aiChattingTitleKey.tr()} -1.5-flash',
+            '${aiChattingTitleKey.tr()} - 2.0',
             color: Colors.white,
             fontWeight: FontWeight.w700,
-            fontSize: 30,
+            fontSize: 26,
           ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new),
@@ -116,8 +116,9 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
               aiChattingInputKey.tr(),
               containerUserBox,
               textColorWhite,
-              errorConnectionKey.tr(),
-              state.messages);
+              'No internet connection',
+              state.messages,
+              state.isLoading);
         },
       ),
     );
@@ -130,7 +131,8 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
       Color containerUserBox,
       Color textColorWhite,
       String errorConn,
-      List<ChatMessage> messages) {
+      List<ChatMessage> messages,
+      bool isLoading) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Stack(children: [
@@ -139,7 +141,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
             alwaysShowSend: true,
             sendButtonBuilder: (send) {
               return IconButton(
-                icon: ImageIcon(const AssetImage('assets/send.png'),
+                icon: ImageIcon(const AssetImage(ImageAssets.iconSend),
                     color: redCorlor),
                 onPressed: send,
               );
@@ -194,6 +196,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
               color: redCorlor,
             ),
           ),
+          typingUsers: isLoading ? [context.read<GeminiChatBloc>().geminiUser] : null,
           currentUser: currentUser,
           onSend: (message) {
             setState(() {
@@ -201,7 +204,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
             });
             context
                 .read<GeminiChatBloc>()
-                .add(SendGeminiMessage(message, modelName: 'gemini-1.5-flash'));
+                .add(SendGeminiMessage(message, modelName: 'gemini-2.5-flash'));
           },
           messages: messages,
           messageListOptions: MessageListOptions(
@@ -263,7 +266,7 @@ class _GeminiAIState extends BasePageState<GeminiAIFlash> {
       });
       context
           .read<GeminiChatBloc>()
-          .add(SendGeminiMessage(chatMessage, modelName: 'gemini-1.5-flash'));
+          .add(SendGeminiMessage(chatMessage, modelName: 'gemini-2.5-flash'));
     }
   }
 }

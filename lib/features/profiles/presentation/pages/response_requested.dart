@@ -10,17 +10,16 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/response_requested_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ResponseRequested extends BasePage {
+class ResponseRequested extends StatefulWidget {
   const ResponseRequested({super.key});
   @override
   State<ResponseRequested> createState() => _RequestedState();
 }
 
-class _RequestedState extends BasePageState<ResponseRequested> {
+class _RequestedState extends State<ResponseRequested> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -37,7 +36,7 @@ class _RequestedState extends BasePageState<ResponseRequested> {
   }
 
   Future<UserAuthLogin?> getUserAuth(BuildContext context) async {
-    return userAuth ?? context.read<UserAuthProvider>().userAuthLogin;
+    return context.read<UserAuthProvider>().userAuthLogin;
   }
 
   Future<UserAuthLogin?> checkLoginStatus() async {
@@ -55,17 +54,15 @@ class _RequestedState extends BasePageState<ResponseRequested> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = context.select(
+    final userAuth = context.watch<UserAuthProvider>().userAuthLogin;
+final isDarkMode = context.select(
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final boxColor = isDarkMode ? AppColor.backgrTabDark : Colors.white;
     final textBox = isDarkMode ? Colors.white : Colors.black;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    //userAuth
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
 
-    return Scaffold(
+return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColor.redButton,

@@ -1,208 +1,152 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:study_abroad_cemc_mobile/blocs/repository/repository.dart';
-import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/core/configs/injector/injector.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/domain/usecases/get_schools_usecase.dart';
 import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
-import 'package:study_abroad_cemc_mobile/components/functions/circle_avatarimg.dart';
 import 'package:study_abroad_cemc_mobile/features/scholarships/presentation/widgets/scholarships_box.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/models/schools.dart' as schools;
+import 'package:study_abroad_cemc_mobile/models/schools.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 
-class ScholarshipsList extends BasePage {
+class ScholarshipsList extends StatefulWidget {
   const ScholarshipsList({super.key});
   @override
   ScholarshipsListState createState() => ScholarshipsListState();
 }
 
-class ScholarshipsListState extends BasePageState<ScholarshipsList> {
-  Future<List<schools.SchoolScholarship>> fetchScholarships() async {
+class ScholarshipsListState extends State<ScholarshipsList> {
+  Future<List<SchoolScholarship>> fetchScholarships() async {
     final userAuth = context.read<UserAuthProvider>().userAuthLogin;
     if (userAuth != null) {
       final schoolId = userAuth.student?.school.id;
-      final apiRepository = APIRepository();
-      final schoolsList = await apiRepository.fetchSchools();
+      final getSchoolsUseCase = getIt<GetSchoolsUseCase>();
+      final result = await getSchoolsUseCase();
 
-      final school = schoolsList.firstWhere(
-        (school) => school.id == schoolId,
-        orElse: () => schools.Schools(
-          id: '',
-          name: 'Default Name', // Cung cấp giá trị mặc định cho name
-          logo: 'default_logo.png', // Cung cấp giá trị mặc định cho logo
-          color: 'default_color', // Cung cấp giá trị mặc định cho color
-          background:
-              'default_background.png', // Cung cấp giá trị mặc định cho background
-          isPublished: false, // Cung cấp giá trị mặc định cho isPublished
-          country: 'default_country', // Cung cấp giá trị mặc định cho country
-          locations: [], // Cung cấp giá trị mặc định cho locations
-          programs: [], // Cung cấp giá trị mặc định cho programs
-          createdAt: DateTime.now(), // Cung cấp giá trị mặc định cho createdAt
-          updatedAt: DateTime.now(), // Cung cấp giá trị mặc định cho updatedAt
-          scholarships: [], // Cung cấp giá trị mặc định cho scholarships
-          news: [], // Cung cấp giá trị mặc định cho news
-        ),
+      return result.fold(
+        (failure) => [],
+        (schoolsList) {
+          for (final schoolEntity in schoolsList) {
+            if (schoolEntity.id == schoolId) {
+              final scholarships = schoolEntity.scholarships;
+              if (scholarships != null) {
+                return scholarships
+                    .where((s) => s.isPublished)
+                    .map((entity) => SchoolScholarship(
+                          id: entity.id,
+                          name: entity.name,
+                          description: entity.description,
+                          cover: entity.cover,
+                          isPublished: entity.isPublished,
+                          schoolId: schoolId ?? '',
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                        ))
+                    .toList();
+              }
+              return <SchoolScholarship>[];
+            }
+          }
+          return <SchoolScholarship>[];
+        },
       );
-      final publishedScholarships = school.scholarships
-              ?.where((scholarship) => scholarship.isPublished)
-              .toList() ??
-          [];
-      return publishedScholarships;
     }
     return [];
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isDarkMode = context.select(
-        (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
-    final textColor = isDarkMode ? Colors.white : AppColor.redButton;
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(screenWidth * 0.05),
-        child: Stack(
-          children: [
-            FutureBuilder<List<schools.SchoolScholarship>>(
-              future: fetchScholarships(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Padding(
-                    padding: EdgeInsets.only(top: screenHeight * 0.14),
-                    child: Column(
-                      children: [
-                        Stack(
-                          alignment: Alignment.topLeft,
-                          children: [
-                            Container(
-                              width: screenWidth,
-                              height: screenHeight * 0.2,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      userAuth?.student?.school.background ??
-                                          ''),
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(screenWidth * 0.04),
+      body: Stack(
+        children: [
+          Container(
+            width: screenWidth,
+            height: screenHeight,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColor.red,
+                  AppColor.backgrTabLight
+                ],
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+              child: Column(
+                children: [
+                  SizedBox(height: screenHeight * 0.02),
+                  Row(
+                    children: [
+                      BackButtonCircle(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      const Spacer(),
+                      TextMonserats(
+                        schScholarshipKey.tr(),
+                        fontSize: screenWidth * 0.06,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                      const Spacer(),
+                      Container(width: 35),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.02),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColor.backgrTabLight,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: FutureBuilder<List<SchoolScholarship>>(
+                        future: fetchScholarships(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Center(
                               child: TextMonserats(
-                                userAuth?.student?.school.name ?? '',
-                                fontSize: screenWidth * 0.05,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
+                                snapshot.error.toString(),
+                                color: Colors.red,
                               ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                            child: Container(
-                          transform: Matrix4.translationValues(0.0, -50.0, 0.0),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/Graduation.gif',
-                                  width: 300,
-                                  height: 300,
-                                ),
-                                const SizedBox(height: 20),
-                                TextMonserats(
-                                  scholarNullKey.tr(),
-                                  fontSize: screenWidth * 0.04,
-                                  fontWeight: FontWeight.bold,
-                                  color: textColor,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                        )),
-                      ],
-                    ),
-                  );
-                } else {
-                  final scholarships = snapshot.data!;
-                  return Padding(
-                    padding: EdgeInsets.only(top: screenHeight * 0.14),
-                    child: Column(
-                      children: [
-                        Stack(
-                          alignment: Alignment.topLeft,
-                          children: [
-                            Container(
-                              width: screenWidth,
-                              height: screenHeight * 0.2,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      userAuth?.student?.school.background ??
-                                          ''),
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(screenWidth * 0.04),
+                            );
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
+                            return Center(
                               child: TextMonserats(
-                                userAuth?.student?.school.name ?? '',
-                                fontSize: screenWidth * 0.05,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
+                                scholarNullKey.tr(),
+                                fontSize: screenWidth * 0.04,
+                                color: Colors.grey,
                               ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: ScholarshipsBox(
-                            scholarships: scholarships,
-                          ),
-                        ),
-                      ],
+                            );
+                          } else {
+                            return ScholarshipsBox(
+                              scholarships: snapshot.data!,
+                            );
+                          }
+                        },
+                      ),
                     ),
-                  );
-                }
-              },
+                  ),
+                ],
+              ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).padding.top,
-              left: 0,
-              child:
-                  const BackButtonCircle(), // Đặt BackButtonCircle ở góc trái trên
-            ),
-            Positioned(
-              top: MediaQuery.of(context).padding.top,
-              right: 0,
-              child: CirleAvatarImage(
-                  avatarImgUrl: userAuth?.student?.school.logo != null
-                      ? userAuth!.student?.school.logo
-                      : null,
-                  avatarImgPath: 'assets/logo/logo_red.png',
-                  width: 60,
-                  height: 60),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

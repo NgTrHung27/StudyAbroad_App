@@ -40,6 +40,9 @@ abstract class AuthRepository {
   /// Get current user from cache
   Future<Either<AuthFailure, UserEntity?>> getCachedUser();
 
+  /// Get current user profile from server
+  Future<Either<AuthFailure, UserEntity>> getCurrentProfile();
+
   /// Refresh token
   Future<Either<AuthFailure, String>> refreshToken();
 

@@ -7,10 +7,10 @@ import 'package:study_abroad_cemc_mobile/components/functions/circle_avatarimg.d
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/models/notifications.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/notifications/presentation/pages/notifications_detail.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class ListNoti extends BasePage {
+class ListNoti extends StatefulWidget {
   const ListNoti({super.key, required this.notifications});
   final List<Notifications> notifications;
 
@@ -18,7 +18,7 @@ class ListNoti extends BasePage {
   State<ListNoti> createState() => _ListNotiState();
 }
 
-class _ListNotiState extends BasePageState<ListNoti> {
+class _ListNotiState extends State<ListNoti> {
   // ignore: unused_field
   List<Notifications> _notifications = [];
 
@@ -38,7 +38,7 @@ class _ListNotiState extends BasePageState<ListNoti> {
   @override
   Widget build(BuildContext context) {
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
     final isDarkMode = context.select(
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColorRed = isDarkMode ? Colors.white : AppColor.redButton;
@@ -90,7 +90,7 @@ class _ListNotiState extends BasePageState<ListNoti> {
                                   userAuth?.student?.school.logo != null
                                       ? userAuth!.student?.school.logo
                                       : null,
-                              avatarImgPath: 'assets/logo/logo_red.png',
+                              avatarImgPath: ImageAssets.logoRed,
                               width: 60,
                               height: 60),
                           Expanded(

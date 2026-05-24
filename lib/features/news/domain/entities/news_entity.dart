@@ -26,24 +26,13 @@ class NewsEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        id,
-        title,
-        content,
-        type,
-        cover,
-        isPublished,
-        schoolId,
-        createdAt,
-        updatedAt,
-        school
-      ];
+  List<Object?> get props => [id, title, type];
 }
 
 class NewsSchoolEntity extends Equatable {
-  final String name;
+  final String? name;
 
-  const NewsSchoolEntity({required this.name});
+  const NewsSchoolEntity({this.name});
 
   @override
   List<Object?> get props => [name];

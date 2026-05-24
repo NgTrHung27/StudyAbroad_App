@@ -16,12 +16,12 @@ import 'package:study_abroad_cemc_mobile/models/chat_message.dart';
 import 'package:study_abroad_cemc_mobile/models/chat_session.dart';
 import 'package:study_abroad_cemc_mobile/models/chat_session_role.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/client_id.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class AblyWebsocket extends BasePage {
+class AblyWebsocket extends StatefulWidget {
   const AblyWebsocket({super.key});
 
   @override
@@ -29,7 +29,7 @@ class AblyWebsocket extends BasePage {
 }
 
 //Final
-class _AblyChatState extends BasePageState<AblyWebsocket> {
+class _AblyChatState extends State<AblyWebsocket> {
   bool _isLoading = false;
 
   late String _clientId;
@@ -62,14 +62,23 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
   void initState() {
     super.initState();
     setLoadingState();
-    _clientId = Provider.of<ClientIdProvider>(context, listen: false).clientId;
+    _clientId = '';
     currentUser = ChatUser(
         id: "0",
         firstName: userName, // Sử dụng giá trị mặc định hoặc tạm thời
         profileImage: avtUser);
-    createAblyRealtimeInstance();
-    _loadChatSession();
     _currentChatSession = ChatSession.placeholder();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final newClientId = Provider.of<ClientIdProvider>(context).clientId;
+    if (newClientId != _clientId && newClientId.isNotEmpty) {
+      _clientId = newClientId;
+      createAblyRealtimeInstance();
+      _loadChatSession();
+    }
   }
 
   void setLoadingState() {
@@ -96,6 +105,7 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
   }
 
   Future<void> _loadChatSession() async {
+    if (_clientId.isEmpty) return;
     try {
       final chatSessionResponse = await http.get(
         Uri.parse(ApiUrls.chatSessionByClientAndAccount(_clientId, _clientId)),
@@ -278,7 +288,7 @@ class _AblyChatState extends BasePageState<AblyWebsocket> {
                         sendButtonBuilder: (send) {
                           return IconButton(
                             icon: ImageIcon(
-                              const AssetImage('assets/send.png'),
+                              const AssetImage(ImageAssets.iconSend),
                               color: redCorlor,
                             ),
                             onPressed: send,

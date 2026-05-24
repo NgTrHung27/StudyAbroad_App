@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
-import 'package:study_abroad_cemc_mobile/models/schools.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class CarouselSliderDataFound extends StatefulWidget {
-  final List<Schools> carouselList;
+  final List<SchoolEntity> carouselList;
   const CarouselSliderDataFound(this.carouselList, {super.key});
 
   @override

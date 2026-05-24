@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -67,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen>
                     child: Transform.translate(
                       offset: Offset(0, value),
                       child:
-                          Image.asset('assets/logo/logo_red.png', width: 100),
+                          Image.asset(ImageAssets.logoRed, width: 100),
                     ),
                   );
                 },

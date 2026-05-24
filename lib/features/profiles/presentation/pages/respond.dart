@@ -18,7 +18,6 @@ import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart
 import 'package:study_abroad_cemc_mobile/models/response.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 
 // Events
 abstract class ResponseEvent {}
@@ -94,7 +93,7 @@ class ResponseBloc extends Bloc<ResponseEvent, ResponseState> {
   }
 }
 
-class Respond extends BasePage {
+class Respond extends StatefulWidget {
   final String title;
   final String description;
   final String id;
@@ -112,7 +111,7 @@ class Respond extends BasePage {
   State<Respond> createState() => _RespondState();
 }
 
-class _RespondState extends BasePageState<Respond> {
+class _RespondState extends State<Respond> {
   final TextEditingController contentController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   List<String> imageBase64List = [];
@@ -120,7 +119,6 @@ class _RespondState extends BasePageState<Respond> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    userAuth = context.watch<UserAuthProvider>().userAuthLogin;
   }
 
   Future<void> _pickImages() async {
@@ -194,8 +192,7 @@ class _RespondState extends BasePageState<Respond> {
 
   Widget _buildResponseContent(BuildContext context, ResponseState state,
       bool isDarkMode, double screenHeight) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = context.watch<UserAuthProvider>().userAuthLogin;
     ResponseModel? responseModel;
     if (state is ResponseSuccess) {
       responseModel = state.responseModel;

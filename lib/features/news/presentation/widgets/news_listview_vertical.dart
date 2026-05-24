@@ -1,13 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_event.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_state.dart';
+import 'package:study_abroad_cemc_mobile/features/news/domain/failures/news_failures.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
-import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_school_detail.dart';
 
 class VerticalNewsListView extends StatefulWidget {
@@ -35,6 +34,14 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
     final textColor = isDarkMode ? Colors.white : Colors.black;
     final bgColor = isDarkMode ? AppColor.backgrTabDark : Colors.white;
     return BlocBuilder<NewsBloc, NewsState>(
+      // Chỉ rebuild khi nhận state loại school — tránh race condition
+      buildWhen: (previous, current) {
+        if (current is NewsInitial) return true;
+        if (current is NewsLoading) return current.newsType == NewsType.school || current.newsType == NewsType.all;
+        if (current is NewsLoaded) return current.newsType == NewsType.school || current.newsType == NewsType.all;
+        if (current is NewsError) return current.newsType == NewsType.school || current.newsType == NewsType.all;
+        return false;
+      },
       builder: (context, state) {
         if (state is NewsLoading) {
           return const Center(
@@ -42,8 +49,25 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
           );
         }
         if (state is NewsError) {
-          print(state.message.toString());
-          return Center(child: Text(errorConnectionKey.tr()));
+          final isNetworkError = state.failure is NewsNetworkFailure;
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  isNetworkError ? Icons.wifi_off : Icons.error_outline,
+                  size: 48,
+                  color: Colors.grey,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  state.message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+          );
         }
         if (state is NewsLoaded) {
           final newsSchoolList = state.newsList;
@@ -114,7 +138,6 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
             },
           );
         }
-        print('error state: $state');
         return Container();
       },
     );

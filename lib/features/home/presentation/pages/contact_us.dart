@@ -3,8 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:study_abroad_cemc_mobile/blocs/contact_us_bloc/contact_bloc.dart';
-import 'package:study_abroad_cemc_mobile/blocs/contact_us_bloc/contact_state.dart';
+import 'package:study_abroad_cemc_mobile/features/contact/presentation/bloc/contact_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
@@ -16,18 +15,17 @@ import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/models/enum.dart';
 import 'package:study_abroad_cemc_mobile/models/schools.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ContactUs extends BasePage {
+class ContactUs extends StatefulWidget {
   const ContactUs({super.key});
 
   @override
   State<ContactUs> createState() => _ContactUsState();
 }
 
-class _ContactUsState extends BasePageState<ContactUs> {
+class _ContactUsState extends State<ContactUs> {
   //Declare
   String email = '', fullName = '', phone = '', message = '';
   Schools? selectedSchoolObject;

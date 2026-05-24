@@ -5,9 +5,8 @@ import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 
-class TuitionBox extends BasePage {
+class TuitionBox extends StatefulWidget {
   const TuitionBox({
     super.key,
     required this.tuition,
@@ -18,13 +17,13 @@ class TuitionBox extends BasePage {
   TuitionBoxDetailState createState() => TuitionBoxDetailState();
 }
 
-class TuitionBoxDetailState extends BasePageState<TuitionBox> {
+class TuitionBoxDetailState extends State<TuitionBox> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
     Color statusColor;
     final List<String?> tuitionStatuses = userAuth?.student?.tuitions
             ?.map((tuition) => tuition.status)

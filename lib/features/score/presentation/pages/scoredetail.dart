@@ -9,10 +9,9 @@ import 'package:study_abroad_cemc_mobile/features/score/presentation/widgets/sco
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/score/presentation/pages/pdf_score_api.dart';
 
-class ScoreDetail extends BasePage {
+class ScoreDetail extends StatefulWidget {
   final String semester;
   final String year;
   const ScoreDetail({super.key, required this.semester, required this.year});
@@ -21,13 +20,13 @@ class ScoreDetail extends BasePage {
   ScoreDetailState createState() => ScoreDetailState();
 }
 
-class ScoreDetailState extends BasePageState<ScoreDetail> {
+class ScoreDetailState extends State<ScoreDetail> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
     List<Score>? scores = userAuth?.student?.program?.scores;
 
     return Scaffold(

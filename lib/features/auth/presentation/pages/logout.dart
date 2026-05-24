@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/style/simplebutton.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class LogoutPage extends BasePage {
+class LogoutPage extends StatefulWidget {
   const LogoutPage({super.key});
 
   @override
@@ -25,7 +25,7 @@ class _LogoutPageState extends State<LogoutPage> {
     return Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/backgrounds/backgr_logoutfin.png"),
+                image: AssetImage(ImageAssets.bgLogoutFin),
                 fit: BoxFit.cover)),
         child: Scaffold(
             backgroundColor: Colors.transparent,
@@ -44,7 +44,7 @@ class _LogoutPageState extends State<LogoutPage> {
                           }),
                           SizedBox(height: screenHeight * 0.15),
                           const Spacer(),
-                          Image.asset("assets/logo/logo_red.png", height: 80),
+                          Image.asset(ImageAssets.logoRed, height: 80),
                           const Spacer(),
                           Container(width: 35)
                         ],

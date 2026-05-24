@@ -13,7 +13,6 @@ import 'package:study_abroad_cemc_mobile/core/api/api_url.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/models/apply_scholar.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:http/http.dart' as http;
 
 // Events
@@ -93,7 +92,7 @@ class ApplyScholarBloc extends Bloc<ApplyScholarEvent, ApplyScholarState> {
   }
 }
 
-class ApplyPage extends BasePage {
+class ApplyPage extends StatefulWidget {
   final String name;
   final String id;
 
@@ -107,13 +106,13 @@ class ApplyPage extends BasePage {
   ApplyPageState createState() => ApplyPageState();
 }
 
-class ApplyPageState extends BasePageState<ApplyPage> {
+class ApplyPageState extends State<ApplyPage> {
   final TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return BlocProvider(

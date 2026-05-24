@@ -7,9 +7,7 @@ import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_event.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_state.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
@@ -18,16 +16,16 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/components/functions/button.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/text_field.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class LoginPage extends BasePage {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends BasePageState<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
   String email = '';
   String password = '';
   String? errorMessage;
@@ -42,7 +40,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
     String password = passwordController.text.trim();
     log('data email: $email');
     log('data pass: $password');
-    context.read<LoginBloc>().login(email, password, isRememberChange ?? false);
+    context.read<LoginBloc>().add(LoginRequested(email: email, password: password));
   }
 
   void changeSelectedValueRadio(bool? isRemember) {
@@ -65,8 +63,8 @@ class _LoginPageState extends BasePageState<LoginPage> {
           image: DecorationImage(
               image: AssetImage(
                   context.watch<ThemeSettingBloc>().state.isDarkMode
-                      ? "assets/backgrounds/bckgr_login_dark.jpg"
-                      : "assets/backgrounds/bckgr_login.jpg"),
+                      ? ImageAssets.bgLoginDark
+                      : ImageAssets.bgLogin),
               fit: BoxFit.cover)),
       child: Stack(children: [
         Scaffold(
@@ -81,12 +79,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
                 });
               } else if (state is LoginFailure) {
                 setState(() {
-                  errorMessage = state.error;
-                  isLoading = false;
-                });
-              } else if (state is LoginEmailError) {
-                setState(() {
-                  errorMessage = state.error;
+                  errorMessage = state.message;
                   isLoading = false;
                 });
               } else if (state is LoginLoading) {
@@ -100,7 +93,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
                 // Navigate to mainpage when login succeeds
                 context
                     .read<UserAuthProvider>()
-                    .setUserAuthLogin(state.userAuthLogin);
+                    .setUserAuthLogin();
                 Navigator.pushNamed(context, '/mainpage');
               } else {
                 setState(() {
@@ -126,8 +119,8 @@ class _LoginPageState extends BasePageState<LoginPage> {
                           SizedBox(width: screenWidth * 0.20),
                           Image.asset(
                             context.watch<ThemeSettingBloc>().state.isDarkMode
-                                ? "assets/logo/logo_white.png"
-                                : "assets/logo/logo_red.png",
+                                ? ImageAssets.logoWhite
+                                : ImageAssets.logoRed,
                             height: 80,
                           ),
                           SizedBox(width: screenWidth * 0.25),
@@ -158,9 +151,6 @@ class _LoginPageState extends BasePageState<LoginPage> {
                             prefixIcon: Icons.email,
                             onChanged: (value) {
                               email = value;
-                              context
-                                  .read<LoginBloc>()
-                                  .add(CheckLoginEmailEvent(email));
                             },
                           ),
                         ],

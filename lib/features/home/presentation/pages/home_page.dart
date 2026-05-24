@@ -6,8 +6,6 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_event.dart';
 import 'package:study_abroad_cemc_mobile/features/home/presentation/bloc/legacy/carousel_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/home/presentation/bloc/legacy/carousel_event.dart';
 import 'package:study_abroad_cemc_mobile/features/home/presentation/bloc/legacy/carousel_state.dart';
@@ -26,20 +24,23 @@ import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart
 import 'package:study_abroad_cemc_mobile/models/news.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/client_id.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/schools_list.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_localization/easy_localization.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class HomePage extends BasePage {
+import '../../../news/presentation/bloc/news_bloc.dart';
+import '../../../news/presentation/bloc/news_event.dart';
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key, NewsList? newsData});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends BasePageState<HomePage> {
+class _HomePageState extends State<HomePage> {
   final GlobalKey _one = GlobalKey();
   final GlobalKey _two = GlobalKey();
   final GlobalKey _three = GlobalKey();
@@ -77,10 +78,7 @@ class _HomePageState extends BasePageState<HomePage> {
   }
 
   Future<void> _initializeNotifications(BuildContext context) async {
-    final userAuth =
-        this.userAuth ?? context.read<UserAuthProvider>().userAuthLogin;
-    print('checkuserAuth _initializeNotifications: $userAuth');
-
+    final userAuth = context.read<UserAuthProvider>().userAuthLogin;
     if (userAuth == null) {
     } else {}
 
@@ -119,8 +117,7 @@ class _HomePageState extends BasePageState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = context.watch<UserAuthProvider>().userAuthLogin;
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -135,8 +132,14 @@ class _HomePageState extends BasePageState<HomePage> {
               horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
           child: RefreshIndicator(
             color: textColorRed,
-            onRefresh: () => Future.delayed(const Duration(seconds: 2),
-                () => context.read<LoginBloc>().add(AutoLoginEvent())),
+            onRefresh: () async {
+              // Refresh data on pull-to-refresh
+              if (mounted) {
+                context.read<CarouselBloc>().add(FetchCarousel());
+                context.read<NewsBloc>().add(LoadNewsEvent());
+              }
+              await Future.delayed(const Duration(seconds: 1));
+            },
             child: ListView(
               controller: _scrollController,
               children: [
@@ -151,7 +154,26 @@ class _HomePageState extends BasePageState<HomePage> {
                     } else if (state is CarouselLoaded) {
                       return CarouselSliderDataFound(state.carousels);
                     } else if (state is CarouselError) {
-                      return Center(child: Text(errorConnectionKey.tr()));
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              state.isNetworkError
+                                  ? Icons.wifi_off
+                                  : Icons.error_outline,
+                              size: 48,
+                              color: Colors.grey,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              state.message,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      );
                     } else {
                       return Container();
                     }
@@ -198,7 +220,7 @@ class _HomePageState extends BasePageState<HomePage> {
                             child: SizedBox(
                                 width: 330,
                                 child:
-                                    Image.asset('assets/countries/Canada.png')),
+                                    Image.asset(ImageAssets.countryCanada)),
                           ),
                           SizedBox(width: screenWidth * 0.02),
                           GestureDetector(
@@ -213,7 +235,7 @@ class _HomePageState extends BasePageState<HomePage> {
                             child: SizedBox(
                                 width: 330,
                                 child: Image.asset(
-                                    'assets/countries/Australia.png')),
+                                    ImageAssets.countryAustralia)),
                           ),
                           SizedBox(width: screenWidth * 0.02),
                           GestureDetector(
@@ -228,7 +250,7 @@ class _HomePageState extends BasePageState<HomePage> {
                             child: SizedBox(
                                 width: 330,
                                 child:
-                                    Image.asset('assets/countries/Korea.png')),
+                                    Image.asset(ImageAssets.countryKorea)),
                           ),
                         ],
                       ),

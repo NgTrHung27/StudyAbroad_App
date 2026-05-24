@@ -49,7 +49,6 @@ dependencies:
   flutter_markdown: ^0.7.3
   url_launcher: ^6.3.0
   dash_chat_2: ^0.0.21
-  flutter_gemini: ^3.0.0
   web_socket_channel: ^3.0.0
   firebase_core: ^4.8.0
   connectivity_plus: ^6.1.5
@@ -125,6 +124,7 @@ flutter:
     - assets/logo/
     - assets/fonts/
     - assets/l10n/
+    - assets/knowledge/
     - env.json
 
   # An image asset can refer to one or more resolution-specific "variants", see

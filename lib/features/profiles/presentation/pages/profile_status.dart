@@ -1,3 +1,4 @@
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,19 +14,30 @@ import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
+import 'package:shimmer/shimmer.dart';
 
-class ProfileStatus extends BasePage {
+class ProfileStatus extends StatefulWidget {
   const ProfileStatus({super.key});
   @override
   State<ProfileStatus> createState() => _ProfileStatusState();
 }
 
-class _ProfileStatusState extends BasePageState<ProfileStatus> {
+class _ProfileStatusState extends State<ProfileStatus> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<UserAuthProvider>().fetchFreshProfile();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuthProvider = context.watch<UserAuthProvider>();
+    final userAuth = userAuthProvider.userAuthLogin;
+    final isFetching = userAuthProvider.isFetchingProfile;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
     //Theme
@@ -71,15 +83,26 @@ class _ProfileStatusState extends BasePageState<ProfileStatus> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IdTab(
-                            userName: userAuth?.name ?? 'N/A',
-                            idUser: userAuth?.email ?? 'N/A',
-                            avatarImgUrl: userAuth?.student?.school.logo != null
-                                ? userAuth!.student?.school.logo
-                                : null,
-                            avatarImgPath: 'assets/logo/logo_red.png',
-                          ),
-                        ], // parameters userName+idUser and avatarUser
+                          if (isFetching)
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: IdTab(
+                                userName: 'Loading...',
+                                idUser: 'Loading...',
+                                avatarImgPath: ImageAssets.logoRed,
+                              ),
+                            )
+                          else
+                            IdTab(
+                              userName: userAuth?.name ?? 'N/A',
+                              idUser: userAuth?.email ?? 'N/A',
+                              avatarImgUrl: userAuth?.student?.school.logo != null
+                                  ? userAuth!.student?.school.logo
+                                  : null,
+                              avatarImgPath: ImageAssets.logoRed,
+                            ),
+                        ],
                       ),
                       SizedBox(height: screenHeight * 0.03),
 

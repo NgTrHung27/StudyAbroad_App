@@ -1,13 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_event.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_state.dart';
-import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
-import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_detail.dart';
+import 'package:study_abroad_cemc_mobile/features/news/domain/failures/news_failures.dart';
 import 'package:study_abroad_cemc_mobile/features/news/domain/entities/news_entity.dart';
+import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_detail.dart';
 
 class NewsListViewShort extends StatefulWidget {
   const NewsListViewShort({super.key, required this.nullSchool});
@@ -36,7 +35,25 @@ class NewsListViewShortState extends State<NewsListViewShort> {
           );
         }
         if (state is NewsError) {
-          return Center(child: Text(errorConnectionKey.tr()));
+          final isNetworkError = state.failure is NewsNetworkFailure;
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  isNetworkError ? Icons.wifi_off : Icons.error_outline,
+                  size: 48,
+                  color: Colors.grey,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  state.message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+          );
         }
         if (state is NewsLoaded) {
           final newsList = state.newsList;

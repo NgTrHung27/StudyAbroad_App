@@ -9,16 +9,15 @@ import 'package:study_abroad_cemc_mobile/features/notifications/presentation/wid
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/models/notifications.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 
-class NotificationsPage extends BasePage {
+class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
 
   @override
   State<NotificationsPage> createState() => NotificationsPageState();
 }
 
-class NotificationsPageState extends BasePageState<NotificationsPage> {
+class NotificationsPageState extends State<NotificationsPage> {
   List<Notifications> notifications = [];
 
   @override
@@ -39,20 +38,20 @@ class NotificationsPageState extends BasePageState<NotificationsPage> {
         );
         notifications.add(newNotification);
         await Notifications.saveNotifications(notifications);
-        setState(() {}); // Cập nhật giao diện người dùng
+        setState(() {});
       }
     });
   }
 
   Future<void> _loadNotifications() async {
     notifications = await Notifications.loadNotifications();
-    setState(() {}); // Cập nhật giao diện người dùng
+    setState(() {});
   }
 
   Future<void> _clearNotifications() async {
     notifications.clear();
     await Notifications.saveNotifications(notifications);
-    setState(() {}); // Cập nhật giao diện người dùng
+    setState(() {});
   }
 
   void checkUserAuthAndClearNotifications() {
@@ -65,7 +64,7 @@ class NotificationsPageState extends BasePageState<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 

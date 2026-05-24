@@ -6,22 +6,22 @@ import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/score/presentation/pages/scoredetail.dart';
 
-class ScorePage extends BasePage {
+class ScorePage extends StatefulWidget {
   const ScorePage({super.key});
 
   @override
   ScorePageState createState() => ScorePageState();
 }
 
-class ScorePageState extends BasePageState<ScorePage> {
+class ScorePageState extends State<ScorePage> {
   late int latestSemester;
 
   @override
   void initState() {
     super.initState();
+    final userAuth = context.read<UserAuthProvider>().userAuthLogin;
     latestSemester = userAuth?.student?.program?.scores
             ?.map((e) => int.parse(e.semester))
             .reduce((a, b) => a > b ? a : b) ??
@@ -30,9 +30,8 @@ class ScorePageState extends BasePageState<ScorePage> {
 
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
-    List<Score>? scores = userAuth?.student?.program?.scores;
+    final userAuth = context.watch<UserAuthProvider>().userAuthLogin;
+List<Score>? scores = userAuth?.student?.program?.scores;
 
     Score? latestScore;
     List<Score> previousScores = [];

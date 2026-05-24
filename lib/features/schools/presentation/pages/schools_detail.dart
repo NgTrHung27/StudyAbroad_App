@@ -10,9 +10,8 @@ import 'package:study_abroad_cemc_mobile/features/news/presentation/widgets/news
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/widgets/scholar_school_box.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 
-class SchoolsDetail extends BasePage {
+class SchoolsDetail extends StatefulWidget {
   final SchoolEntity school;
   const SchoolsDetail({super.key, required this.school});
 
@@ -20,7 +19,7 @@ class SchoolsDetail extends BasePage {
   SchoolsDetailState createState() => SchoolsDetailState();
 }
 
-class SchoolsDetailState extends BasePageState<SchoolsDetail> {
+class SchoolsDetailState extends State<SchoolsDetail> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

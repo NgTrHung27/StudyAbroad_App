@@ -4,21 +4,21 @@ import 'package:study_abroad_cemc_mobile/components/functions/alert_dialog.dart'
 import 'package:study_abroad_cemc_mobile/components/functions_main_page/boxgradient.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:provider/provider.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class BoxGridView extends BasePage {
+class BoxGridView extends StatefulWidget {
   const BoxGridView({super.key});
   @override
   State<BoxGridView> createState() => _BoxGridViewState();
 }
 
-class _BoxGridViewState extends BasePageState<BoxGridView> {
+class _BoxGridViewState extends State<BoxGridView> {
   @override
   Widget build(BuildContext context) {
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
     final isLoggedIn = userAuth != null;
 
     int crossAxisCount =
@@ -53,7 +53,7 @@ class _BoxGridViewState extends BasePageState<BoxGridView> {
                       },
                     );
             },
-            image: const AssetImage('assets/icons_3d/icon_3d_medal.png'),
+            image: const AssetImage(ImageAssets.icon3dMedal),
           ),
           BoxGradient(
             color1: AppColor.tealLight,
@@ -63,7 +63,7 @@ class _BoxGridViewState extends BasePageState<BoxGridView> {
             onTap: () {
               Navigator.pushNamed(context, "/news");
             },
-            image: const AssetImage('assets/icons_3d/icon_3d_newspaper.png'),
+            image: const AssetImage(ImageAssets.icon3dNewspaper),
           ),
           BoxGradient(
             color1: AppColor.cyanAccent,
@@ -73,7 +73,7 @@ class _BoxGridViewState extends BasePageState<BoxGridView> {
             onTap: () {
               Navigator.pushNamed(context, "/contactus");
             },
-            image: const AssetImage('assets/icons_3d/icon_3d_contact.png'),
+            image: const AssetImage(ImageAssets.icon3dContact),
           ),
           BoxGradient(
             color1: AppColor.blueAccentLight,
@@ -90,7 +90,7 @@ class _BoxGridViewState extends BasePageState<BoxGridView> {
                       },
                     );
             },
-            image: const AssetImage('assets/icons_3d/icon_3d_scholarship.png'),
+            image: const AssetImage(ImageAssets.icon3dScholarship),
           ),
         ],
       ),

@@ -24,7 +24,7 @@ class GeminiChatBloc extends Bloc<GeminiChatEvent, GeminiChatState> {
       SendGeminiMessage event, Emitter<GeminiChatState> emit) async {
     // Add user message to UI
     final newMessages = [event.message, ...state.messages];
-    emit(state.copyWith(messages: newMessages, error: null));
+    emit(state.copyWith(messages: newMessages, error: null, isLoading: true));
 
     // Prepare images if any
     List<Uint8List>? images;
@@ -32,16 +32,28 @@ class GeminiChatBloc extends Bloc<GeminiChatEvent, GeminiChatState> {
       images = [File(event.message.medias!.first.url).readAsBytesSync()];
     }
 
+    // Prepare history
+    // state.messages contains previous messages, newest first.
+    // GenerativeModel needs oldest first.
+    List<Map<String, dynamic>> history = [];
+    for (var msg in state.messages.reversed) {
+      history.add({
+        'role': msg.user.id == geminiUser.id ? 'model' : 'user',
+        'text': msg.text,
+      });
+    }
+
     try {
       final stream = _repository.streamGenerateContent(
         event.message.text,
         images: images,
         modelName: event.modelName,
+        history: history,
       );
 
       await emit.forEach(stream, onData: (result) {
         return result.fold(
-          (failure) => state.copyWith(error: failure.message),
+          (failure) => state.copyWith(error: failure.message, isLoading: false),
           (chunk) {
             final List<ChatMessage> updatedMessages = List.from(state.messages);
 
@@ -61,12 +73,12 @@ class GeminiChatBloc extends Bloc<GeminiChatEvent, GeminiChatState> {
               updatedMessages.insert(0, message);
             }
 
-            return state.copyWith(messages: updatedMessages);
+            return state.copyWith(messages: updatedMessages, isLoading: false);
           },
         );
       });
     } catch (e) {
-      emit(state.copyWith(error: 'An error occurred: $e'));
+      emit(state.copyWith(error: 'An error occurred: $e', isLoading: false));
     }
   }
 }

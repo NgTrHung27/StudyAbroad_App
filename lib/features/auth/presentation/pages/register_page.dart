@@ -7,11 +7,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/auth_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/auth_event.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/auth_state.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/models/country.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/convert_imagetostring.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/dropdown.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/radio.dart';
@@ -21,19 +20,17 @@ import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/style/simplebutton.dart';
 import 'package:study_abroad_cemc_mobile/components/style/textspan.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/models/country.dart';
 import 'package:study_abroad_cemc_mobile/models/enum.dart';
 import 'package:study_abroad_cemc_mobile/models/schools.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/login_page.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 
-class RegisterPage extends BasePage {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends BasePageState<RegisterPage> {
+class _RegisterPageState extends State<RegisterPage> {
   //Declare API School
   List<Schools> lstschools = [];
   List<Country> lstCountry = [];
@@ -570,37 +567,30 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
               ],
             ),
             const SizedBox(height: 12),
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                if (state is AuthLoadedCityState) {
-                  lstCountry = state.country;
+            DropdownCustom<Country>(
+              icon: Icons.location_city,
+              items: lstCountry,
+              selectedItem: selectedCity == null
+                  ? null
+                  : lstCountry.firstWhereOrNull(
+                      (element) => element.name == selectedCity),
+              onChanged: (Country? newValueCountry) {
+                if (newValueCountry != null) {
+                  cityChange(newValueCountry);
+                  selectedDistrict = null;
+                  selectedWard = null;
                 }
-                return DropdownCustom<Country>(
-                  icon: Icons.location_city,
-                  items: lstCountry,
-                  selectedItem: selectedCity == null
-                      ? null
-                      : lstCountry.firstWhereOrNull(
-                          (element) => element.name == selectedCity),
-                  onChanged: (Country? newValueCountry) {
-                    if (newValueCountry != null) {
-                      cityChange(newValueCountry);
-                      selectedDistrict = null;
-                      selectedWard = null;
-                    }
-                  },
-                  itemLabel: (Country country) => country.name,
-                  hintText: registerCityKey.tr(),
-                  isExpanded: false,
-                );
               },
+              itemLabel: (Country country) => country.name,
+              hintText: registerCityKey.tr(),
+              isExpanded: false,
             ),
             const SizedBox(height: 15),
             Row(children: [
               Expanded(child: BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   if (state is AuthLoadedCityState) {
-                    lstCountry = state.country;
+                    lstCountry = state.country.cast<Country>();
                   }
                   return DropdownCustom<District>(
                     icon: Icons.map,
@@ -635,7 +625,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
               Expanded(child: BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   if (state is AuthLoadedCityState) {
-                    lstCountry = state.country;
+                    lstCountry = state.country.cast<Country>();
                   }
                   final districts = selectedCity == null
                       ? <District>[]
@@ -726,7 +716,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                 Expanded(child: BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     if (state is AuthLoadedState) {
-                      lstschools = state.schools;
+                      lstschools = state.schools.cast<Schools>();
                     }
                     return DropdownCustom<Schools>(
                       icon: Icons.school,
@@ -756,7 +746,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
                   child: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthLoadedState) {
-                        lstschools = state.schools;
+                        lstschools = state.schools.cast<Schools>();
                       }
                       return DropdownCustom<SchoolProgram>(
                         icon: Icons.history_edu,
@@ -899,87 +889,87 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
       listener: (context, state) {
         if (state is AuthErrorEmailState) {
           setState(() {
-            errorEmailMessage = state.error;
+            errorEmailMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorNameState) {
           setState(() {
-            errorNameMessage = state.error;
+            errorNameMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorPasswordState) {
           setState(() {
-            errorPasswordMessage = state.error;
+            errorPasswordMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorConfrimPasswordState) {
           setState(() {
-            errorConfrimPasswordMessage = state.error;
+            errorConfrimPasswordMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorIDCardNumberState) {
           setState(() {
-            errorIDCardNumberMessage = state.error;
+            errorIDCardNumberMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorDOBState) {
           setState(() {
-            errorDateMessage = state.error;
+            errorDateMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorPhoneState) {
           setState(() {
-            errorPhoneMessage = state.error;
+            errorPhoneMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorCityState) {
           setState(() {
-            errorCityMessage = state.error;
+            errorCityMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorDistrictState) {
           setState(() {
-            errorDistrictMessage = state.error;
+            errorDistrictMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorWardState) {
           setState(() {
-            errorWardMessage = state.error;
+            errorWardMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorAddressState) {
           setState(() {
-            errorAddressMessage = state.error;
+            errorAddressMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorGenderErrorState) {
           setState(() {
-            errorGenderMessage = state.error;
+            errorGenderMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorDegreeTypeState) {
           setState(() {
-            errorDegreeMessage = state.error;
+            errorDegreeMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorGradeTypeState) {
           setState(() {
-            errorGradeTypeMessage = state.error;
+            errorGradeTypeMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorGradeScore) {
           setState(() {
-            errorGradeMessage = state.error;
+            errorGradeMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorCertificateTypeState) {
           setState(() {
-            errorCertificateTypeMessage = state.error;
+            errorCertificateTypeMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthErrorState) {
           setState(() {
-            errorMessage = state.error;
+            errorMessage = state.message;
             isLoading = false;
           });
         } else if (state is AuthSuccessState) {
@@ -992,7 +982,7 @@ class _RegisterPageState extends BasePageState<RegisterPage> {
         if (state is AuthErrorState) {
           Future.microtask(() {
             setState(() {
-              errorMessage = state.error;
+              errorMessage = state.message;
             });
           });
           isLoading = false;

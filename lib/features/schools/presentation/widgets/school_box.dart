@@ -37,6 +37,22 @@ class SchoolBox extends StatelessWidget {
       stops.add(stop);
     }
 
+    if (colors.isEmpty) {
+      Color fallbackColor = Colors.black;
+      try {
+        String hexString = gradientString.replaceAll('#', '').trim();
+        if (hexString.length == 6) {
+          fallbackColor = Color(int.parse(hexString, radix: 16) + 0xFF000000);
+        }
+      } catch (_) {}
+      return LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [fallbackColor, fallbackColor],
+        stops: const [0.0, 1.0],
+      );
+    }
+
     return LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,

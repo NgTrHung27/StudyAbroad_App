@@ -1,8 +1,8 @@
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/login_event.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_event.dart';
 import 'package:study_abroad_cemc_mobile/components/action/action_tab.dart';
@@ -14,17 +14,17 @@ import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/style/simplebutton.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
-class Profile extends BasePage {
+class Profile extends StatefulWidget {
   const Profile({super.key});
 
   @override
   State<Profile> createState() => _UserProfileState();
 }
 
-class _UserProfileState extends BasePageState<Profile> {
+class _UserProfileState extends State<Profile> {
   bool isChangeColor = false;
 
   @override
@@ -32,10 +32,13 @@ class _UserProfileState extends BasePageState<Profile> {
     super.initState();
     _loadIconState();
 
-    // Fetch fresh profile data in background
+    // Fetch fresh profile data on first load
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        context.read<UserAuthProvider>().fetchFreshProfile();
+        final authProvider = context.read<UserAuthProvider>();
+        if (!authProvider.hasFetchedProfile) {
+          authProvider.fetchFreshProfile();
+        }
       }
     });
   }
@@ -59,8 +62,9 @@ class _UserProfileState extends BasePageState<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuthProvider = context.watch<UserAuthProvider>();
+    final userAuth = userAuthProvider.userAuthLogin;
+    final isFetching = userAuthProvider.isFetchingProfile;
     final isLoggedIn = userAuth != null;
 
     final logoutText =
@@ -82,11 +86,8 @@ class _UserProfileState extends BasePageState<Profile> {
           (ThemeSettingBloc bloc) => bloc.state.scaffoldBackgroundColor),
       body: RefreshIndicator(
         onRefresh: () async {
-          await Future.delayed(const Duration(seconds: 2));
+          await context.read<UserAuthProvider>().fetchFreshProfile();
           if (!mounted) return;
-          // ignore: use_build_context_synchronously
-          final loginBloc = context.read<LoginBloc>();
-          loginBloc.add(AutoLoginEvent());
         },
         child: Stack(
           children: <Widget>[
@@ -100,18 +101,28 @@ class _UserProfileState extends BasePageState<Profile> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        isLoggedIn
-                            ? IdTab(
-                                userName: homeHelloKey.tr(),
-                                idUser: userAuth.name ?? 'User',
-                                avatarImgUrl: userAuth.student?.school
-                                    .logo, // Sử dụng hình ảnh từ API nếu có
-                                avatarImgPath: 'assets/logo/logo_white.png',
-                              )
-                            : IdTabLogout(
-                                textTab: registerSignInKey.tr(),
-                                avatarImgPath: 'assets/logo/logo_white.png',
-                              )
+                        if (isFetching)
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: IdTab(
+                              userName: homeHelloKey.tr(),
+                              idUser: 'Loading...',
+                              avatarImgPath: ImageAssets.logoWhite,
+                            ),
+                          )
+                        else if (isLoggedIn)
+                          IdTab(
+                            userName: homeHelloKey.tr(),
+                            idUser: userAuth.name ?? 'User',
+                            avatarImgUrl: userAuth.student?.school.logo,
+                            avatarImgPath: ImageAssets.logoWhite,
+                          )
+                        else
+                          IdTabLogout(
+                            textTab: registerSignInKey.tr(),
+                            avatarImgPath: ImageAssets.logoWhite,
+                          )
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.03),

@@ -32,16 +32,19 @@ class SchoolModel extends SchoolEntity {
       isPublished: json["isPublished"] ?? false,
       country: json["country"] ?? '',
       locations: json["locations"] != null
-          ? List<SchoolLocationModel>.from(
-              json["locations"].map((x) => SchoolLocationModel.fromJson(x)))
+          ? (json["locations"] as List)
+              .map((e) => SchoolLocationModel.fromJson(e))
+              .toList()
           : null,
       programs: json["programs"] != null
-          ? List<SchoolProgramModel>.from(
-              json["programs"].map((x) => SchoolProgramModel.fromJson(x)))
+          ? (json["programs"] as List)
+              .map((e) => SchoolProgramModel.fromJson(e))
+              .toList()
           : null,
       scholarships: json["scholarships"] != null
-          ? List<SchoolScholarshipModel>.from(json["scholarships"]
-              .map((x) => SchoolScholarshipModel.fromJson(x)))
+          ? (json["scholarships"] as List)
+              .map((e) => SchoolScholarshipModel.fromJson(e))
+              .toList()
           : null,
       createdAt: json["createdAt"] != null
           ? DateTime.parse(json["createdAt"])
@@ -63,13 +66,6 @@ class SchoolModel extends SchoolEntity {
         "color": color,
         "isPublished": isPublished,
         "country": country,
-        "locations":
-            locations?.map((x) => (x as SchoolLocationModel).toJson()).toList(),
-        "programs":
-            programs?.map((x) => (x as SchoolProgramModel).toJson()).toList(),
-        "scholarships": scholarships
-            ?.map((x) => (x as SchoolScholarshipModel).toJson())
-            .toList(),
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
       };
@@ -95,15 +91,6 @@ class SchoolLocationModel extends SchoolLocationEntity {
       isMain: json["isMain"],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "cover": cover,
-        "name": name,
-        "description": description,
-        "address": address,
-        "isMain": isMain,
-      };
 }
 
 class SchoolProgramModel extends SchoolProgramEntity {
@@ -124,14 +111,6 @@ class SchoolProgramModel extends SchoolProgramEntity {
       isPublished: json["isPublished"] ?? false,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "description": description,
-        "cover": cover,
-        "isPublished": isPublished,
-      };
 }
 
 class SchoolScholarshipModel extends SchoolScholarshipEntity {
@@ -152,12 +131,4 @@ class SchoolScholarshipModel extends SchoolScholarshipEntity {
       isPublished: json["isPublished"] ?? false,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "description": description,
-        "cover": cover,
-        "isPublished": isPublished,
-      };
 }

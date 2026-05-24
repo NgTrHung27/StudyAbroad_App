@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gif/gif.dart';
 import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroPage extends StatefulWidget {
@@ -38,15 +39,15 @@ class IntroPageState extends State<IntroPage> {
                 },
                 children: [
                   BuildIntroPage(
-                    img: 'assets/Education.gif',
+                    img: ImageAssets.gifEducation,
                     description: 'Choose international affiliated universities',
                   ),
                   BuildIntroPage(
-                    img: 'assets/CA.gif',
+                    img: ImageAssets.gifCA,
                     description: 'We manage progress and application status',
                   ),
                   BuildIntroPage(
-                    img: 'assets/Graduation.gif',
+                    img: ImageAssets.gifGraduation,
                     description:
                         'Easily manage points and scholarships according to your wishes',
                   ),

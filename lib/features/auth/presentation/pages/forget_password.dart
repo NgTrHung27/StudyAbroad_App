@@ -1,24 +1,23 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/forgot_pass_bloc.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/legacy/forgot_pass_state.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/forgot_pass_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/button.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/text_field.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class ForgetPass extends BasePage {
+class ForgetPass extends StatefulWidget {
   const ForgetPass({super.key});
   @override
   State<ForgetPass> createState() => _ForgetPassState();
 }
 
-class _ForgetPassState extends BasePageState<ForgetPass> {
+class _ForgetPassState extends State<ForgetPass> {
   String email = '';
   String? errorMessage;
   final usermailController = TextEditingController();
@@ -44,8 +43,8 @@ class _ForgetPassState extends BasePageState<ForgetPass> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(context.watch<ThemeSettingBloc>().state.isDarkMode
-                ? 'assets/backgrounds/bckgr_fgpass_dark.jpg'
-                : 'assets/backgrounds/bckgr_fgpass.jpg'),
+                ? ImageAssets.bgForgotPassDark
+                : ImageAssets.bgForgotPass),
             fit: BoxFit.cover,
           ),
         ),
@@ -58,13 +57,13 @@ class _ForgetPassState extends BasePageState<ForgetPass> {
               }
               if (state is ForgotPassFailure) {
                 setState(() {
-                  errorMessage = state.error;
+                  errorMessage = state.message;
                 });
               } else if (state is ForgotPassSuccess) {
                 errorMessage = 'Verification email has been sent!';
               } else if (state is ForgotPassEmailError) {
                 setState(() {
-                  errorMessage = state.error;
+                  errorMessage = state.message;
                 });
               } else if (state is ForgotPassInitial) {
                 setState(() {
@@ -91,8 +90,8 @@ class _ForgetPassState extends BasePageState<ForgetPass> {
                           SizedBox(width: screenWidth * 0.20),
                           Image.asset(
                             context.watch<ThemeSettingBloc>().state.isDarkMode
-                                ? "assets/logo/logo_white.png"
-                                : "assets/logo/logo_red.png",
+                                ? ImageAssets.logoWhite
+                                : ImageAssets.logoRed,
                             height: 80,
                           ),
                           SizedBox(width: screenWidth * 0.25),

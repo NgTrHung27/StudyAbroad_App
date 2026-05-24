@@ -438,14 +438,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
-  flutter_gemini:
-    dependency: "direct main"
-    description:
-      name: flutter_gemini
-      sha256: b7264b1d19acc4b1a5628a0e26c0976aa1fb948f0d3243bc3510ff51e09476b7
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   flutter_html:
     dependency: "direct main"
     description:

@@ -1,11 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_event.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_state.dart';
+import 'package:study_abroad_cemc_mobile/features/news/domain/failures/news_failures.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
-import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_detail.dart';
 
 class NewsListView extends StatefulWidget {
@@ -17,8 +16,6 @@ class NewsListView extends StatefulWidget {
 }
 
 class NewsListViewState extends State<NewsListView> {
-  // List<NewsList> newsList = [];
-
   @override
   void initState() {
     super.initState();
@@ -28,6 +25,14 @@ class NewsListViewState extends State<NewsListView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NewsBloc, NewsState>(
+      // Chỉ rebuild khi nhận state loại general — tránh race condition
+      buildWhen: (previous, current) {
+        if (current is NewsInitial) return true;
+        if (current is NewsLoading) return current.newsType == NewsType.general || current.newsType == NewsType.all;
+        if (current is NewsLoaded) return current.newsType == NewsType.general || current.newsType == NewsType.all;
+        if (current is NewsError) return current.newsType == NewsType.general || current.newsType == NewsType.all;
+        return false;
+      },
       builder: (context, state) {
         if (state is NewsLoading) {
           return const Center(
@@ -35,7 +40,25 @@ class NewsListViewState extends State<NewsListView> {
           );
         }
         if (state is NewsError) {
-          return Center(child: Text(errorConnectionKey.tr()));
+          final isNetworkError = state.failure is NewsNetworkFailure;
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  isNetworkError ? Icons.wifi_off : Icons.error_outline,
+                  size: 48,
+                  color: Colors.grey,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  state.message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+          );
         }
         if (state is NewsLoaded) {
           final newsList = state.newsList;
@@ -97,7 +120,6 @@ class NewsListViewState extends State<NewsListView> {
             ),
           );
         }
-        print('error state: $state');
         return Container();
       },
     );

@@ -1,13 +1,13 @@
 import 'package:study_abroad_cemc_mobile/core/errors/failures.dart';
 
-class ChattingFailure extends Failure {
-  const ChattingFailure({required super.message, super.originalError});
+abstract class ChattingFailure extends Failure {
+  const ChattingFailure({String? message}) : super(message: message ?? 'Chatting failure occurred');
 }
 
 class GeminiFailure extends ChattingFailure {
-  const GeminiFailure({required super.message, super.originalError});
+  const GeminiFailure({super.message});
 }
 
 class LiveSupportFailure extends ChattingFailure {
-  const LiveSupportFailure({required super.message, super.originalError});
+  const LiveSupportFailure({super.message});
 }

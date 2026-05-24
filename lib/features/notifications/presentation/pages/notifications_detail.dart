@@ -8,9 +8,9 @@ import 'package:study_abroad_cemc_mobile/components/functions/circle_avatarimg.d
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/models/notifications.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
-class NotificationDetailPage extends BasePage {
+class NotificationDetailPage extends StatefulWidget {
   const NotificationDetailPage({super.key, required this.notification});
   final Notifications notification;
 
@@ -20,14 +20,14 @@ class NotificationDetailPage extends BasePage {
 
 @override
 class _NotificationDetailPageState
-    extends BasePageState<NotificationDetailPage> {
+    extends State<NotificationDetailPage> {
   @override
   Widget build(BuildContext context) {
     // Định dạng thời gian của thông báo
     DateTime timesend = DateTime.parse(widget.notification.time!);
     String formattedDate = DateFormat('dd/MM/yyyy').format(timesend);
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
     final isDarkMode = context.select(
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final screenWidth = MediaQuery.of(context).size.width;
@@ -50,7 +50,7 @@ class _NotificationDetailPageState
                     avatarImgUrl: userAuth?.student?.school.logo != null
                         ? userAuth!.student?.school.logo
                         : null,
-                    avatarImgPath: 'assets/logo/logo_red.png',
+                    avatarImgPath: ImageAssets.logoRed,
                     width: 60,
                     height: 60),
               ],
@@ -72,7 +72,7 @@ class _NotificationDetailPageState
                                     userAuth?.student?.school.logo != null
                                         ? userAuth!.student?.school.logo
                                         : null,
-                                avatarImgPath: 'assets/logo/logo_red.png',
+                                avatarImgPath: ImageAssets.logoRed,
                                 width: 60,
                                 height: 60),
                             SizedBox(

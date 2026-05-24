@@ -26,10 +26,6 @@ class IdTab extends StatefulWidget {
 class _IdTabState extends State<IdTab> {
   @override
   Widget build(BuildContext context) {
-    final ImageProvider<Object> imageWidget = widget.avatarImgUrl != null
-        ? CachedNetworkImageProvider(widget.avatarImgUrl!)
-            as ImageProvider<Object>
-        : AssetImage(widget.avatarImgPath) as ImageProvider<Object>;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDarkMode = context.watch<ThemeSettingBloc>().state.isDarkMode;
     return Container(
@@ -55,16 +51,26 @@ class _IdTabState extends State<IdTab> {
             top: 10,
             left: 20,
             bottom: 10,
-            child: Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: imageWidget,
-                  fit: BoxFit.cover,
-                ),
-              ),
+            child: ClipOval(
+              child: widget.avatarImgUrl != null && widget.avatarImgUrl!.isNotEmpty
+                  ? CachedNetworkImage(
+                      imageUrl: widget.avatarImgUrl!,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) => Image.asset(
+                        widget.avatarImgPath,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Image.asset(
+                      widget.avatarImgPath,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
           Positioned(

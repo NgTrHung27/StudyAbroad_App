@@ -6,6 +6,7 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 
 import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
 class HelpFeedback extends StatelessWidget {
   const HelpFeedback({super.key});
@@ -41,7 +42,7 @@ class HelpFeedback extends StatelessWidget {
                         end: Alignment.bottomCenter,
                       ),
                     ),
-                    child: Image.asset('assets/backgrounds/help&feedback.png'),
+                    child: Image.asset(ImageAssets.bgHelpFeedback),
                   ), // thumbnail image
                 ),
                 ConstrainedBox(

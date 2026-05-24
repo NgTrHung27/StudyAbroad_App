@@ -2,13 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:study_abroad_cemc_mobile/components/Style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:provider/provider.dart';
 
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
 
-class ScoreTable extends BasePage {
+class ScoreTable extends StatefulWidget {
   final String semester;
   final String year;
   const ScoreTable({super.key, required this.semester, required this.year});
@@ -17,11 +16,11 @@ class ScoreTable extends BasePage {
   ScoreTableState createState() => ScoreTableState();
 }
 
-class ScoreTableState extends BasePageState<ScoreTable> {
+class ScoreTableState extends State<ScoreTable> {
   @override
   Widget build(BuildContext context) {
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
     final screenWidth = MediaQuery.of(context).size.width;
 
     // Lọc điểm theo semester và year

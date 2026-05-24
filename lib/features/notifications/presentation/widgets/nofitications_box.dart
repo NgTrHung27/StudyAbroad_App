@@ -4,10 +4,9 @@ import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/models/notifications.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/notifications/presentation/pages/notifications_detail.dart';
 
-class NotificationBox extends BasePage {
+class NotificationBox extends StatefulWidget {
   final Notifications notification;
 
   const NotificationBox({super.key, required this.notification});
@@ -16,7 +15,7 @@ class NotificationBox extends BasePage {
   NotificationBoxState createState() => NotificationBoxState();
 }
 
-class NotificationBoxState extends BasePageState<NotificationBox> {
+class NotificationBoxState extends State<NotificationBox> {
   late ThemeSettingBloc themeSettingBloc;
   late bool isDarkMode;
 

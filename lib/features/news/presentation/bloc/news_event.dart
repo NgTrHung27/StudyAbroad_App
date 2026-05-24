@@ -7,6 +7,10 @@ abstract class NewsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class LoadNewsEvent extends NewsEvent {
+  const LoadNewsEvent();
+}
+
 class LoadGeneralNewsEvent extends NewsEvent {
   const LoadGeneralNewsEvent();
 }
@@ -18,4 +22,13 @@ class LoadSchoolNewsEvent extends NewsEvent {
 
   @override
   List<Object?> get props => [schoolName];
+}
+
+class LoadNewsByIdEvent extends NewsEvent {
+  final String newsId;
+
+  const LoadNewsByIdEvent(this.newsId);
+
+  @override
+  List<Object?> get props => [newsId];
 }

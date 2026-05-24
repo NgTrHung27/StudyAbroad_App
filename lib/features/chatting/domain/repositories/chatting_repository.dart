@@ -8,6 +8,7 @@ abstract class ChattingRepository {
     String question, {
     List<Uint8List>? images,
     required String modelName,
+    List<Map<String, dynamic>>? history,
   });
 
   /// Connects to Ably Live Support

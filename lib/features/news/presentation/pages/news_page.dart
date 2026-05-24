@@ -8,12 +8,12 @@ import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/circle_avatarimg.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/widgets/news_listview_vertical.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/widgets/news_listview_horizontal.dart';
 
-class NewsPage extends BasePage {
+class NewsPage extends StatefulWidget {
   const NewsPage({super.key});
 
   @override
@@ -21,11 +21,11 @@ class NewsPage extends BasePage {
   _NewsPageState createState() => _NewsPageState();
 }
 
-class _NewsPageState extends BasePageState<NewsPage> {
+class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
     final isLoggedIn = userAuth != null;
 
     final screenHeight = MediaQuery.of(context).size.height;
@@ -54,7 +54,7 @@ class _NewsPageState extends BasePageState<NewsPage> {
                     avatarImgUrl: userAuth?.student?.school.logo != null
                         ? userAuth!.student?.school.logo
                         : null,
-                    avatarImgPath: 'assets/logo/logo_red.png',
+                    avatarImgPath: ImageAssets.logoRed,
                     width: 60,
                     height: 60),
               ],

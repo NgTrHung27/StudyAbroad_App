@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_event.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/bloc/news_state.dart';
+import 'package:study_abroad_cemc_mobile/features/news/domain/failures/news_failures.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
@@ -104,7 +105,25 @@ class _SearchPageState extends State<SearchPage> {
             return const Center(child: CircularProgressIndicator());
           }
           if (state is NewsError) {
-            return _isNotFound(textColor, bgColor);
+            final isNetworkError = state.failure is NewsNetworkFailure;
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    isNetworkError ? Icons.wifi_off : Icons.error_outline,
+                    size: 48,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 8),
+                  TextMonserats(
+                    state.message,
+                    textAlign: TextAlign.center,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+            );
           }
           if (state is NewsLoaded) {
             Future.microtask(() {
@@ -138,7 +157,7 @@ class _SearchPageState extends State<SearchPage> {
           color: Theme.of(context).scaffoldBackgroundColor,
           child: Center(
             child: TextMonserats(
-              errorConnectionKey.tr(),
+              'No results found',
               textAlign: TextAlign.center,
             ),
           ),

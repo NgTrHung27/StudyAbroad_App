@@ -9,8 +9,8 @@ import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/ably_websocket.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/widgets/flash_dismissible_chatting_gemini_ai.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/widgets/floating_chatting_position.dart';
-import 'package:study_abroad_cemc_mobile/features/chatting/presentation/widgets/pro_dismissible_chatting_gemini_ai.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
 import 'package:study_abroad_cemc_mobile/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:study_abroad_cemc_mobile/features/profiles/presentation/pages/profile.dart';
@@ -94,10 +94,10 @@ class MainPageState extends State<MainPage>
   }
 
   final List<String> _icons = [
-    'assets/iconHome',
-    'assets/iconMess',
-    'assets/iconNoti',
-    'assets/iconUser',
+    ImageAssets.iconHome,
+    ImageAssets.iconMess,
+    ImageAssets.iconNoti,
+    ImageAssets.iconUser,
   ];
 
   @override
@@ -116,7 +116,10 @@ class MainPageState extends State<MainPage>
         children: [
           // Main content
           Center(
-            child: _bodyView.elementAt(_currentIndex),
+            child: IndexedStack(
+              index: _currentIndex,
+              children: _bodyView,
+            ),
           ),
           // Floating bottom navigation bar
           if (_currentIndex != 1)
@@ -156,41 +159,14 @@ class MainPageState extends State<MainPage>
         ],
       ),
       floatingActionButton: _currentIndex != 1
-          ? SpeedDial(
-              animatedIcon: AnimatedIcons.view_list,
-              // ignore: sort_child_properties_last
+          ? FloatingActionButton(
+              onPressed: () => _showAIBottomSheet(context),
+              backgroundColor: AppColor.redLight,
               child: const ImageIcon(
-                AssetImage('assets/icons_3d/chatbot.png'),
+                AssetImage(ImageAssets.icon3dChatbot),
                 size: 30,
                 color: Colors.white,
               ),
-              backgroundColor: AppColor.redLight,
-              children: [
-                SpeedDialChild(
-                  child: const ImageIcon(
-                    AssetImage('assets/icons_3d/chatbot.png'),
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                  label: 'Gemini - Flash',
-                  onTap: () => _showFlashBottomSheetNew(context),
-                  backgroundColor: AppColor.redLight,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                ),
-                SpeedDialChild(
-                  child: const ImageIcon(
-                    AssetImage('assets/icons_3d/chatbot.png'),
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                  label: 'Gemini - Pro',
-                  onTap: () => _showProBottomSheet(context),
-                  backgroundColor: AppColor.redLight,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                ),
-              ],
             )
           : null,
       floatingActionButtonLocation: CustomFABLocation(
@@ -200,28 +176,7 @@ class MainPageState extends State<MainPage>
     );
   }
 
-  Future<void> _showProBottomSheet(BuildContext context) async {
-    return showModalBottomSheet(
-      enableDrag: false,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      context: context,
-      builder: (context) => ProDismissibleBottomSheetView(
-        childView: Container(
-            width: double.infinity,
-            color: Colors.white,
-            child: const Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text("Chat AI",
-                    style: TextStyle(fontSize: 30, color: Colors.blue)),
-              ),
-            )),
-      ),
-    );
-  }
-
-  Future<void> _showFlashBottomSheetNew(BuildContext bCcontextontext) async {
+  Future<void> _showAIBottomSheet(BuildContext context) async {
     return showModalBottomSheet(
       enableDrag: false,
       isScrollControlled: true,

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_event.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_state.dart';
+import 'package:study_abroad_cemc_mobile/features/schools/domain/failures/schools_failures.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/Style/simplebutton.dart';
@@ -11,10 +12,11 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/widgets/school_box.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/compare_schools.dart';
 
-class SchoolsListPage extends BasePage {
+typedef SchoolBloc = SchoolsBloc;
+
+class SchoolsListPage extends StatefulWidget {
   const SchoolsListPage({super.key, required this.country});
   final String country;
 
@@ -170,7 +172,25 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
               ),
             );
           } else if (state is SchoolsError) {
-            return Center(child: Text(errorConnectionKey.tr()));
+            final isNetworkError = state.failure is SchoolsNetworkFailure;
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    isNetworkError ? Icons.wifi_off : Icons.error_outline,
+                    size: 48,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    state.message,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            );
           }
           return const Center(child: Text('Please wait...'));
         },

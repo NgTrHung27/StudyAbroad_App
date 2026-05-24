@@ -1,3 +1,4 @@
+import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,20 +8,19 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/components/functions/circle_avatarimg.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
-import 'package:study_abroad_cemc_mobile/features/home/presentation/pages/base_lang.dart';
 
-class WelcomeAVT extends BasePage {
+class WelcomeAVT extends StatefulWidget {
   const WelcomeAVT({super.key, required this.username});
   final String username;
   @override
   State<WelcomeAVT> createState() => _WelcomeAVTState();
 }
 
-class _WelcomeAVTState extends BasePageState<WelcomeAVT> {
+class _WelcomeAVTState extends State<WelcomeAVT> {
   @override
   Widget build(BuildContext context) {
     final userAuth =
-        this.userAuth ?? context.watch<UserAuthProvider>().userAuthLogin;
+        context.watch<UserAuthProvider>().userAuthLogin;
 
     final isDarkMode = context.select(
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
@@ -55,7 +55,7 @@ class _WelcomeAVTState extends BasePageState<WelcomeAVT> {
                 avatarImgUrl: userAuth?.student?.school.logo != null
                     ? userAuth!.student?.school.logo
                     : null,
-                avatarImgPath: 'assets/logo/logo_red.png',
+                avatarImgPath: ImageAssets.logoRed,
                 width: 60,
                 height: 60)),
       ],
