@@ -65,6 +65,9 @@ jobs:
         run: |
           echo "${{ secrets.PLAY_STORE_CREDENTIALS_BASE64 }}" | base64 --decode > android/fastlane/play-store-credentials.json
 
+      - name: Build App Bundle
+        run: flutter build appbundle --release
+
       - name: Execute Fastlane Deploy
         working-directory: android
         run: bundle exec fastlane deploy
