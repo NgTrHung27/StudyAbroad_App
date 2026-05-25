@@ -5,7 +5,6 @@ import 'package:study_abroad_cemc_mobile/features/contact/domain/usecases/submit
 import 'package:study_abroad_cemc_mobile/features/schools/domain/usecases/get_schools_usecase.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/failures/schools_failures.dart';
 import 'package:study_abroad_cemc_mobile/models/enum.dart';
-import 'package:study_abroad_cemc_mobile/models/schools.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
 import 'package:equatable/equatable.dart';
 

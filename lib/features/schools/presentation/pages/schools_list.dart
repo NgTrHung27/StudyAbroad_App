@@ -6,8 +6,8 @@ import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/scho
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/bloc/school_state.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/failures/schools_failures.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
-import 'package:study_abroad_cemc_mobile/components/Style/backbutton.dart';
-import 'package:study_abroad_cemc_mobile/components/Style/simplebutton.dart';
+import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/style/simplebutton.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/widgets/school_box.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';

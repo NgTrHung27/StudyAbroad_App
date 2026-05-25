@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
-import 'package:study_abroad_cemc_mobile/components/Style/news_searchtextfield.dart';
+import 'package:study_abroad_cemc_mobile/components/style/news_searchtextfield.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/circle_avatarimg.dart';
