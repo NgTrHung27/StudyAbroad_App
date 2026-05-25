@@ -58,3 +58,4 @@ play-store-credentials.txt
 keystore_base64.txt
 upload-keystore.jks
 android/key.properties
+env_base64.txt
