@@ -52,7 +52,7 @@ jobs:
 
       - name: Decode Keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode --ignore-garbage > android/app/keystore.jks
 
       - name: Create key.properties
         run: |
@@ -63,11 +63,11 @@ jobs:
 
       - name: Decode Google Play Credentials
         run: |
-          echo "${{ secrets.PLAY_STORE_CREDENTIALS_BASE64 }}" | base64 --decode > android/play-store-credentials.json
+          echo "${{ secrets.PLAY_STORE_CREDENTIALS_BASE64 }}" | base64 --decode --ignore-garbage > android/play-store-credentials.json
 
       - name: Generate env.json
         run: |
-          echo "${{ secrets.ENV_JSON_BASE64 }}" | base64 --decode > env.json
+          echo "${{ secrets.ENV_JSON_BASE64 }}" | base64 --decode --ignore-garbage > env.json
 
       - name: Build App Bundle
         run: flutter build appbundle --release
