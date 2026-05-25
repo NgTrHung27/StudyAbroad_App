@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/chatting/presentation/pages/ably_chat_page.dart';
