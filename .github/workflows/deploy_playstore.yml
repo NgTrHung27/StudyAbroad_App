@@ -51,8 +51,9 @@ jobs:
         run: flutter pub get
 
       - name: Decode Keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode --ignore-garbage > android/app/keystore.jks
+        env:
+          B64_DATA: ${{ secrets.KEYSTORE_BASE64 }}
+        run: python3 -c "import base64, os; open('android/app/keystore.jks', 'wb').write(base64.b64decode(os.environ['B64_DATA']))"
 
       - name: Create key.properties
         run: |
@@ -62,12 +63,14 @@ jobs:
           echo "storeFile=keystore.jks" >> android/key.properties
 
       - name: Decode Google Play Credentials
-        run: |
-          echo "${{ secrets.PLAY_STORE_CREDENTIALS_BASE64 }}" | base64 --decode --ignore-garbage > android/play-store-credentials.json
+        env:
+          B64_DATA: ${{ secrets.PLAY_STORE_CREDENTIALS_BASE64 }}
+        run: python3 -c "import base64, os; open('android/play-store-credentials.json', 'wb').write(base64.b64decode(os.environ['B64_DATA']))"
 
       - name: Generate env.json
-        run: |
-          echo "${{ secrets.ENV_JSON_BASE64 }}" | base64 --decode --ignore-garbage > env.json
+        env:
+          B64_DATA: ${{ secrets.ENV_JSON_BASE64 }}
+        run: python3 -c "import base64, os; open('env.json', 'wb').write(base64.b64decode(os.environ['B64_DATA']))"
 
       - name: Build App Bundle
         run: flutter build appbundle --release
