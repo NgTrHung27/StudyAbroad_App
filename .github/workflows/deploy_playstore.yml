@@ -56,11 +56,12 @@ jobs:
         run: python3 -c "import base64, os; open('android/app/keystore.jks', 'wb').write(base64.b64decode(os.environ['B64_DATA']))"
 
       - name: Create key.properties
+        env:
+          STORE_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASS: ${{ secrets.KEY_PASSWORD }}
+          ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "storeFile=keystore.jks" >> android/key.properties
+          python3 -c "import os; f=open('android/key.properties', 'w'); f.write('storePassword=' + os.environ['STORE_PASS'] + '\nkeyPassword=' + os.environ['KEY_PASS'] + '\nkeyAlias=' + os.environ['ALIAS'] + '\nstoreFile=keystore.jks\n'); f.close()"
 
       - name: Decode Google Play Credentials
         env:
