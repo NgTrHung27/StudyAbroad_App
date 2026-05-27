@@ -74,7 +74,7 @@ jobs:
         run: python3 -c "import base64, os; open('env.json', 'wb').write(base64.b64decode(os.environ['B64_DATA']))"
 
       - name: Build App Bundle
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --build-number=$(( ${{ github.run_number }} + 20 ))
 
       - name: Execute Fastlane Deploy
         working-directory: android
