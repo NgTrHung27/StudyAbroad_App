@@ -2,7 +2,7 @@ name: study_abroad_cemc_mobile
 description: Study Abroad - CECM LTD.CO
 publish_to: "none"
 
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ">=3.1.5 <4.0.0"
