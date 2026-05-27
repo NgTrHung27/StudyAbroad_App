@@ -30,6 +30,12 @@ class UserAuthProvider with ChangeNotifier {
     }
   }
 
+  void clearUserAuthLogin() {
+    _userAuthLogin = null;
+    LocalStorage.remove(StorageKeys.user);
+    LocalStorage.remove(StorageKeys.token);
+    notifyListeners();
+  }
   Future<void> fetchFreshProfile() async {
     _isFetchingProfile = true;
     hasFetchedProfile = true;

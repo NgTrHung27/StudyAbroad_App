@@ -58,6 +58,7 @@ class _UserProfileState extends State<ProfilePage> {
 
   void userLogout(BuildContext context) {
     context.read<LoginBloc>().add(LogoutEvent());
+    context.read<UserAuthProvider>().clearUserAuthLogin();
   }
 
   @override
