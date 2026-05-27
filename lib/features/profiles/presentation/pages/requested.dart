@@ -7,6 +7,7 @@ import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting
 import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/empty_data.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
@@ -108,6 +109,11 @@ class _RequestedState extends State<ResponseRequestPage> {
                   final List<Requirement> pendingRequirements = requirementList
                       .where((requirement) => requirement.status == 'PENDING')
                       .toList();
+
+                  if (pendingRequirements.isEmpty) {
+                    return const EmptyDataWidget();
+                  }
+
                   return Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: screenWidth * 0.05,

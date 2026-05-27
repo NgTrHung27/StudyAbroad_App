@@ -5,6 +5,7 @@ import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/empty_data.dart';
 
 class ResponseRequestedDetail extends StatelessWidget {
   final String title;
@@ -50,6 +51,7 @@ class ResponseRequestedDetail extends StatelessWidget {
         padding: EdgeInsets.symmetric(
             horizontal: screenWidth * 0.06, vertical: screenWidth * 0.06),
         child: Container(
+          height: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           decoration: BoxDecoration(
             color: boxColor, // White background
@@ -92,27 +94,32 @@ class ResponseRequestedDetail extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: replies.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: TextMonserats(
-                            '- ${replies[index].message}',
-                            fontSize: screenWidth * 0.035,
-                            fontWeight: FontWeight.w400,
-                            color: textBox,
-                          ),
-                        ),
-                        Divider(
-                          color: textBox,
-                          thickness: 0.6,
-                        )
-                      ],
-                    );
-                  },
-                ),
+                child: replies.isEmpty
+                    ? const EmptyDataWidget(
+                        text: 'Chưa có phản hồi nào',
+                        icon: Icons.message_outlined,
+                      )
+                    : ListView.builder(
+                        itemCount: replies.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              ListTile(
+                                title: TextMonserats(
+                                  '- ${replies[index].message}',
+                                  fontSize: screenWidth * 0.035,
+                                  fontWeight: FontWeight.w400,
+                                  color: textBox,
+                                ),
+                              ),
+                              Divider(
+                                color: textBox,
+                                thickness: 0.6,
+                              )
+                            ],
+                          );
+                        },
+                      ),
               ),
             ],
           ),

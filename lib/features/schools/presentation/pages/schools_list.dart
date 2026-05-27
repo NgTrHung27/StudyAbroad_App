@@ -11,6 +11,7 @@ import 'package:study_abroad_cemc_mobile/components/style/simplebutton.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/widgets/school_box.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/empty_data.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/compare_schools.dart';
 
@@ -152,15 +153,20 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.08),
-                        child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: state.schoolList.length,
-                          itemBuilder: (context, index) {
-                            final school = state.schoolList[index];
-                            return SchoolBox(school: school);
-                          },
-                        ),
+                        child: state.schoolList.isEmpty
+                            ? const Padding(
+                                padding: EdgeInsets.only(top: 40.0),
+                                child: EmptyDataWidget(text: 'Không có trường học nào'),
+                              )
+                            : ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: state.schoolList.length,
+                                itemBuilder: (context, index) {
+                                  final school = state.schoolList[index];
+                                  return SchoolBox(school: school);
+                                },
+                              ),
                       ),
                     ],
                   ),

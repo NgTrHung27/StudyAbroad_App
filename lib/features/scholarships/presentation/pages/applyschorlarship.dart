@@ -111,8 +111,7 @@ class ApplyPageState extends State<ApplyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userAuth =
-        context.watch<UserAuthProvider>().userAuthLogin;
+    final userAuth = context.watch<UserAuthProvider>().userAuthLogin;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return BlocProvider(
@@ -240,7 +239,7 @@ class ApplyPageState extends State<ApplyPage> {
                     child: Padding(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).padding.top +
-                              screenHeight * 0.009),
+                              screenHeight * 0.1),
                       child: TextMonserats(widget.name,
                           fontSize: screenWidth * 0.05,
                           fontWeight: FontWeight.w700),

@@ -29,7 +29,7 @@ class NewsListViewShortState extends State<NewsListViewShort> {
   Widget build(BuildContext context) {
     return BlocBuilder<NewsBloc, NewsState>(
       builder: (context, state) {
-        if (state is NewsLoading) {
+        if (state is NewsLoading || state is NewsInitial) {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -116,7 +116,11 @@ class NewsListViewShortState extends State<NewsListViewShort> {
             ),
           );
         }
-        print('error state: $state');
+        if (state is NewsError) {
+          print('News error: ${state.message}');
+        } else {
+          print('Unhandled news state: $state');
+        }
         return Container();
       },
     );

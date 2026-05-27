@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +5,7 @@ import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
 
 class CarouselSliderDataFound extends StatefulWidget {
   final List<SchoolEntity> carouselList;
@@ -29,19 +29,11 @@ class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 child: Stack(
+                  fit: StackFit.expand,
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: e.background,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Center(
-                        child: CircularProgressIndicator(
-                          value: downloadProgress.progress,
-                        ),
-                      ),
+                    SafeNetworkImage(
+                      url: e.background,
                       fit: BoxFit.cover,
-                      width: 1000,
                     ),
                     Positioned(
                       bottom: 0,
@@ -65,7 +57,7 @@ class _CarouselSliderDataFoundState extends State<CarouselSliderDataFound> {
                             color: Colors.white,
                             fontWeight: FontWeight.w700),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

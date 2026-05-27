@@ -219,14 +219,28 @@ class _UserProfileState extends State<ProfilePage> {
                           name: request1Key.tr(),
                           icon: Icons.mail_outline,
                           onTap: () {
-                            Navigator.pushNamed(context, '/respondrequest');
+                            isLoggedIn
+                                ? Navigator.pushNamed(context, '/respondrequest')
+                                : showCustomDialog(
+                                    context: context,
+                                    onConfirm: () {
+                                      Navigator.pushNamed(context, '/login');
+                                    },
+                                  );
                           },
                         ),
                         FunctionItem(
                           name: request2Key.tr(),
                           icon: Icons.mark_email_read_outlined,
                           onTap: () {
-                            Navigator.pushNamed(context, '/respondrequested');
+                            isLoggedIn
+                                ? Navigator.pushNamed(context, '/respondrequested')
+                                : showCustomDialog(
+                                    context: context,
+                                    onConfirm: () {
+                                      Navigator.pushNamed(context, '/login');
+                                    },
+                                  );
                           },
                         ),
                       ],

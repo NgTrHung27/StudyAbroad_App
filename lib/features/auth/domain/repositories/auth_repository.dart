@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/domain/entities/user_entity.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/domain/failures/auth_failures.dart';
+import 'package:study_abroad_cemc_mobile/models/country.dart';
 
 /// Abstract repository interface for authentication
 abstract class AuthRepository {
@@ -22,6 +23,9 @@ abstract class AuthRepository {
     String? schoolName,
     String? country,
     String? programName,
+    String? city,
+    String? district,
+    String? ward,
     String? addressLine,
     String? gender,
     String? degreeType,
@@ -61,4 +65,7 @@ abstract class AuthRepository {
 
   /// Delete account
   Future<Either<AuthFailure, void>> deleteAccount();
+
+  /// Get countries list
+  Future<Either<AuthFailure, List<Country>>> getCountries();
 }

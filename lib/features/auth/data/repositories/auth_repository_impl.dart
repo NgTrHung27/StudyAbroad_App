@@ -6,6 +6,7 @@ import 'package:study_abroad_cemc_mobile/features/auth/data/models/user_model.da
 import 'package:study_abroad_cemc_mobile/features/auth/domain/entities/user_entity.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/domain/failures/auth_failures.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/domain/repositories/auth_repository.dart';
+import 'package:study_abroad_cemc_mobile/models/country.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -56,6 +57,9 @@ class AuthRepositoryImpl implements AuthRepository {
     String? schoolName,
     String? country,
     String? programName,
+    String? city,
+    String? district,
+    String? ward,
     String? addressLine,
     String? gender,
     String? degreeType,
@@ -76,6 +80,9 @@ class AuthRepositoryImpl implements AuthRepository {
         schoolName: schoolName,
         country: country,
         programName: programName,
+        city: city,
+        district: district,
+        ward: ward,
         addressLine: addressLine,
         gender: gender,
         degreeType: degreeType,
@@ -229,5 +236,19 @@ class AuthRepositoryImpl implements AuthRepository {
     await LocalStorage.setJson(StorageKeys.user, user.toJson());
     await LocalStorage.setString(StorageKeys.userEmail, email);
     await LocalStorage.setString(StorageKeys.userPassword, password);
+  }
+
+  @override
+  Future<Either<AuthFailure, List<Country>>> getCountries() async {
+    try {
+      final countries = await remoteDataSource.getCountries();
+      return Right(countries);
+    } on NetworkException {
+      return const Left(NetworkErrorFailure());
+    } on ServerException catch (e) {
+      return Left(ServerErrorFailure(e.statusCode));
+    } catch (e) {
+      return const Left(UnknownErrorFailure());
+    }
   }
 }

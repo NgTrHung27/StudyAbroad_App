@@ -196,3 +196,31 @@ const String newsPostKey = 'new_post';
 
 // === Help Feedback ===
 const String helpFeedbackKey = 'help_feedback';
+
+// === Validation & Error ===
+const String errorInvalidEmailKey = 'error_invalid_email';
+const String errorEmptyNameKey = 'error_empty_name';
+const String errorShortPasswordKey = 'error_short_password';
+const String errorPasswordMismatchKey = 'error_password_mismatch';
+const String errorEmptyGenderKey = 'error_empty_gender';
+const String errorEmptyPhoneKey = 'error_empty_phone';
+const String errorInvalidPhoneKey = 'error_invalid_phone';
+const String errorEmptyIdCardKey = 'error_empty_id_card';
+const String errorInvalidIdCardKey = 'error_invalid_id_card';
+const String errorFutureDobKey = 'error_future_dob';
+const String errorUnderageDobKey = 'error_underage_dob';
+const String errorEmptyCityKey = 'error_empty_city';
+const String errorEmptyDistrictKey = 'error_empty_district';
+const String errorEmptyWardKey = 'error_empty_ward';
+const String errorEmptyAddressKey = 'error_empty_address';
+const String errorEmptySchoolKey = 'error_empty_school';
+const String errorEmptyProgramKey = 'error_empty_program';
+const String errorEmptyDegreeTypeKey = 'error_empty_degree_type';
+const String errorEmptyCertificateTypeKey = 'error_empty_certificate_type';
+const String errorEmptyCertificateImgKey = 'error_empty_certificate_img';
+const String errorEmptyGradeTypeKey = 'error_empty_grade_type';
+const String errorEmptyGradeScoreKey = 'error_empty_grade_score';
+const String errorEmptyDobKey = 'error_empty_dob';
+const String registerSuccessTitleKey = 'register_success_title';
+const String registerSuccessContentKey = 'register_success_content';
+const String registerLoginNowKey = 'register_login_now';

@@ -27,6 +27,7 @@ import 'package:study_abroad_cemc_mobile/features/auth/domain/usecases/login_use
 import 'package:study_abroad_cemc_mobile/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/domain/usecases/register_usecase.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/domain/usecases/get_countries_usecase.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/forgot_pass_bloc.dart';
@@ -141,6 +142,7 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton(() => LogoutUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => GetCurrentUserUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => RegisterUseCase(getIt<AuthRepository>()));
+  getIt.registerLazySingleton(() => GetCountriesUseCase(getIt<AuthRepository>()));
   
   // BLoC - Factory
   getIt.registerFactory(() => LoginBloc(

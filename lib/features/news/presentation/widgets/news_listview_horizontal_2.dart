@@ -7,6 +7,8 @@ import 'package:study_abroad_cemc_mobile/features/news/domain/failures/news_fail
 import 'package:study_abroad_cemc_mobile/features/news/domain/entities/news_entity.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_detail.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/empty_data.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
 
 class NewsListViewShort extends StatefulWidget {
   const NewsListViewShort({super.key, required this.nullSchool});
@@ -58,7 +60,13 @@ class NewsListViewShortState extends State<NewsListViewShort> {
         if (state is NewsLoaded) {
           final newsList = state.newsList;
           if (newsList.isEmpty) {
-            return const Center(child: Text('No news available'));
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: EmptyDataWidget(
+                text: 'Không có tin tức nào',
+                icon: Icons.article_outlined,
+              ),
+            );
           }
 
           return SizedBox(
@@ -79,35 +87,39 @@ class NewsListViewShortState extends State<NewsListViewShort> {
                   child: Container(
                     margin: const EdgeInsets.only(right: 10),
                     width: 300,
-                    decoration: BoxDecoration(
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      image: DecorationImage(
-                        image: NetworkImage(newsList[index].cover),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.white.withValues(alpha: 0.1),
-                            Colors.black.withValues(alpha: 0.8),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: TextMonserats(
-                            newsList[index].title,
-                            fontSize: 20,
-                            color: Colors.white,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          SafeNetworkImage(
+                            url: newsList[index].cover,
+                            fit: BoxFit.cover,
                           ),
-                        ),
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white.withValues(alpha: 0.1),
+                                  Colors.black.withValues(alpha: 0.8),
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: TextMonserats(
+                                newsList[index].title,
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

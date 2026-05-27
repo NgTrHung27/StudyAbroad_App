@@ -170,8 +170,10 @@ class AuthLoadedCityState extends AuthState {
   List<Object?> get props => [cities, country];
 }
 
+typedef ProvinceList = List<Province>;
+
 class AuthSuccessState extends AuthState {
-  final UserAuthRegister user;
+  final UserEntity user;
 
   const AuthSuccessState(this.user);
 

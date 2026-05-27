@@ -19,6 +19,29 @@ class ApiInterceptor extends Interceptor {
   }
 
   @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    // Detect HTML responses (e.g. Vercel 404 pages) and reject them
+    final data = response.data;
+    if (data is String &&
+        (data.trimLeft().startsWith('<!DOCTYPE') ||
+            data.trimLeft().startsWith('<html'))) {
+      handler.reject(
+        DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          type: DioExceptionType.badResponse,
+          error: ServerException(
+            message: 'Server returned an unexpected response (status: ${response.statusCode})',
+            statusCode: response.statusCode,
+          ),
+        ),
+      );
+      return;
+    }
+    handler.next(response);
+  }
+
+  @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     switch (err.type) {
       case DioExceptionType.connectionTimeout:

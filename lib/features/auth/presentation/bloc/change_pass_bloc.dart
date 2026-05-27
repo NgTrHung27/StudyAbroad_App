@@ -3,6 +3,8 @@ import 'package:study_abroad_cemc_mobile/core/configs/injector/injector.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/domain/repositories/auth_repository.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/domain/failures/auth_failures.dart';
 import 'package:equatable/equatable.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 
 part 'change_pass_event.dart';
 part 'change_pass_state.dart';
@@ -24,7 +26,7 @@ class ChangePassBloc extends Bloc<ChangePassEvent, ChangePassState> {
     RegExp regExp = RegExp(emailPattern);
 
     if (!regExp.hasMatch(event.email)) {
-      emit(const ChangePassEmailError('Vui lòng nhập đúng định dạng email'));
+      emit(ChangePassEmailError(errorInvalidEmailKey.tr()));
     } else {
       emit(ChangePassInitial());
     }

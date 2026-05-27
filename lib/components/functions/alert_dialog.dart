@@ -11,6 +11,8 @@ void showCustomDialog({
   required BuildContext context,
   String? title,
   String? content,
+  String? confirmText,
+  bool showCancel = true,
   VoidCallback? onCancel,
   VoidCallback? onConfirm,
 }) {
@@ -24,14 +26,13 @@ void showCustomDialog({
         return Builder(// Sử dụng Builder để tạo context mới
             builder: (BuildContext newContext) {
           return AlertDialog(
-            // ignore: unnecessary_null_comparison
             title: TextMonserats(title ?? notiTitle,
                 color: AppColor.redButton,
                 fontWeight: FontWeight.w700,
                 fontSize: 20,
                 textAlign: TextAlign.center),
             content: TextMonserats(
-              notiContent,
+              content ?? notiContent,
               textAlign: TextAlign.center,
             ),
             backgroundColor: newContext.select(
@@ -40,6 +41,7 @@ void showCustomDialog({
               borderRadius: BorderRadius.circular(20),
             ),
             actions: <Widget>[
+              if (showCancel)
               Transform.translate(
                 offset: const Offset(10, 0),
                 child: DialogButton(
@@ -63,10 +65,10 @@ void showCustomDialog({
                   onPressed: () {
                     if (onConfirm != null) onConfirm();
                   },
-                  width: 120,
+                  width: showCancel ? 120 : 160,
                   color: AppColor.redButton,
                   child: TextMonserats(
-                    notiOk,
+                    confirmText ?? notiOk,
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,

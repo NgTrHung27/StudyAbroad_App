@@ -27,9 +27,9 @@ class MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
   late int _currentIndex;
 
-  final List<Widget> _bodyView = [
+  List<Widget> get _bodyView => [
     const HomePage(),
-    const AblyChatPage(),
+    _currentIndex == 1 ? const AblyChatPage() : const SizedBox.shrink(),
     const NotificationsPage(),
     const ProfilePage()
   ];

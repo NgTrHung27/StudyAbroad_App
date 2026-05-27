@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/alert_dialog.dart';
 import 'package:study_abroad_cemc_mobile/models/country.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/convert_imagetostring.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/dropdown.dart';
@@ -22,7 +23,6 @@ import 'package:study_abroad_cemc_mobile/components/style/textspan.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/models/enum.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
-import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -33,6 +33,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   //Declare API School
   List<SchoolEntity> lstschools = [];
+  List<Province> lstProvince = [];
   List<Country> lstCountry = [];
   List<String> lstCountrySchool = [];
   String? errorEmailMessage,
@@ -84,9 +85,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final idCardNumberController = TextEditingController();
   final dateController = TextEditingController();
   final phoneController = TextEditingController();
-  final addressController = TextEditingController();
-  final gradeController = TextEditingController();
-  TextEditingController imageController = TextEditingController();
+final addressController = TextEditingController();
+   final gradeController = TextEditingController();
+   final wardController = TextEditingController();
+   TextEditingController imageController = TextEditingController();
   int currentStep = 0;
 
   void userRegister() async {
@@ -101,6 +103,69 @@ class _RegisterPageState extends State<RegisterPage> {
     String phone = phoneController.text.trim();
     String address = addressController.text.trim();
     String certificateImg = imageController.text.toString();
+
+    void showError(String msg, int step) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+      setState(() {
+        isLoading = false;
+        currentStep = step;
+      });
+    }
+
+    if (!RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+').hasMatch(email)) {
+      return showError(errorInvalidEmailKey.tr(), 0);
+    }
+    if (name.length < 2) {
+      return showError(errorEmptyNameKey.tr(), 0);
+    }
+    if (password.length < 6) {
+      return showError(errorShortPasswordKey.tr(), 0);
+    }
+    if (confirmpassword != password) {
+      return showError(errorPasswordMismatchKey.tr(), 0);
+    }
+    if (idCardNumber.length < 9) {
+      return showError(errorInvalidIdCardKey.tr(), 0);
+    }
+    if (phone.length < 10) {
+      return showError(errorInvalidPhoneKey.tr(), 0);
+    }
+    if (dateController.text.trim().isEmpty) {
+      return showError(errorEmptyDobKey.tr(), 0);
+    }
+    if (valueGender == null) {
+      return showError(errorEmptyGenderKey.tr(), 0);
+    }
+    if (selectedSchool == null || selectedSchool!.isEmpty) {
+      return showError(errorEmptySchoolKey.tr(), 1);
+    }
+    if (selectedProgram == null || selectedProgram!.isEmpty) {
+      return showError(errorEmptyProgramKey.tr(), 1);
+    }
+    if (selectedCity == null || selectedCity!.isEmpty) {
+      return showError(errorEmptyCityKey.tr(), 1);
+    }
+    if (selectedDistrict == null || selectedDistrict!.isEmpty) {
+      return showError(errorEmptyDistrictKey.tr(), 1);
+    }
+    if (selectedWard == null || selectedWard!.isEmpty) {
+      return showError(errorEmptyWardKey.tr(), 1);
+    }
+    if (address.isEmpty) {
+      return showError(errorEmptyAddressKey.tr(), 1);
+    }
+    if (valueDegree == null) {
+      return showError(errorEmptyDegreeTypeKey.tr(), 2);
+    }
+    if (radioGradeTypeValue == null) {
+      return showError(errorEmptyGradeTypeKey.tr(), 2);
+    }
+    if (gradeController.text.trim().isEmpty) {
+      return showError(errorEmptyGradeScoreKey.tr(), 2);
+    }
+    if (selectedCertificateType == null) {
+      return showError(errorEmptyCertificateTypeKey.tr(), 2);
+    }
 
     if (dateController.text.trim().isEmpty) {
       setState(() {
@@ -169,26 +234,26 @@ class _RegisterPageState extends State<RegisterPage> {
     });
   }
 
-  void cityChange(Country? city) {
+void cityChange(Province? city) {
+     setState(() {
+       if (city != null) {
+         selectedCity = city.name;
+       }
+     });
+   }
+
+  void districtChange(String? districtName) {
     setState(() {
-      if (city != null) {
-        selectedCity = city.name;
+      if (districtName != null) {
+        selectedDistrict = districtName;
       }
     });
   }
 
-  void districtChange(District? district) {
+  void wardChange(String? wardName) {
     setState(() {
-      if (district != null) {
-        selectedDistrict = district.name;
-      }
-    });
-  }
-
-  void wardChange(Ward? ward) {
-    setState(() {
-      if (ward != null) {
-        selectedWard = ward.name;
+      if (wardName != null) {
+        selectedWard = wardName;
       }
     });
   }
@@ -368,7 +433,7 @@ class _RegisterPageState extends State<RegisterPage> {
           );
   }
 
-  List<Step> getSteps() {
+  List<Step> getSteps(bool isDarkMode) {
     return [
       Step(
         title: const SizedBox.shrink(),
@@ -567,94 +632,70 @@ class _RegisterPageState extends State<RegisterPage> {
               ],
             ),
             const SizedBox(height: 12),
-            DropdownCustom<Country>(
-              icon: Icons.location_city,
-              items: lstCountry,
-              selectedItem: selectedCity == null
-                  ? null
-                  : lstCountry.firstWhereOrNull(
-                      (element) => element.name == selectedCity),
-              onChanged: (Country? newValueCountry) {
-                if (newValueCountry != null) {
-                  cityChange(newValueCountry);
-                  selectedDistrict = null;
-                  selectedWard = null;
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthLoadedCityState) {
+                  lstCountry = state.country.cast<Country>();
+                  lstProvince = lstCountry.expand((c) => c.provinces).toList();
                 }
+                return DropdownCustom<Province>(
+                  icon: Icons.location_city,
+                  items: lstProvince,
+                  selectedItem: selectedCity == null
+                      ? null
+                      : lstProvince.firstWhereOrNull(
+                          (element) => element.name == selectedCity),
+                  onChanged: (Province? newValueProvince) {
+                    if (newValueProvince != null) {
+                      cityChange(newValueProvince);
+                      selectedDistrict = null;
+                      selectedWard = null;
+                    }
+                  },
+                  itemLabel: (Province province) => province.name,
+                  hintText: registerCityKey.tr(),
+                  isExpanded: false,
+                );
               },
-              itemLabel: (Country country) => country.name,
-              hintText: registerCityKey.tr(),
-              isExpanded: false,
             ),
             const SizedBox(height: 15),
             Row(children: [
               Expanded(child: BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
-                  if (state is AuthLoadedCityState) {
-                    lstCountry = state.country.cast<Country>();
-                  }
-                  return DropdownCustom<District>(
+                  final districts = selectedCity == null
+                      ? <String>[]
+                      : lstProvince
+                              .firstWhereOrNull(
+                                  (element) => element.name == selectedCity)
+                              ?.districts ??
+                          [];
+                  return DropdownCustom<String>(
                     icon: Icons.map,
-                    items: selectedCity == null
-                        ? []
-                        : lstCountry
-                                .firstWhereOrNull(
-                                    (element) => element.name == selectedCity)
-                                ?.districts ??
-                            [],
-                    selectedItem: selectedDistrict == null
-                        ? null
-                        : lstCountry
-                            .firstWhereOrNull(
-                                (element) => element.name == selectedCity)
-                            ?.districts
-                            .firstWhereOrNull(
-                                (element) => element.name == selectedDistrict),
-                    onChanged: (District? newValueDistrict) {
+                    items: districts,
+                    selectedItem: selectedDistrict,
+                    onChanged: (String? newValueDistrict) {
                       setState(() {
                         districtChange(newValueDistrict);
                         selectedWard = null;
                       });
                     },
-                    itemLabel: (District district) => district.name,
+                    itemLabel: (String district) => district,
                     hintText: registerDistrictKey.tr(),
                     isExpanded: true,
                   );
                 },
               )),
               const SizedBox(width: 15),
-              Expanded(child: BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  if (state is AuthLoadedCityState) {
-                    lstCountry = state.country.cast<Country>();
-                  }
-                  final districts = selectedCity == null
-                      ? <District>[]
-                      : lstCountry
-                              .firstWhereOrNull(
-                                  (element) => element.name == selectedCity)
-                              ?.districts ??
-                          [];
-                  final selectedDistrictObj = selectedDistrict == null
-                      ? null
-                      : districts.firstWhereOrNull(
-                          (element) => element.name == selectedDistrict);
-                  final wards = selectedDistrictObj?.wards ?? [];
-                  return DropdownCustom<Ward>(
-                    icon: Icons.location_on,
-                    items: wards,
-                    selectedItem: selectedWard == null
-                        ? null
-                        : wards.firstWhereOrNull(
-                            (element) => element.name == selectedWard),
-                    onChanged: (Ward? newValueWard) {
-                      setState(() {
-                        wardChange(newValueWard);
-                      });
-                    },
-                    itemLabel: (Ward ward) => ward.name,
-                    hintText: registerWardKey.tr(),
-                    isExpanded: true,
-                  );
+              Expanded(child: MyTextField(
+                controller: wardController,
+                hintText: registerWardKey.tr(),
+                obscureText: false,
+                prefixIcon: Icons.location_on,
+                filled: true,
+                fillColor: isDarkMode ? AppColor.scafflodBgColorDark : Colors.white,
+                height: 43,
+                onChanged: (value) {
+                  selectedWard = value;
                 },
               )),
             ]),
@@ -664,6 +705,8 @@ class _RegisterPageState extends State<RegisterPage> {
               hintText: registerAddressLineKey.tr(),
               obscureText: false,
               prefixIcon: Icons.home,
+              filled: true,
+              fillColor: isDarkMode ? AppColor.scafflodBgColorDark : Colors.white,
               onChanged: (value) {
                 address = value;
               },
@@ -815,9 +858,16 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.upload_file, size: 21),
+                    Icon(
+                      certificateImg.isNotEmpty ? Icons.check_circle : Icons.upload_file,
+                      size: 21,
+                      color: certificateImg.isNotEmpty ? Colors.green : (isDarkMode ? Colors.white : Colors.black),
+                    ),
                     const SizedBox(width: 10),
-                    TextMonserats(registerUploadFileKey.tr())
+                    TextMonserats(
+                      registerUploadFileKey.tr(),
+                      color: certificateImg.isNotEmpty ? Colors.green : (isDarkMode ? Colors.white : Colors.black),
+                    )
                   ],
                 ),
               ),
@@ -973,9 +1023,18 @@ class _RegisterPageState extends State<RegisterPage> {
             isLoading = false;
           });
         } else if (state is AuthSuccessState) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const LoginPage()));
           isLoading = false;
+          showCustomDialog(
+            context: context,
+            title: registerSuccessTitleKey.tr(),
+            content: registerSuccessContentKey.tr(),
+            confirmText: registerLoginNowKey.tr(),
+            showCancel: false,
+            onConfirm: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/login', (route) => false);
+            },
+          );
         }
       },
       builder: (context, state) {
@@ -1043,7 +1102,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           onStepCancel: cancelStep,
                           onStepTapped: onStepTapped,
                           controlsBuilder: controlsBuilder,
-                          steps: getSteps(),
+                          steps: getSteps(isDarkMode),
                         ),
                       ),
                     ),

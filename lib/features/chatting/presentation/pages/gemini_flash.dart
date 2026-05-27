@@ -98,7 +98,7 @@ class _GeminiAIState extends State<GeminiAIFlash> {
             color: Colors.white,
             onPressed: () {
               context.read<GeminiChatBloc>().add(ClearGeminiChat());
-              Navigator.pushNamed(context, '/mainpage');
+              Navigator.pop(context);
             },
           )),
       body: BlocConsumer<GeminiChatBloc, GeminiChatState>(

@@ -25,6 +25,10 @@ class _ActiontabResultState extends State<ActiontabResult> {
       backgroundColor = Colors.grey;
     }
 
+    if (widget.result.isEmpty || widget.result == 'N/A') {
+      return const SizedBox.shrink();
+    }
+
     return Container(
       height: 50,
       width: screenWidth * 0.9,

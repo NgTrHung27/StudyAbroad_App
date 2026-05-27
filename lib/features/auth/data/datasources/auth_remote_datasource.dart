@@ -3,12 +3,13 @@ import 'package:study_abroad_cemc_mobile/core/api/api_helper.dart';
 import 'package:study_abroad_cemc_mobile/core/api/api_url.dart';
 import 'package:study_abroad_cemc_mobile/core/errors/exceptions.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/data/models/user_model.dart';
+import 'package:study_abroad_cemc_mobile/models/country.dart';
 
 import '../../../../core/cache/local_storage.dart';
 
 abstract class AuthRemoteDataSource {
   Future<AuthResponse> login({required String email, required String password});
-  Future<UserModel> register({
+  Future<List<Country>> getCountries(); Future<UserModel> register({
     required String email,
     required String password,
     required String confirmPassword,
@@ -19,6 +20,9 @@ abstract class AuthRemoteDataSource {
     String? schoolName,
     String? country,
     String? programName,
+    String? city,
+    String? district,
+    String? ward,
     String? addressLine,
     String? gender,
     String? degreeType,
@@ -57,6 +61,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final ApiHelper apiHelper;
 
   AuthRemoteDataSourceImpl({required this.apiHelper});
+
+  @override
+  Future<List<Country>> getCountries() async {
+    try {
+      final response = await apiHelper.get(ApiUrls.countries);
+      final data = response.data;
+      final List<dynamic> countriesJson = data['data'] ?? [];
+      return countriesJson.map((json) => Country.fromJson(json)).toList();
+    } on DioException catch (e) {
+      throw _handleDioException(e);
+    }
+  }
 
   @override
   Future<AuthResponse> login({
@@ -109,6 +125,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     String? schoolName,
     String? country,
     String? programName,
+    String? city,
+    String? district,
+    String? ward,
     String? addressLine,
     String? gender,
     String? degreeType,
@@ -131,6 +150,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (schoolName != null) body['schoolName'] = schoolName;
       if (country != null) body['country'] = country;
       if (programName != null) body['programName'] = programName;
+      if (city != null) body['city'] = city;
+      if (district != null) body['district'] = district;
+      if (ward != null) body['ward'] = ward;
       if (addressLine != null) body['addressLine'] = addressLine;
       if (gender != null) body['gender'] = gender;
       if (degreeType != null) body['degreeType'] = degreeType;

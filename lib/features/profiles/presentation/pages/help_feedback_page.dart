@@ -85,7 +85,7 @@ class HelpFeedbackPage extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.only(top: 50.0),
             child: BackButtonCircle(
               onPressed: () {
                 Navigator.pop(context); // Go back to the previous page

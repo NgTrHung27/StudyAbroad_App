@@ -1,101 +1,117 @@
 // To parse this JSON data, do
 //
-//     final country = countryFromJson(jsonString);
+//     final countryResponse = countryResponseFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Country> countryFromJson(String str) =>
-    List<Country>.from(json.decode(str).map((x) => Country.fromJson(x)));
+CountryResponse countryResponseFromJson(String str) =>
+    CountryResponse.fromJson(json.decode(str));
 
-String countryToJson(List<Country> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String countryResponseToJson(CountryResponse data) =>
+    json.encode(data.toJson());
+
+class CountryResponse {
+  int statusCode;
+  String message;
+  List<Country> data;
+
+  CountryResponse({
+    required this.statusCode,
+    required this.message,
+    required this.data,
+  });
+
+  factory CountryResponse.fromJson(Map<String, dynamic> json) => CountryResponse(
+        statusCode: json["statusCode"],
+        message: json["message"],
+        data: List<Country>.from(
+            json["data"].map((x) => Country.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "statusCode": statusCode,
+        "message": message,
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+      };
+}
 
 class Country {
-  String id;
   String name;
-  List<District> districts;
+  String code;
+  List<Province> provinces;
 
   Country({
-    required this.id,
+    required this.name,
+    required this.code,
+    required this.provinces,
+  });
+
+  factory Country.fromJson(Map<String, dynamic> json) => Country(
+        name: json["name"],
+        code: json["code"],
+        provinces: List<Province>.from(
+            json["provinces"].map((x) => Province.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "code": code,
+        "provinces": List<dynamic>.from(provinces.map((x) => x.toJson())),
+      };
+}
+
+class Province {
+  String name;
+  List<String> districts;
+
+  Province({
     required this.name,
     required this.districts,
   });
 
-  factory Country.fromJson(Map<String, dynamic> json) => Country(
-        id: json["Id"],
-        name: json["Name"],
-        districts: List<District>.from(
-            json["Districts"].map((x) => District.fromJson(x))),
+  factory Province.fromJson(Map<String, dynamic> json) => Province(
+        name: json["name"],
+        districts: List<String>.from(json["districts"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
-        "Id": id,
-        "Name": name,
-        "Districts": List<dynamic>.from(districts.map((x) => x.toJson())),
+        "name": name,
+        "districts": List<dynamic>.from(districts.map((x) => x)),
       };
 }
 
 class District {
-  String id;
   String name;
   List<Ward> wards;
 
   District({
-    required this.id,
     required this.name,
     required this.wards,
   });
 
   factory District.fromJson(Map<String, dynamic> json) => District(
-        id: json["Id"],
-        name: json["Name"],
-        wards: List<Ward>.from(json["Wards"].map((x) => Ward.fromJson(x))),
+        name: json["name"],
+        wards: json["wards"] == null
+            ? []
+            : List<Ward>.from(json["wards"].map((x) => Ward.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "Id": id,
-        "Name": name,
-        "Wards": List<dynamic>.from(wards.map((x) => x.toJson())),
+        "name": name,
+        "wards": List<dynamic>.from(wards.map((x) => x.toJson())),
       };
 }
 
 class Ward {
-  String id;
   String name;
-  Level level;
 
-  Ward({
-    required this.id,
-    required this.name,
-    required this.level,
-  });
+  Ward({required this.name});
 
   factory Ward.fromJson(Map<String, dynamic> json) => Ward(
-        id: json["Id"],
-        name: json["Name"],
-        level: levelValues.map[json["Level"]]!,
+        name: json["name"],
       );
 
   Map<String, dynamic> toJson() => {
-        "Id": id,
-        "Name": name,
-        "Level": levelValues.reverse[level],
+        "name": name,
       };
-}
-
-enum Level { phuong, thitran, xa }
-
-final levelValues = EnumValues(
-    {"Phường": Level.phuong, "Thị trấn": Level.thitran, "Xã": Level.xa});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }
