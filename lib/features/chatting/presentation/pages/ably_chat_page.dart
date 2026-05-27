@@ -224,7 +224,8 @@ class _AblyChatState extends State<AblyChatPage> {
         _sendMessageToServer(myMessage),
       ];
       if (chatChannel != null) {
-        tasks.add(chatChannel!.publish(name: 'support:$_clientId', data: myMessage));
+        tasks.add(
+            chatChannel!.publish(name: 'support:$_clientId', data: myMessage));
       }
       await Future.wait(tasks);
 
@@ -283,7 +284,7 @@ class _AblyChatState extends State<AblyChatPage> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new),
               color: Colors.white,
-              onPressed: () => Navigator.pushNamed(context, '/mainpage'),
+              onPressed: () => Navigator.pop(context),
             )),
         body: Padding(
           padding: const EdgeInsets.only(bottom: 20),

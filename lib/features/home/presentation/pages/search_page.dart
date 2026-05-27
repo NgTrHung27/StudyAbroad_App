@@ -12,6 +12,7 @@ import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/news/domain/entities/news_entity.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_detail.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/empty_data.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key, this.nullSchool});
@@ -148,22 +149,14 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _isNotFound(Color textColor, Color bgColor) {
-    return Column(children: [
-      Transform.translate(
-        offset: const Offset(100, 0),
-        child: Container(
-          width: 200,
-          height: 200,
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: Center(
-            child: TextMonserats(
-              'No results found',
-              textAlign: TextAlign.center,
-            ),
-          ),
+    return const Expanded(
+      child: Center(
+        child: EmptyDataWidget(
+          text: 'Không có kết quả tìm kiếm',
+          icon: Icons.search_off,
         ),
       ),
-    ]);
+    );
   }
 
   Widget _isFound(Color textColor, Color bgColor) {

@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     context.read<CarouselBloc>().add(FetchCarousel());
     context.read<ThemeSettingBloc>().add(LoadThemeEvent());
+    context.read<NewsBloc>().add(LoadNewsEvent());
     ShowcaseView.register(
       onComplete: (index, key) {
         debugPrint('onComplete: $index, $key');
@@ -63,7 +64,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    ShowcaseView.get().unregister();
     super.dispose();
   }
 

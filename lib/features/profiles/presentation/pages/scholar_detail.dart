@@ -9,6 +9,7 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/features/scholarships/presentation/widgets/scholar_box.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/empty_data.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ScholarDetailPage extends StatefulWidget {
@@ -90,14 +91,19 @@ class ScholarDetailPageState extends State<ScholarDetailPage> {
                     ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: scholarshipList?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return ScholarStatusWidget(
-                      scholarStatus: scholarshipList![index].status,
-                      name: scholarshipList[index].scholarship?.name ?? '');
-                },
-              ),
+              child: scholarshipList == null || scholarshipList.isEmpty
+                  ? const EmptyDataWidget(
+                      text: 'Không có dữ liệu học bổng',
+                      icon: Icons.school_outlined,
+                    )
+                  : ListView.builder(
+                      itemCount: scholarshipList.length,
+                      itemBuilder: (context, index) {
+                        return ScholarStatusWidget(
+                            scholarStatus: scholarshipList[index].status,
+                            name: scholarshipList[index].scholarship?.name ?? '');
+                      },
+                    ),
             ),
           ],
         ),

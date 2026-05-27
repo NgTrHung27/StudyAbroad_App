@@ -9,6 +9,7 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/widgets/tuition_box.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/empty_data.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TuitionStatusPage extends StatefulWidget {
@@ -81,12 +82,17 @@ class TuitionStatusPageState extends State<TuitionStatusPage> {
                     ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: tuitionList?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return TuitionBox(tuition: tuitionList![index]);
-                },
-              ),
+              child: tuitionList == null || tuitionList.isEmpty
+                  ? const EmptyDataWidget(
+                      text: 'Không có dữ liệu học phí',
+                      icon: Icons.receipt_long_outlined,
+                    )
+                  : ListView.builder(
+                      itemCount: tuitionList.length,
+                      itemBuilder: (context, index) {
+                        return TuitionBox(tuition: tuitionList[index]);
+                      },
+                    ),
             ),
           ],
         ),

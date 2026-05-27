@@ -17,6 +17,9 @@ class MyTextField extends StatefulWidget {
   final TextCapitalization? textCapitalization;
   final Function()? onpressed;
   final String? errorText;
+  final bool? filled;
+  final Color? fillColor;
+  final double? height;
 
   const MyTextField(
       {super.key,
@@ -31,7 +34,10 @@ class MyTextField extends StatefulWidget {
       this.keyboardType,
       this.textCapitalization,
       this.onpressed,
-      this.errorText});
+      this.errorText,
+      this.filled,
+      this.fillColor,
+      this.height});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -64,7 +70,7 @@ class _MyTextFieldState extends State<MyTextField> {
     final border = isDarkMode ? Colors.black : Colors.white;
 
     return SizedBox(
-      height: 73,
+      height: widget.height ?? 73,
       child: SizedBox(
         height: 43,
         width: screenWidth * 0.85,
@@ -135,7 +141,10 @@ class _MyTextFieldState extends State<MyTextField> {
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: iconColor),
                   borderRadius: const BorderRadius.all(Radius.circular(10))),
-              contentPadding: const EdgeInsets.all(10)),
+              contentPadding: const EdgeInsets.all(10),
+              filled: widget.filled,
+              fillColor: widget.fillColor,
+            ),
         ),
       ),
     );

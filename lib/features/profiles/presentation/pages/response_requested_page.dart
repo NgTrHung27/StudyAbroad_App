@@ -7,6 +7,7 @@ import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting
 import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/empty_data.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
@@ -105,13 +106,15 @@ class _RequestedState extends State<ResponseRequestedPage> {
                     userAuth?.student?.requirements;
                 if (requirementList != null && requirementList != []) {
                   // Lọc danh sách requirementList để chỉ giữ lại các mục có status là RESOLVE hoặc REPLIED
-                  // ignore: unnecessary_nullable_for_final_variable_declarations
-                  final List<Requirement>? filteredRequirements =
-                      requirementList
-                          .where((requirement) =>
-                              requirement.status == 'RESOLVED' ||
-                              requirement.status == 'REPLIED')
-                          .toList();
+                  final List<Requirement> filteredRequirements = requirementList
+                      .where((requirement) =>
+                          requirement.status == 'RESOLVED' ||
+                          requirement.status == 'REPLIED')
+                      .toList();
+
+                  if (filteredRequirements.isEmpty) {
+                    return const EmptyDataWidget();
+                  }
 
                   return Padding(
                     padding: EdgeInsets.symmetric(
@@ -130,12 +133,12 @@ class _RequestedState extends State<ResponseRequestedPage> {
                               ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: filteredRequirements?.length ?? 0,
+                                itemCount: filteredRequirements.length,
                                 itemBuilder: (context, index) {
                                   final titleRe =
-                                      filteredRequirements?[index].title;
+                                      filteredRequirements[index].title;
                                   final detailRe =
-                                      filteredRequirements?[index].description;
+                                      filteredRequirements[index].description;
 
                                   return Column(
                                     children: [
@@ -147,7 +150,7 @@ class _RequestedState extends State<ResponseRequestedPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               TextMonserats(
-                                                titleRe ?? '',
+                                                titleRe,
                                                 fontSize: screenWidth * 0.04,
                                                 fontWeight: FontWeight.w600,
                                                 color: textBox,
@@ -175,9 +178,9 @@ class _RequestedState extends State<ResponseRequestedPage> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   ResponseRequestedDetail(
-                                                      title: titleRe ?? '',
+                                                      title: titleRe,
                                                       replies:
-                                                          filteredRequirements![
+                                                          filteredRequirements[
                                                                       index]
                                                                   .replies ??
                                                               []),
@@ -186,7 +189,7 @@ class _RequestedState extends State<ResponseRequestedPage> {
                                         },
                                       ),
                                       if (index !=
-                                          filteredRequirements!.length - 1)
+                                          filteredRequirements.length - 1)
                                         const Divider(
                                           color: Colors.grey,
                                           thickness: 1.0,

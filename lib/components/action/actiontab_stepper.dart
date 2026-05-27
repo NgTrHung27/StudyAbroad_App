@@ -64,6 +64,7 @@ class ActionTabStepper extends StatelessWidget {
                   ),
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(stepTexts.length, (index) {
                     final isCompleted = index < currentStep;
@@ -100,7 +101,7 @@ class ActionTabStepper extends StatelessWidget {
                                     '${index + 1}',
                                     style: TextStyle(
                                       color: isCompleted || isCurrent
-                                          ? Colors.white
+                                          ? (isDarkMode ? Colors.black : Colors.white)
                                           : Colors.grey,
                                       fontWeight: FontWeight.bold,
                                     ),

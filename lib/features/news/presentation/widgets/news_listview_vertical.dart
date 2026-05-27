@@ -8,6 +8,8 @@ import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_school_detail.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/empty_data.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
 
 class VerticalNewsListView extends StatefulWidget {
   const VerticalNewsListView({
@@ -72,7 +74,13 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
         if (state is NewsLoaded) {
           final newsSchoolList = state.newsList;
           if (newsSchoolList.isEmpty) {
-            return const Center(child: Text('No news available'));
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: EmptyDataWidget(
+                text: 'Không có tin tức nào',
+                icon: Icons.article_outlined,
+              ),
+            );
           }
           return ListView.builder(
             shrinkWrap: true,
@@ -104,14 +112,9 @@ class VerticalNewsListViewState extends State<VerticalNewsListView> {
                             topLeft: Radius.circular(15),
                             bottomLeft: Radius.circular(15),
                           ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image:
-                                    NetworkImage(newsSchoolList[index].cover),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                          child: SafeNetworkImage(
+                            url: newsSchoolList[index].cover,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),

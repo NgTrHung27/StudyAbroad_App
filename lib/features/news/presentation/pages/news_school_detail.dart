@@ -20,7 +20,8 @@ class NewsSchoolDetailPage extends StatelessWidget {
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
     return Scaffold(
-      body: Stack(
+        body: SafeArea(
+      child: Stack(
         children: [
           ListView(
             children: [
@@ -80,16 +81,13 @@ class NewsSchoolDetailPage extends StatelessWidget {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: BackButtonCircle(
-              onPressed: () {
-                Navigator.pop(context); // Go back to the previous page
-              },
-            ),
+          BackButtonCircle(
+            onPressed: () {
+              Navigator.pop(context); // Go back to the previous page
+            },
           ),
         ],
       ),
-    );
+    ));
   }
 }

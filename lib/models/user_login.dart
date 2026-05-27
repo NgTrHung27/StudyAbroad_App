@@ -218,10 +218,10 @@ class School {
       );
 
   factory School.fromJson(Map<String, dynamic> json) => School(
-        id: json["id"],
-        name: json["name"],
-        logo: json["logo"],
-        background: json["background"],
+        id: json["id"] ?? '',
+        name: json["name"] ?? '',
+        logo: json["logo"] ?? '',
+        background: json["background"] ?? json["image"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -255,8 +255,8 @@ class StudentProgram {
       );
 
   factory StudentProgram.fromJson(Map<String, dynamic> json) => StudentProgram(
-        program: ProgramProgram.fromJson(json["program"]),
-        scores: List<Score>.from(json["scores"].map((x) => Score.fromJson(x))),
+        program: json["program"] != null ? ProgramProgram.fromJson(json["program"]) : ProgramProgram.empty(),
+        scores: json["scores"] != null ? List<Score>.from(json["scores"].map((x) => Score.fromJson(x))) : [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -284,7 +284,7 @@ class ProgramProgram {
       );
 
   factory ProgramProgram.fromJson(Map<String, dynamic> json) => ProgramProgram(
-        name: json["name"],
+        name: json["name"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -319,11 +319,11 @@ class Score {
       );
 
   factory Score.fromJson(Map<String, dynamic> json) => Score(
-        title: json["title"],
-        semester: json["semester"],
-        year: json["year"],
-        subjects: List<Subject>.from(
-            json["subjects"].map((x) => Subject.fromJson(x))),
+        title: json["title"] ?? '',
+        semester: json["semester"] ?? '',
+        year: json["year"] ?? '',
+        subjects: json["subjects"] != null ? List<Subject>.from(
+            json["subjects"].map((x) => Subject.fromJson(x))) : [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -353,8 +353,8 @@ class Subject {
       );
 
   factory Subject.fromJson(Map<String, dynamic> json) => Subject(
-        name: json["name"],
-        score: json["score"]?.toDouble(),
+        name: json["name"] ?? '',
+        score: json["score"]?.toDouble() ?? 0.0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -398,8 +398,8 @@ class Requirement {
       );
 
   factory Requirement.fromJson(Map<String, dynamic> json) => Requirement(
-        id: json["id"],
-        title: json["title"],
+        id: json["id"] ?? '',
+        title: json["title"] ?? '',
         images: json["images"] != null
             ? List<StudentRequirementImage>.from(
                 json["images"].map((x) => StudentRequirementImage.fromJson(x)))
@@ -407,7 +407,7 @@ class Requirement {
         replies: json["replies"] != null
             ? List<Reply>.from(json["replies"].map((x) => Reply.fromJson(x)))
             : [],
-        status: json["status"],
+        status: json["status"] ?? '',
         description: json["description"],
       );
 
@@ -471,9 +471,9 @@ class Reply {
       );
 
   factory Reply.fromJson(Map<String, dynamic> json) => Reply(
-        message: json["message"],
-        senderName: json["senderName"],
-        createdAt: DateTime.parse(json["createdAt"]),
+        message: json["message"] ?? '',
+        senderName: json["senderName"] ?? '',
+        createdAt: json["createdAt"] != null ? DateTime.parse(json["createdAt"]) : DateTime.now(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -507,7 +507,7 @@ class StudentSchoolScholarship {
 
   factory StudentSchoolScholarship.fromJson(Map<String, dynamic> json) =>
       StudentSchoolScholarship(
-        status: json["status"],
+        status: json["status"] ?? '',
         description: json["description"],
         scholarship: json["scholarship"] != null
             ? SchoolScholarship.fromJson(json["scholarship"])
@@ -549,11 +549,11 @@ class SchoolScholarship {
 
   factory SchoolScholarship.fromJson(Map<String, dynamic> json) =>
       SchoolScholarship(
-        name: json["name"],
-        cover: json["cover"],
-        images: List<SchoolScholarshipImage>.from(
-            json["images"].map((x) => SchoolScholarshipImage.fromJson(x))),
-        description: json["description"],
+        name: json["name"] ?? '',
+        cover: json["cover"] ?? '',
+        images: json["images"] != null ? List<SchoolScholarshipImage>.from(
+            json["images"].map((x) => SchoolScholarshipImage.fromJson(x))) : [],
+        description: json["description"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -579,9 +579,9 @@ class SchoolScholarshipImage {
 
   factory SchoolScholarshipImage.fromJson(Map<String, dynamic> json) =>
       SchoolScholarshipImage(
-        id: json["id"],
-        url: json["url"],
-        scholarshipId: json["scholarshipId"],
+        id: json["id"] ?? '',
+        url: json["url"] ?? '',
+        scholarshipId: json["scholarshipId"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -621,7 +621,7 @@ class Tuition {
         status: json["status"],
         amount: json["amount"],
         description: json["description"],
-        dueAt: DateTime.parse(json["dueAt"]),
+        dueAt: json["dueAt"] != null ? DateTime.parse(json["dueAt"]) : null,
       );
 
   Map<String, dynamic> toJson() => {

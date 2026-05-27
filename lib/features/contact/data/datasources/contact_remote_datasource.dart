@@ -29,6 +29,9 @@ class ContactRemoteDataSourceImpl implements ContactRemoteDataSource {
     String? schoolId,
   }) async {
     try {
+      // API /feedbacks trên admin backend (Vercel) dùng Clerk auth riêng,
+      // không chấp nhận Bearer token của app. Gửi request không có header
+      // Authorization để tránh lỗi 401 Unauthorized.
       await apiHelper.post(
         ApiUrls.feedbacks,
         data: {
@@ -39,6 +42,7 @@ class ContactRemoteDataSourceImpl implements ContactRemoteDataSource {
           'message': message,
           if (schoolId != null) 'schoolId': schoolId,
         },
+        options: Options(headers: <String, dynamic>{'Authorization': null}),
       );
     } on DioException catch (e) {
       throw _handleDioException(e);

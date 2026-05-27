@@ -8,6 +8,7 @@ import 'package:study_abroad_cemc_mobile/features/news/domain/entities/news_enti
 import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
 
 class NewsDetailPage extends StatelessWidget {
   final NewsEntity news;
@@ -21,16 +22,18 @@ class NewsDetailPage extends StatelessWidget {
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
     return Scaffold(
-      body: Stack(
+        body: SafeArea(
+      child: Stack(
         children: [
           ListView(
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width, // full screen width
-                height: MediaQuery.of(context).size.height *
-                    0.5, // half screen height
-                child: Image.network(news.cover,
-                    fit: BoxFit.cover), // thumbnail image
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.5,
+                child: SafeNetworkImage(
+                  url: news.cover,
+                  fit: BoxFit.cover,
+                ),
               ),
               Container(
                 transform: Matrix4.translationValues(0.0, -120.0, 0.0),
@@ -81,16 +84,13 @@ class NewsDetailPage extends StatelessWidget {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: BackButtonCircle(
-              onPressed: () {
-                Navigator.pop(context); // Go back to the previous page
-              },
-            ),
+          BackButtonCircle(
+            onPressed: () {
+              Navigator.pop(context); // Go back to the previous page
+            },
           ),
         ],
       ),
-    );
+    ));
   }
 }

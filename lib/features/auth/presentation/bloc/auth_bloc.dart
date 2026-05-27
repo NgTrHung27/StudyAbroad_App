@@ -5,10 +5,12 @@ import 'package:study_abroad_cemc_mobile/features/schools/domain/usecases/get_sc
 import 'package:study_abroad_cemc_mobile/features/schools/domain/usecases/get_unique_countries_usecase.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/domain/failures/auth_failures.dart';
 import 'package:study_abroad_cemc_mobile/models/enum.dart';
-import 'package:study_abroad_cemc_mobile/models/user_register.dart';
 import 'package:study_abroad_cemc_mobile/models/country.dart';
-import 'package:http/http.dart' as http;
+import 'package:study_abroad_cemc_mobile/features/auth/domain/usecases/get_countries_usecase.dart';
+import 'package:study_abroad_cemc_mobile/features/auth/domain/entities/user_entity.dart';
 import 'package:equatable/equatable.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -17,14 +19,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final RegisterUseCase registerUseCase;
   final GetSchoolsUseCase getSchoolsUseCase;
   final GetUniqueCountriesUseCase getUniqueCountriesUseCase;
+  final GetCountriesUseCase getCountriesUseCase;
 
   AuthBloc({
     RegisterUseCase? registerUseCase,
     GetSchoolsUseCase? getSchoolsUseCase,
     GetUniqueCountriesUseCase? getUniqueCountriesUseCase,
+    GetCountriesUseCase? getCountriesUseCase,
   })  : registerUseCase = registerUseCase ?? getIt<RegisterUseCase>(),
         getSchoolsUseCase = getSchoolsUseCase ?? getIt<GetSchoolsUseCase>(),
-        getUniqueCountriesUseCase = getUniqueCountriesUseCase ?? getIt<GetUniqueCountriesUseCase>(),
+        getUniqueCountriesUseCase =
+            getUniqueCountriesUseCase ?? getIt<GetUniqueCountriesUseCase>(),
+        getCountriesUseCase =
+            getCountriesUseCase ?? getIt<GetCountriesUseCase>(),
         super(AuthInitialState()) {
     on<CheckEmailEvent>(_onCheckEmail);
     on<CheckPasswordEvent>(_onCheckPassword);
@@ -54,7 +61,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     RegExp regExp = RegExp(emailPattern);
 
     if (!regExp.hasMatch(event.email)) {
-      emit(const AuthErrorEmailState('Vui lòng nhập đúng định dạng email'));
+      emit(AuthErrorEmailState(errorInvalidEmailKey.tr()));
     } else {
       emit(AuthInitialState());
     }
@@ -62,7 +69,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onCheckPassword(CheckPasswordEvent event, Emitter<AuthState> emit) {
     if (event.password.length < 6) {
-      emit(const AuthErrorPasswordState('Mật khẩu phải lớn hơn 6 ký tự'));
+      emit(AuthErrorPasswordState(errorShortPasswordKey.tr()));
     } else {
       emit(AuthInitialState());
     }
@@ -71,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onCheckConfirmPassword(
       CheckConfirmPasswordEvent event, Emitter<AuthState> emit) {
     if (event.password != event.confirmPassword) {
-      emit(const AuthErrorConfrimPasswordState('Mật khẩu không trùng khớp'));
+      emit(AuthErrorConfrimPasswordState(errorPasswordMismatchKey.tr()));
     } else {
       emit(AuthInitialState());
     }
@@ -79,7 +86,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onCheckName(CheckNameEvent event, Emitter<AuthState> emit) {
     if (event.name.isEmpty) {
-      emit(const AuthErrorNameState('Vui lòng nhập họ tên'));
+      emit(AuthErrorNameState(errorEmptyNameKey.tr()));
     }
     emit(AuthInitialState());
   }
@@ -87,9 +94,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onCheckDob(CheckDobEvent event, Emitter<AuthState> emit) {
     emit(AuthLoadingState());
     if (event.dob.isAfter(DateTime.now())) {
-      emit(const AuthErrorDOBState('Date of birth cannot be in the future'));
+      emit(AuthErrorDOBState(errorFutureDobKey.tr()));
     } else if (DateTime.now().year - event.dob.year < 18) {
-      emit(const AuthErrorDOBState('You must be at least 18 years old'));
+      emit(AuthErrorDOBState(errorUnderageDobKey.tr()));
     } else {
       emit(AuthInitialState());
     }
@@ -97,91 +104,91 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onCheckGender(CheckGenderEvent event, Emitter<AuthState> emit) {
     if (event.gender.isEmpty) {
-      emit(const AuthErrorGenderErrorState('Vui lòng chọn giới tính'));
+      emit(AuthErrorGenderErrorState(errorEmptyGenderKey.tr()));
     }
   }
 
   void _onCheckPhoneNumber(
       CheckPhoneNumberEvent event, Emitter<AuthState> emit) {
     if (event.phoneNumber.isEmpty) {
-      emit(const AuthErrorPhoneState('Vui lòng nhập số điện thoại'));
+      emit(AuthErrorPhoneState(errorEmptyPhoneKey.tr()));
     } else if (event.phoneNumber.length < 10 || event.phoneNumber.length > 11) {
-      emit(const AuthErrorPhoneState('Số điện thoại không hợp lệ'));
+      emit(AuthErrorPhoneState(errorInvalidPhoneKey.tr()));
     }
   }
 
   void _onCheckIdCardNumber(
       CheckIdCardNumberEvent event, Emitter<AuthState> emit) {
     if (event.idCardNumber.isEmpty) {
-      emit(const AuthErrorIDCardNumberState('Vui lòng nhập số chứng minh nhân dân'));
+      emit(AuthErrorIDCardNumberState(errorEmptyIdCardKey.tr()));
     } else if (event.idCardNumber.length <= 9 ||
         event.idCardNumber.length >= 13) {
-      emit(const AuthErrorIDCardNumberState('Số chứng minh nhân dân không hợp lệ'));
+      emit(AuthErrorIDCardNumberState(errorInvalidIdCardKey.tr()));
     }
   }
 
   void _onCheckDistrict(CheckDistrictEvent event, Emitter<AuthState> emit) {
     if (event.district.isEmpty) {
-      emit(const AuthErrorDistrictState('Vui lòng chọn quận/huyện'));
+      emit(AuthErrorDistrictState(errorEmptyDistrictKey.tr()));
     }
   }
 
   void _onCheckWard(CheckWardEvent event, Emitter<AuthState> emit) {
     if (event.ward.isEmpty) {
-      emit(const AuthErrorWardState('Vui lòng chọn phường/xã'));
+      emit(AuthErrorWardState(errorEmptyWardKey.tr()));
     }
   }
 
   void _onCheckAddress(CheckAddressEvent event, Emitter<AuthState> emit) {
     if (event.address.isEmpty) {
-      emit(const AuthErrorAddressState('Vui lòng nhập địa chỉ'));
+      emit(AuthErrorAddressState(errorEmptyAddressKey.tr()));
     }
   }
 
   void _onCheckSchoolName(CheckSchoolNameEvent event, Emitter<AuthState> emit) {
     if (event.schoolName.isEmpty) {
-      emit(const AuthErrorNamedSchoolState('Vui lòng chọn trường học'));
+      emit(AuthErrorNamedSchoolState(errorEmptySchoolKey.tr()));
     }
   }
 
   void _onCheckProgramName(
       CheckProgramNameEvent event, Emitter<AuthState> emit) {
     if (event.programName.isEmpty) {
-      emit(const AuthErrorNamedSchoolState('Vui lòng chọn chương trình học'));
+      emit(AuthErrorNamedSchoolState(errorEmptyProgramKey.tr()));
     }
   }
 
   void _onCheckDegreeType(CheckDegreeTypeEvent event, Emitter<AuthState> emit) {
     if (event.degreeType.isEmpty) {
-      emit(const AuthErrorNamedSchoolState('Vui lòng chọn loại bằng cấp'));
+      emit(AuthErrorNamedSchoolState(errorEmptyDegreeTypeKey.tr()));
     }
   }
 
   void _onCheckCertificateType(
       CheckCertificateTypeEvent event, Emitter<AuthState> emit) {
     if (event.certificateType.isEmpty) {
-      emit(const AuthErrorNamedSchoolState('Vui lòng chọn loại chứng chỉ'));
+      emit(AuthErrorNamedSchoolState(errorEmptyCertificateTypeKey.tr()));
     }
   }
 
   void _onCheckCertificateImg(
       CheckCertificateImgEvent event, Emitter<AuthState> emit) {
     if (event.certificateImg.isEmpty) {
-      emit(const AuthErrorNamedSchoolState('Vui lòng chọn ảnh chứng chỉ'));
+      emit(AuthErrorNamedSchoolState(errorEmptyCertificateImgKey.tr()));
     }
   }
 
   void _onCheckGradeType(CheckGradeTypeEvent event, Emitter<AuthState> emit) {
     if (event.gradeType.isEmpty) {
-      emit(const AuthErrorNamedSchoolState('Vui lòng chọn loại điểm'));
+      emit(AuthErrorNamedSchoolState(errorEmptyGradeTypeKey.tr()));
     }
   }
 
   void _onCheckGradeScore(CheckGradeScoreEvent event, Emitter<AuthState> emit) {
     if (event.gradeScore == 0.0) {
-      emit(const AuthErrorNamedSchoolState('Vui lòng nhập điểm'));
+      emit(AuthErrorNamedSchoolState(errorEmptyGradeScoreKey.tr()));
     } else if (event.gradeScore < 0 || event.gradeScore > 10) {
-      emit(const AuthErrorNamedSchoolState('Điểm không hợp lệ'));
+      emit(AuthErrorNamedSchoolState(errorEmptyGradeScoreKey.tr()));
     }
   }
 
@@ -214,17 +221,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onGetCity(GetCityEvent event, Emitter<AuthState> emit) async {
-    try {
-      final response = await http.get(Uri.parse('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json'));
-      if (response.statusCode == 200) {
-        final List<Country> countries = countryFromJson(response.body);
+    final result = await getCountriesUseCase();
+    result.fold(
+      (failure) {
+        emit(AuthErrorCityState(failure.message));
+      },
+      (countries) {
         emit(AuthLoadedCityState(const [], country: countries));
-      } else {
-        emit(const AuthErrorCityState('Failed to load city data'));
-      }
-    } catch (e) {
-      emit(AuthErrorCityState(e.toString()));
-    }
+      },
+    );
   }
 
   Future<void> _onRegister(RegisterEvent event, Emitter<AuthState> emit) async {
@@ -242,12 +247,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       schoolName: event.selectedSchool,
       country: event.selectedCountry,
       programName: event.selectedProgram,
-      addressLine: '${event.selectedWard ?? ''}, ${event.selectedDistrict ?? ''}, ${event.selectedCity ?? ''}, ${event.address}',
+      city: event.selectedCity,
+      district: event.selectedDistrict,
+      ward: event.selectedWard,
+      addressLine: event.address,
       gender: event.valueGender?.toString().split('.').last.toUpperCase(),
       degreeType: event.valueDegree?.toString().split('.').last.toUpperCase(),
       gradeType: event.radioGradeTypeValue?.toString().split('.').last,
       gradeScore: gradeScoreString,
-      certificateType: event.selectedCertificateType?.toString().split('.').last,
+      certificateType:
+          event.selectedCertificateType?.toString().split('.').last,
       certificateImg: event.certificateImg,
     );
 
@@ -264,7 +273,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthErrorState(failure.message));
         }
       },
-      (user) => emit(AuthSuccessState(user as dynamic)),
+      (user) => emit(AuthSuccessState(user)),
     );
   }
 }
