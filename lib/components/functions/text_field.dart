@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:study_abroad_cemc_mobile/blocs/theme_setting_cubit/theme_setting_bloc.dart';
+import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
 
 class MyTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -67,7 +68,6 @@ class _MyTextFieldState extends State<MyTextField> {
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : Colors.black;
     final iconColor = isDarkMode ? Colors.white : Colors.black;
-    final border = isDarkMode ? Colors.black : Colors.white;
 
     return SizedBox(
       height: widget.height ?? 73,
@@ -134,12 +134,12 @@ class _MyTextFieldState extends State<MyTextField> {
                 borderSide: BorderSide(color: Colors.red),
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: border),
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: AppColor.borderGrey, width: 1.0),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
               focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: iconColor),
+                  borderSide: BorderSide(color: iconColor, width: 1.0),
                   borderRadius: const BorderRadius.all(Radius.circular(10))),
               contentPadding: const EdgeInsets.all(10),
               filled: widget.filled,

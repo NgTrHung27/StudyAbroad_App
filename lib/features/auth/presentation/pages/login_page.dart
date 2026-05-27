@@ -40,7 +40,9 @@ class _LoginPageState extends State<LoginPage> {
     String password = passwordController.text.trim();
     log('data email: $email');
     log('data pass: $password');
-    context.read<LoginBloc>().add(LoginRequested(email: email, password: password));
+    context
+        .read<LoginBloc>()
+        .add(LoginRequested(email: email, password: password));
   }
 
   void changeSelectedValueRadio(bool? isRemember) {
@@ -91,9 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                   isLoading = false;
                 });
                 // Navigate to mainpage when login succeeds
-                context
-                    .read<UserAuthProvider>()
-                    .setUserAuthLogin();
+                context.read<UserAuthProvider>().setUserAuthLogin();
                 Navigator.pushNamed(context, '/mainpage');
               } else {
                 setState(() {
@@ -138,141 +138,145 @@ class _LoginPageState extends State<LoginPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: screenHeight * 0.02),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: TextMonserats(loginWelcomeKey.tr(),
-                            fontSize: 30, color: textColorRed),
-                      ),
-                      SizedBox(height: screenHeight * 0.008),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: TextMonserats(loginContinueKey.tr(),
-                            fontSize: 15, fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(height: screenHeight * 0.04),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MyTextField(
-                            controller: usermailController,
-                            hintText: registerEmailKey.tr(),
-                            keyboardType: TextInputType.emailAddress,
-                            obscureText: false,
-                            prefixIcon: Icons.email,
-                            onChanged: (value) {
-                              email = value;
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: screenHeight * 0.001),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MyTextField(
-                            controller: passwordController,
-                            hintText: registerPasswordKey.tr(),
-                            obscureText: true,
-                            prefixIcon: Icons.lock,
-                            onChanged: (value) {
-                              password = value;
-                            },
-                          ),
-                        ],
-                      ),
-                      if (errorMessage != null)
-                        Center(
-                          child:
-                              TextMonserats(errorMessage!, color: Colors.red),
-                        ),
-                      Row(
-                        children: [
-                          Transform.scale(
-                              scale: 0.8,
-                              child: Checkbox(
-                                checkColor: Colors.white,
-                                value: isRememberChange,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50)),
-                                fillColor: WidgetStateProperty.all<Color>(
-                                    AppColor.redButton),
-                                onChanged: (bool? value) {
-                                  changeSelectedValueRadio(value!);
-                                },
-                              )),
-                          TextMonserats(loginRememberKey.tr(),
-                              fontWeight: FontWeight.w400, fontSize: 15),
-                        ],
-                      ),
-                      SizedBox(height: screenHeight * 0.04),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MyButton(
-                            onTap: () => userLogin(context),
-                            text: registerSignInKey.tr(),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: screenHeight * 0.03),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, "/forgotpass");
-                            },
-                            child: TextMonserats(loginForgotKey.tr(),
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: screenHeight * 0.25),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Divider(
-                            height: 1,
-                            color: AppColor.borderGrey,
-                            thickness: 1.0,
-                            indent: 20,
-                            endIndent: 20,
-                          ),
-                          SizedBox(height: screenHeight * 0.02),
-                          Align(
-                            alignment: Alignment.center,
-                            child: RichText(
-                              text: TextSpan(
-                                style: DefaultTextStyle.of(context).style,
-                                children: <TextSpan>[
-                                  styledTextSpan(loginDoNotKey.tr(),
-                                      color: textColor),
-                                  styledTextSpan(
-                                    logoutSignUpKey.tr(),
-                                    color: AppColor.redButton,
-                                    fontWeight: FontWeight.w700,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: AppColor.redButton,
-                                    decorationStyle: TextDecorationStyle.solid,
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Navigator.pushNamed(
-                                            context, "/register");
-                                      },
-                                  ),
-                                ],
-                              ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: TextMonserats(loginWelcomeKey.tr(),
+                                  fontSize: 30, color: textColorRed),
                             ),
-                          ),
-                        ],
+                            SizedBox(height: screenHeight * 0.008),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: TextMonserats(loginContinueKey.tr(),
+                                  fontSize: 15, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(height: screenHeight * 0.04),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                MyTextField(
+                                  controller: usermailController,
+                                  hintText: registerEmailKey.tr(),
+                                  keyboardType: TextInputType.emailAddress,
+                                  obscureText: false,
+                                  prefixIcon: Icons.email,
+                                  onChanged: (value) {
+                                    email = value;
+                                  },
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: screenHeight * 0.001),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                MyTextField(
+                                  controller: passwordController,
+                                  hintText: registerPasswordKey.tr(),
+                                  obscureText: true,
+                                  prefixIcon: Icons.lock,
+                                  onChanged: (value) {
+                                    password = value;
+                                  },
+                                ),
+                              ],
+                            ),
+                            if (errorMessage != null)
+                              Center(
+                                child: TextMonserats(errorMessage!,
+                                    color: Colors.red),
+                              ),
+                            Row(
+                              children: [
+                                Transform.scale(
+                                    scale: 0.8,
+                                    child: Checkbox(
+                                      checkColor: Colors.white,
+                                      value: isRememberChange,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      fillColor: WidgetStateProperty.all<Color>(
+                                          AppColor.redButton),
+                                      onChanged: (bool? value) {
+                                        changeSelectedValueRadio(value!);
+                                      },
+                                    )),
+                                TextMonserats(loginRememberKey.tr(),
+                                    fontWeight: FontWeight.w400, fontSize: 15),
+                              ],
+                            ),
+                            SizedBox(height: screenHeight * 0.04),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                MyButton(
+                                  onTap: () => userLogin(context),
+                                  text: registerSignInKey.tr(),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: screenHeight * 0.03),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, "/forgotpass");
+                                  },
+                                  child: TextMonserats(loginForgotKey.tr(),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: screenHeight * 0.25),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Divider(
+                                  height: 1,
+                                  color: AppColor.borderGrey,
+                                  thickness: 1.0,
+                                  indent: 20,
+                                  endIndent: 20,
+                                ),
+                                SizedBox(height: screenHeight * 0.02),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: DefaultTextStyle.of(context).style,
+                                      children: <TextSpan>[
+                                        styledTextSpan(loginDoNotKey.tr(),
+                                            color: textColor),
+                                        styledTextSpan(
+                                          ' ${logoutSignUpKey.tr()}',
+                                          color: AppColor.redButton,
+                                          fontWeight: FontWeight.w700,
+                                          decoration: TextDecoration.underline,
+                                          decorationColor: AppColor.redButton,
+                                          decorationStyle:
+                                              TextDecorationStyle.solid,
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              Navigator.pushNamed(
+                                                  context, "/register");
+                                            },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ],
-        );
+                ],
+              );
             },
           ),
         ),
