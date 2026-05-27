@@ -85,10 +85,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final idCardNumberController = TextEditingController();
   final dateController = TextEditingController();
   final phoneController = TextEditingController();
-final addressController = TextEditingController();
-   final gradeController = TextEditingController();
-   final wardController = TextEditingController();
-   TextEditingController imageController = TextEditingController();
+  final addressController = TextEditingController();
+  final gradeController = TextEditingController();
+  final wardController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
   int currentStep = 0;
 
   void userRegister() async {
@@ -234,13 +234,13 @@ final addressController = TextEditingController();
     });
   }
 
-void cityChange(Province? city) {
-     setState(() {
-       if (city != null) {
-         selectedCity = city.name;
-       }
-     });
-   }
+  void cityChange(Province? city) {
+    setState(() {
+      if (city != null) {
+        selectedCity = city.name;
+      }
+    });
+  }
 
   void districtChange(String? districtName) {
     setState(() {
@@ -686,13 +686,15 @@ void cityChange(Province? city) {
                 },
               )),
               const SizedBox(width: 15),
-              Expanded(child: MyTextField(
+              Expanded(
+                  child: MyTextField(
                 controller: wardController,
                 hintText: registerWardKey.tr(),
                 obscureText: false,
                 prefixIcon: Icons.location_on,
                 filled: true,
-                fillColor: isDarkMode ? AppColor.scafflodBgColorDark : Colors.white,
+                fillColor:
+                    isDarkMode ? AppColor.scafflodBgColorDark : Colors.white,
                 height: 43,
                 onChanged: (value) {
                   selectedWard = value;
@@ -706,7 +708,8 @@ void cityChange(Province? city) {
               obscureText: false,
               prefixIcon: Icons.home,
               filled: true,
-              fillColor: isDarkMode ? AppColor.scafflodBgColorDark : Colors.white,
+              fillColor:
+                  isDarkMode ? AppColor.scafflodBgColorDark : Colors.white,
               onChanged: (value) {
                 address = value;
               },
@@ -805,7 +808,8 @@ void cityChange(Province? city) {
                             programChange(newValueProgram?.name);
                           });
                         },
-                        itemLabel: (SchoolProgramEntity program) => program.name,
+                        itemLabel: (SchoolProgramEntity program) =>
+                            program.name,
                         hintText: registerMajorKey.tr(),
                         isExpanded: true,
                       );
@@ -859,14 +863,20 @@ void cityChange(Province? city) {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      certificateImg.isNotEmpty ? Icons.check_circle : Icons.upload_file,
+                      certificateImg.isNotEmpty
+                          ? Icons.check_circle
+                          : Icons.upload_file,
                       size: 21,
-                      color: certificateImg.isNotEmpty ? Colors.green : (isDarkMode ? Colors.white : Colors.black),
+                      color: certificateImg.isNotEmpty
+                          ? Colors.green
+                          : (isDarkMode ? Colors.white : Colors.black),
                     ),
                     const SizedBox(width: 10),
                     TextMonserats(
                       registerUploadFileKey.tr(),
-                      color: certificateImg.isNotEmpty ? Colors.green : (isDarkMode ? Colors.white : Colors.black),
+                      color: certificateImg.isNotEmpty
+                          ? Colors.green
+                          : (isDarkMode ? Colors.white : Colors.black),
                     )
                   ],
                 ),
@@ -1123,7 +1133,7 @@ void cityChange(Province? city) {
                             styledTextSpan(registerHaveAccountKey.tr(),
                                 color: textColor),
                             styledTextSpan(
-                              logoutSignUpKey.tr(),
+                              ' ${logoutSignUpKey.tr()}',
                               color: AppColor.redButton,
                               fontWeight: FontWeight.w700,
                               decoration: TextDecoration.underline,

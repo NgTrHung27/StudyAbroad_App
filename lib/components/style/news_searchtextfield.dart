@@ -45,7 +45,7 @@ class NewsSearchTextField extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(20.0)),
               ),
               enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 0.0),
+                borderSide: BorderSide(color: AppColor.borderGrey, width: 1),
                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
               ),
               hintText: homeSearchKey.tr(),

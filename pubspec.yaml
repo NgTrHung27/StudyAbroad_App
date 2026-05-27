@@ -67,6 +67,7 @@ dependencies:
   ably_flutter: ^1.2.36
   flutter_speed_dial: ^7.0.0
   meta: ^1.16.0
+  flutter_svg: ^2.3.0
 
 dependency_overrides:
   intl: ^0.19.0
