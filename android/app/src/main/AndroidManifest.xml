@@ -5,7 +5,9 @@
     <application
         android:label="Study Abroad - CECM LTD.CO"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:enableOnBackInvokedCallback="true"
+        android:allowBackup="false">
 
         <!-- Định nghĩa Activity -->
         <activity

@@ -21,8 +21,11 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:study_abroad_cemc_mobile/core/constants/image_assets.dart';
 
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
+
 class AblyChatPage extends StatefulWidget {
-  const AblyChatPage({super.key});
+  final VoidCallback? onBack;
+  const AblyChatPage({super.key, this.onBack});
 
   @override
   State<AblyChatPage> createState() => _AblyChatState();
@@ -284,7 +287,13 @@ class _AblyChatState extends State<AblyChatPage> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new),
               color: Colors.white,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                if (widget.onBack != null) {
+                  widget.onBack!();
+                } else {
+                  Navigator.pop(context);
+                }
+              },
             )),
         body: Padding(
           padding: const EdgeInsets.only(bottom: 20),
@@ -386,11 +395,14 @@ class _AblyChatState extends State<AblyChatPage> {
                           return GestureDetector(
                             onTap: () => onPressAvatar?.call(user),
                             onLongPress: () => onLongPressAvatar?.call(user),
-                            child: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(user.profileImage ?? ''),
-                              backgroundColor: Colors.white,
-                              radius: 20,
+                            child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: SafeNetworkImage(
+                                url: user.profileImage ?? '',
+                                fit: BoxFit.cover,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                             ),
                           );
                         },

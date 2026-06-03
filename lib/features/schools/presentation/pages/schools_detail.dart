@@ -10,6 +10,7 @@ import 'package:study_abroad_cemc_mobile/features/news/presentation/widgets/news
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/widgets/scholar_school_box.dart';
 import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
 
 class SchoolsDetail extends StatefulWidget {
   final SchoolEntity school;
@@ -37,7 +38,8 @@ class SchoolsDetailState extends State<SchoolsDetail> {
             SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.5,
-              child: Image.network(widget.school.background, fit: BoxFit.cover),
+              child: SafeNetworkImage(
+                  url: widget.school.background, fit: BoxFit.cover),
             ),
             Container(
               transform:

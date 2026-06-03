@@ -44,19 +44,24 @@ Future<void> main() async {
 
   await EasyLocalization.ensureInitialized();
 
-  //FirebaseMess
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  // Kiểm tra nếu đang chạy trên Android
-  bool isRunningOnAndroid = Platform.isAndroid;
+  // Firebase initialization - bọc try-catch vì trên Android, google-services.json
+  // có thể đã tự động init Firebase ở tầng native trước khi Dart code chạy.
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {
+    debugPrint('Firebase already initialized: $e');
+  }
 
   // Chỉ thực thi phần thông báo nếu đang chạy trên Android
-  if (isRunningOnAndroid) {
-    await Firebase.initializeApp();
-    await initializeNotifications();
-    await setupNotificationChannel();
-    await listenToForegroundMessages();
-    setupFirebaseMessagingBackgroundHandler();
+  if (Platform.isAndroid) {
+    try {
+      await initializeNotifications();
+      await setupNotificationChannel();
+      await listenToForegroundMessages();
+      setupFirebaseMessagingBackgroundHandler();
+    } catch (e) {
+      debugPrint('Notification init error: $e');
+    }
   }
 
   // Check login status synchronously from cache

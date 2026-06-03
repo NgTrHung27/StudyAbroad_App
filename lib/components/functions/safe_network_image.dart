@@ -25,51 +25,56 @@ class SafeNetworkImage extends StatelessWidget {
     if (fallback != null) return fallback!;
     return LayoutBuilder(
       builder: (context, constraints) {
-        final size = constraints.biggest;
-        final logoSize = (size.width * 0.35).clamp(80.0, 160.0);
-        return Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF1A1F36),
-                Color(0xFF0F1320),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+        final double w = constraints.hasBoundedWidth ? constraints.maxWidth : (width ?? 100.0);
+        final double h = constraints.hasBoundedHeight ? constraints.maxHeight : (height ?? 100.0);
+        final logoSize = (w * 0.35).clamp(30.0, 160.0);
+        return SizedBox(
+          width: w,
+          height: h,
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF1A1F36),
+                  Color(0xFF0F1320),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-          ),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              // Subtle radial glow in the centre
-              Center(
-                child: Container(
-                  width: logoSize * 1.8,
-                  height: logoSize * 1.8,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        const Color(0xFF8B1A1A).withValues(alpha: 0.25),
-                        Colors.transparent,
-                      ],
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                // Subtle radial glow in the centre
+                Center(
+                  child: Container(
+                    width: logoSize * 1.8,
+                    height: logoSize * 1.8,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          const Color(0xFF8B1A1A).withValues(alpha: 0.25),
+                          Colors.transparent,
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              // Logo
-              Center(
-                child: Opacity(
-                  opacity: 0.75,
-                  child: Image.asset(
-                    ImageAssets.logoRed,
-                    width: logoSize,
-                    height: logoSize,
-                    fit: BoxFit.contain,
+                // Logo
+                Center(
+                  child: Opacity(
+                    opacity: 0.75,
+                    child: Image.asset(
+                      ImageAssets.logoRed,
+                      width: logoSize,
+                      height: logoSize,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

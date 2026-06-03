@@ -5,6 +5,7 @@ import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/presentation/pages/schools_detail.dart';
 import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
 
 class SchoolBox extends StatelessWidget {
   final SchoolEntity school;
@@ -88,8 +89,8 @@ class SchoolBox extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Image.network(
-                    school.background,
+                  SafeNetworkImage(
+                    url: school.background,
                     height: screenHeight * 0.23,
                     width: double.infinity,
                     fit: BoxFit.cover,

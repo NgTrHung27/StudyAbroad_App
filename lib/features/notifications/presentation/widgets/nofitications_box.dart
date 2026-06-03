@@ -6,6 +6,8 @@ import 'package:study_abroad_cemc_mobile/components/constant/color_constant.dart
 import 'package:study_abroad_cemc_mobile/models/notifications.dart';
 import 'package:study_abroad_cemc_mobile/features/notifications/presentation/pages/notifications_detail.dart';
 
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
+
 class NotificationBox extends StatefulWidget {
   final Notifications notification;
 
@@ -58,10 +60,14 @@ class NotificationBoxState extends State<NotificationBox> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundImage:
-                          NetworkImage(widget.notification.schoolAvt ?? ''),
+                    SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: SafeNetworkImage(
+                        url: widget.notification.schoolAvt ?? '',
+                        fit: BoxFit.cover,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                     ),
                     Expanded(
                       child: Padding(
