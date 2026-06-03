@@ -40,11 +40,10 @@ void showCustomDialog({
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
+            actionsAlignment: MainAxisAlignment.center,
             actions: <Widget>[
               if (showCancel)
-              Transform.translate(
-                offset: const Offset(10, 0),
-                child: DialogButton(
+                DialogButton(
                   onPressed: () {
                     Navigator.pop(context);
                     if (onCancel != null) onCancel();
@@ -58,21 +57,17 @@ void showCustomDialog({
                     color: AppColor.scafflodBgColorDark,
                   ),
                 ),
-              ),
-              Transform.translate(
-                offset: const Offset(-15, 0),
-                child: DialogButton(
-                  onPressed: () {
-                    if (onConfirm != null) onConfirm();
-                  },
-                  width: showCancel ? 120 : 160,
-                  color: AppColor.redButton,
-                  child: TextMonserats(
-                    confirmText ?? notiOk,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
+              DialogButton(
+                onPressed: () {
+                  if (onConfirm != null) onConfirm();
+                },
+                width: showCancel ? 120 : 160,
+                color: AppColor.redButton,
+                child: TextMonserats(
+                  confirmText ?? notiOk,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 ),
               ),
             ],

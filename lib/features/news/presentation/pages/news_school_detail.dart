@@ -8,6 +8,8 @@ import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
+
 class NewsSchoolDetailPage extends StatelessWidget {
   final NewsEntity newsSchool;
   const NewsSchoolDetailPage({super.key, required this.newsSchool});
@@ -29,7 +31,7 @@ class NewsSchoolDetailPage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width, // full screen width
                 height: MediaQuery.of(context).size.height *
                     0.5, // half screen height
-                child: Image.network(newsSchool.cover,
+                child: SafeNetworkImage(url: newsSchool.cover,
                     fit: BoxFit.cover), // thumbnail image
               ),
               Container(

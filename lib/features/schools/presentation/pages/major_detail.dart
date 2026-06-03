@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:study_abroad_cemc_mobile/components/style/montserrat.dart';
 import 'package:study_abroad_cemc_mobile/features/schools/domain/entities/school_entity.dart';
 import 'package:study_abroad_cemc_mobile/components/style/backbutton.dart';
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
 
 class MajorDetailPage extends StatelessWidget {
   final SchoolProgramEntity program;
@@ -19,7 +20,7 @@ class MajorDetailPage extends StatelessWidget {
               SizedBox(
                 width: screenWidth,
                 height: screenHeight * 0.5,
-                child: Image.network(program.cover, fit: BoxFit.cover),
+                child: SafeNetworkImage(url: program.cover, fit: BoxFit.cover),
               ),
               SingleChildScrollView(
                 child: ConstrainedBox(

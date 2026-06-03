@@ -14,6 +14,8 @@ import 'package:study_abroad_cemc_mobile/features/news/domain/entities/news_enti
 import 'package:study_abroad_cemc_mobile/features/news/presentation/pages/news_detail.dart';
 import 'package:study_abroad_cemc_mobile/components/functions/empty_data.dart';
 
+import 'package:study_abroad_cemc_mobile/components/functions/safe_network_image.dart';
+
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key, this.nullSchool});
   final dynamic nullSchool;
@@ -136,7 +138,7 @@ class _SearchPageState extends State<SearchPage> {
             });
             return buildNewsList(textColor, bgColor);
           }
-          return Container();
+          return const SizedBox.shrink();
         },
       ),
     );
@@ -149,12 +151,10 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _isNotFound(Color textColor, Color bgColor) {
-    return const Expanded(
-      child: Center(
-        child: EmptyDataWidget(
-          text: 'Không có kết quả tìm kiếm',
-          icon: Icons.search_off,
-        ),
+    return const Center(
+      child: EmptyDataWidget(
+        text: 'Không có kết quả tìm kiếm',
+        icon: Icons.search_off,
       ),
     );
   }
@@ -197,13 +197,11 @@ class _SearchPageState extends State<SearchPage> {
                                           ))),
                                 ),
                                 Expanded(
-                                  child: ClipRRect(
+                                  child: SafeNetworkImage(
+                                    height: 100,
+                                    url: _filteredData[index].cover.toString(),
+                                    fit: BoxFit.cover,
                                     borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.network(
-                                      height: 100,
-                                      _filteredData[index].cover.toString(),
-                                      fit: BoxFit.cover,
-                                    ),
                                   ),
                                 ),
                                 SizedBox(

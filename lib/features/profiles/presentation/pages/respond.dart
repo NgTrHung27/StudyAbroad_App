@@ -18,6 +18,7 @@ import 'package:study_abroad_cemc_mobile/core/translations/translation_keys.dart
 import 'package:study_abroad_cemc_mobile/models/response.dart';
 import 'package:study_abroad_cemc_mobile/models/user_login.dart';
 import 'package:study_abroad_cemc_mobile/features/auth/presentation/pages/auth_data_notify.dart';
+import '../../../../components/functions/safe_network_image.dart';
 
 // Events
 abstract class ResponseEvent {}
@@ -240,14 +241,12 @@ class _RespondState extends State<Respond> {
                                   return Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: screenHeight * 0.006),
-                                    child: ClipRRect(
+                                    child: SafeNetworkImage(
+                                      width: screenHeight * 0.35,
+                                      height: screenHeight * 0.25,
+                                      url: image.url ?? '',
+                                      fit: BoxFit.cover,
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        width: screenHeight * 0.35,
-                                        height: screenHeight * 0.25,
-                                        image.url ?? '',
-                                        fit: BoxFit.cover,
-                                      ),
                                     ),
                                   );
                                 }).toList(),

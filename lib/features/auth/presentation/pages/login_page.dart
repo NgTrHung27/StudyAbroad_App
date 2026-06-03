@@ -187,26 +187,26 @@ class _LoginPageState extends State<LoginPage> {
                                 child: TextMonserats(errorMessage!,
                                     color: Colors.red),
                               ),
-                            Row(
-                              children: [
-                                Transform.scale(
-                                    scale: 0.8,
-                                    child: Checkbox(
-                                      checkColor: Colors.white,
-                                      value: isRememberChange,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
-                                      fillColor: WidgetStateProperty.all<Color>(
-                                          AppColor.redButton),
-                                      onChanged: (bool? value) {
-                                        changeSelectedValueRadio(value!);
-                                      },
-                                    )),
-                                TextMonserats(loginRememberKey.tr(),
-                                    fontWeight: FontWeight.w400, fontSize: 15),
-                              ],
-                            ),
+                            // Row(
+                            //   children: [
+                            //     Transform.scale(
+                            //         scale: 0.8,
+                            //         child: Checkbox(
+                            //           checkColor: Colors.white,
+                            //           value: isRememberChange,
+                            //           shape: RoundedRectangleBorder(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(50)),
+                            //           fillColor: WidgetStateProperty.all<Color>(
+                            //               AppColor.redButton),
+                            //           onChanged: (bool? value) {
+                            //             changeSelectedValueRadio(value!);
+                            //           },
+                            //         )),
+                            //     TextMonserats(loginRememberKey.tr(),
+                            //         fontWeight: FontWeight.w400, fontSize: 15),
+                            //   ],
+                            // ),
                             SizedBox(height: screenHeight * 0.04),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,

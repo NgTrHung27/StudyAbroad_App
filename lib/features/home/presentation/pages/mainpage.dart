@@ -29,7 +29,7 @@ class MainPageState extends State<MainPage>
 
   List<Widget> get _bodyView => [
     const HomePage(),
-    _currentIndex == 1 ? const AblyChatPage() : const SizedBox.shrink(),
+    _currentIndex == 1 ? AblyChatPage(onBack: () => onTabTapped(0)) : const SizedBox.shrink(),
     const NotificationsPage(),
     const ProfilePage()
   ];

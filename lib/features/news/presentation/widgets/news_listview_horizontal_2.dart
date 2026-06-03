@@ -128,8 +128,8 @@ class NewsListViewShortState extends State<NewsListViewShort> {
             ),
           );
         }
-        print('error state: $state');
-        return Container();
+        debugPrint('News state: $state');
+        return const SizedBox.shrink();
       },
     );
   }

@@ -67,10 +67,6 @@ Future<void> setupNotificationChannel() async {
 void handleMessage(RemoteMessage? message) {
   try {
     if (message == null) {
-      navigatorKey.currentState?.pushNamed(
-        '/mainpage',
-        arguments: {'message': {}, 'index': 2},
-      );
       return;
     }
     navigatorKey.currentState?.pushNamed(

@@ -78,40 +78,45 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _initializeNotifications(BuildContext context) async {
-    final userAuth = context.read<UserAuthProvider>().userAuthLogin;
-    if (userAuth == null) {
-    } else {}
+    try {
+      final userAuth = context.read<UserAuthProvider>().userAuthLogin;
 
-    final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-    await firebaseMessaging.requestPermission();
+      final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+      await firebaseMessaging.requestPermission();
 
-    // Ensure the APNS token is available only on iOS
-    if (Platform.isIOS) {
-      String? apnsToken = await firebaseMessaging.getAPNSToken();
-      while (apnsToken == null) {
-        await Future.delayed(const Duration(seconds: 1));
-        apnsToken = await firebaseMessaging.getAPNSToken();
+      // Ensure the APNS token is available only on iOS
+      if (Platform.isIOS) {
+        String? apnsToken = await firebaseMessaging.getAPNSToken();
+        int retries = 0;
+        while (apnsToken == null && retries < 10) {
+          await Future.delayed(const Duration(seconds: 1));
+          apnsToken = await firebaseMessaging.getAPNSToken();
+          retries++;
+        }
+        if (apnsToken == null) return; // Không lấy được APNS token, bỏ qua
       }
-    }
 
-    // Fetch the FCM token for this device
-    final fCMToken = await firebaseMessaging.getToken();
+      // Fetch the FCM token for this device
+      final fCMToken = await firebaseMessaging.getToken();
 
-    // Print the token
-    if (fCMToken == null) return;
-    final idUser = userAuth?.id;
-    final url = Uri.parse(ApiUrls.notificationToken);
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({'token': fCMToken, 'userId': idUser}),
-    );
-    if (mounted) {
-      context.read<ClientIdProvider>().setClientId(fCMToken);
-    } else {
-      print('Failed to post token: ${response.statusCode}');
+      // Print the token
+      if (fCMToken == null) return;
+      final idUser = userAuth?.id;
+      final url = Uri.parse(ApiUrls.notificationToken);
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'token': fCMToken, 'userId': idUser}),
+      );
+      if (mounted) {
+        context.read<ClientIdProvider>().setClientId(fCMToken);
+      } else {
+        print('Failed to post token: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('Notification init error: $e');
     }
   }
 
