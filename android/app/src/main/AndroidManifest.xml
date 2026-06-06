@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hungdev.kltn_mobile">
+    package="com.cemc.studyabroad">
     
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="Study Abroad - CECM LTD.CO"
+        android:label="Multinational Study Abroad"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:enableOnBackInvokedCallback="true"
