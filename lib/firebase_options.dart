@@ -51,29 +51,27 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA9lmnOR0anpmgF0cGK4VuW19EvxyJia18',
-    appId: '1:936640374389:android:35025d73c1f3f8c12cfa3c',
-    messagingSenderId: '936640374389',
-    projectId: 'kltn-56ae4',
-    storageBucket: 'kltn-56ae4.appspot.com',
+    apiKey: 'AIzaSyB5-nI1CjKyGn6f4_WVHKvBTSfEOhIiFYU',
+    appId: '1:812956802168:android:0fc322f07d6de0cc1f618d',
+    messagingSenderId: '812956802168',
+    projectId: 'cemc-co',
+    storageBucket: 'cemc-co.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyATFAAjvm4t57CwmPtAOS-dJjlTIek41kE',
-    appId: '1:936640374389:ios:bbb2c5ddd56c7ddb2cfa3c',
-    messagingSenderId: '936640374389',
-    projectId: 'kltn-56ae4',
-    storageBucket: 'kltn-56ae4.appspot.com',
+    apiKey: 'AIzaSyCwrXHri9Lns2u7my-RjqHVde3T-5TaB6s',
+    appId: '1:812956802168:ios:84c2bf67303f72091f618d',
+    messagingSenderId: '812956802168',
+    projectId: 'cemc-co',
+    storageBucket: 'cemc-co.firebasestorage.app',
     iosBundleId: 'com.hungdev.kltnMobile',
   );
-
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyATFAAjvm4t57CwmPtAOS-dJjlTIek41kE',
     appId: '1:936640374389:ios:bbb2c5ddd56c7ddb2cfa3c',
     messagingSenderId: '936640374389',
     projectId: 'kltn-56ae4',
     storageBucket: 'kltn-56ae4.appspot.com',
-    iosBundleId: 'com.hungdev.kltnMobile',
+    iosBundleId: 'com.cemc.studyabroad',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

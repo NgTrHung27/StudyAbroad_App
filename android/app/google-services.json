@@ -7,9 +7,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:812956802168:android:00678e2f371c8b521f618d",
+        "mobilesdk_app_id": "1:812956802168:android:d963cf81d079710f1f618d",
         "android_client_info": {
-          "package_name": "com.hungdev.kltn_mobile"
+          "package_name": "com.cemc.studyabroad"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5-nI1CjKyGn6f4_WVHKvBTSfEOhIiFYU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812956802168:android:0fc322f07d6de0cc1f618d",
+        "android_client_info": {
+          "package_name": "com.example.ably_flutter"
         }
       },
       "oauth_client": [],

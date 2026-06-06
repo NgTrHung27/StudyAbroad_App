@@ -1,4 +1,4 @@
-package com.hungdev.kltn_mobile
+package com.cemc.studyabroad
 
 import io.flutter.embedding.android.FlutterActivity
 
