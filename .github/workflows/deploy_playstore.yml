@@ -5,6 +5,11 @@ on:
     branches:
       - master
       - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/*.md'
+      - '*.txt'
 
 jobs:
   deploy:
