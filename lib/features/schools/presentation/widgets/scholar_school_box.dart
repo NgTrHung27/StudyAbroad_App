@@ -24,29 +24,35 @@ class ScholarSchoolBoxState extends State<ScholarSchoolBox> {
     return ListView.builder(
       itemCount: widget.scholar.length,
       itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ScholarDetailPage(scholar: widget.scholar[index])),
-            );
-          },
-          child: Container(
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: boxColor,
+        return Container(
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: boxColor,
+            borderRadius: BorderRadius.circular(15),
+            border:
+                Border.all(color: isDarkMode ? Colors.white : Colors.black),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
               borderRadius: BorderRadius.circular(15),
-              border:
-                  Border.all(color: isDarkMode ? Colors.white : Colors.black),
-            ),
-            child: TextMonserats(
-              widget.scholar[index].name,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: textColor,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ScholarDetailPage(scholar: widget.scholar[index])),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextMonserats(
+                  widget.scholar[index].name,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: textColor,
+                ),
+              ),
             ),
           ),
         );

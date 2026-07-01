@@ -6,8 +6,8 @@ class ApplyScholarModel {
 
   factory ApplyScholarModel.fromJson(Map<String, dynamic> json) {
     return ApplyScholarModel(
-      success: json['success'] as String?,
-      error: json['error'] as String?,
+      success: json['success']?.toString(),
+      error: json['error']?.toString() ?? json['message']?.toString(),
     );
   }
 }

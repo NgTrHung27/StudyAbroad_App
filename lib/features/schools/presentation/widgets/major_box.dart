@@ -24,29 +24,35 @@ class MajorBoxState extends State<MajorBox> {
     return ListView.builder(
       itemCount: widget.programs.length,
       itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      MajorDetailPage(program: widget.programs[index])),
-            );
-          },
-          child: Container(
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: boxColor,
+        return Container(
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: boxColor,
+            borderRadius: BorderRadius.circular(15),
+            border:
+                Border.all(color: isDarkMode ? Colors.white : Colors.black),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
               borderRadius: BorderRadius.circular(15),
-              border:
-                  Border.all(color: isDarkMode ? Colors.white : Colors.black),
-            ),
-            child: TextMonserats(
-              widget.programs[index].name,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: textColor,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          MajorDetailPage(program: widget.programs[index])),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextMonserats(
+                  widget.programs[index].name,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: textColor,
+                ),
+              ),
             ),
           ),
         );

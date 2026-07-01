@@ -52,10 +52,9 @@ List<Score>? scores = userAuth?.student?.program?.scores;
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
+      body: Column(
+        children: [
+          Container(
               height: screenHeight * 0.15,
               color: AppColor.redButton,
               child: Padding(
@@ -82,8 +81,10 @@ List<Score>? scores = userAuth?.student?.program?.scores;
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 0.05, vertical: screenWidth * 0.05),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,8 +295,9 @@ List<Score>? scores = userAuth?.student?.program?.scores;
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+          ),
+        ],
       ),
     );
   }

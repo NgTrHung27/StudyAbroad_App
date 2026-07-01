@@ -19,21 +19,18 @@ class CompareSchoolsPage extends StatelessWidget {
         (ThemeSettingBloc bloc) => bloc.state.brightness == Brightness.dark);
     final textColor = isDarkMode ? Colors.white : AppColor.redButton;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
           children: [
             SizedBox(height: screenHeight * 0.03),
             Padding(
               padding: EdgeInsets.all(screenHeight * 0.025),
-              child: Stack(
-                children: [
-                  const Align(
-                      alignment: Alignment.topLeft, child: BackButtonCircle()),
-                  Center(
-                    child: TextMonserats(schDescKey.tr(),
-                        fontSize: screenHeight * 0.03, color: textColor),
-                  ),
-                ],
+              child: Center(
+                child: TextMonserats(schDescKey.tr(),
+                    fontSize: screenHeight * 0.03, color: textColor),
               ),
             ),
             Padding(
@@ -69,6 +66,14 @@ class CompareSchoolsPage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
+      const Positioned(
+        top: 10,
+        left: 10,
+        child: BackButtonCircle(),
+      ),
+    ],
+  ),
+),
+);
+}
 }

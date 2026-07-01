@@ -77,7 +77,7 @@ class ApplyScholarBloc extends Bloc<ApplyScholarEvent, ApplyScholarState> {
         }),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         emit(ApplyScholarSuccess(ApplyScholarModel.fromJson(
             jsonDecode(utf8.decode(response.bodyBytes)))));
       } else {
