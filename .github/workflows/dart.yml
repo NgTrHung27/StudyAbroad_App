@@ -19,6 +19,7 @@ jobs:
           architecture: x64
       - run: flutter pub get
       
+      - run: echo "{}" > env.json
 
       - run: pod repo update
         working-directory: ios
