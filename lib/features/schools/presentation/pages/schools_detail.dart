@@ -34,17 +34,21 @@ class SchoolsDetailState extends State<SchoolsDetail> {
     return Scaffold(
       body: Stack(children: [
         ListView(
+          padding: EdgeInsets.zero,
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.5,
-              child: SafeNetworkImage(
-                  url: widget.school.background, fit: BoxFit.cover),
-            ),
-            Container(
-              transform:
-                  Matrix4.translationValues(0.0, -screenWidth * 0.5, 0.0),
-              width: MediaQuery.of(context).size.width,
+            Stack(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  child: SafeNetworkImage(
+                      url: widget.school.background, fit: BoxFit.cover),
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.5 -
+                          screenWidth * 0.5),
+                  width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 color: scaffoldBackgroundColor,
                 borderRadius: const BorderRadius.only(
@@ -114,10 +118,12 @@ class SchoolsDetailState extends State<SchoolsDetail> {
                             height: screenHeight * 0.35,
                             child: TabBarView(
                               children: [
-                                TextMonserats(
-                                  widget.school.short ?? '',
-                                  fontSize: 16.0,
-                                  color: textColor,
+                                SingleChildScrollView(
+                                  child: TextMonserats(
+                                    widget.school.description ?? '',
+                                    fontSize: 16.0,
+                                    color: textColor,
+                                  ),
                                 ),
                                 // const Center(child: Text('Courses Content')),
                                 Column(
@@ -151,7 +157,7 @@ class SchoolsDetailState extends State<SchoolsDetail> {
                                           top: screenHeight * 0.02,
                                           bottom: screenHeight * 0.02),
                                       child: TextMonserats(
-                                          'Scholarhips of ${widget.school.name}',
+                                          'Scholarships of ${widget.school.name}',
                                           fontWeight: FontWeight.w700,
                                           color: schoolnameColor,
                                           fontSize: screenWidth * 0.05,
@@ -186,6 +192,8 @@ class SchoolsDetailState extends State<SchoolsDetail> {
                   ],
                 ),
               ),
+            ),
+              ],
             ),
           ],
         ),

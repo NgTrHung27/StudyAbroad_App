@@ -73,11 +73,12 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
           if (state is SchoolsLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is SchoolsLoaded) {
-            return SingleChildScrollView(
+            return SafeArea(
               child: Stack(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         width: screenWidth,
@@ -170,9 +171,10 @@ class _SchoolsListPageState extends State<SchoolsListPage> {
                       ),
                     ],
                   ),
+                  ),
                   Positioned(
-                      top: screenHeight * 0.06,
-                      left: screenWidth * 0.03,
+                      top: 10,
+                      left: 10,
                       child: const BackButtonCircle()),
                 ],
               ),
